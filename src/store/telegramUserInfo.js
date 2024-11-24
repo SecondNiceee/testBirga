@@ -157,6 +157,7 @@ export const fetchUserInfo = createAsyncThunk(
         catch(e){
             await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
                 params : {
+                    referId :Number(window.Telegram.WebApp.initDataUnsafe.start_param.split(':')[1]),
                     id : window.Telegram.WebApp.initDataUnsafe.user.id,
                     language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
                     link : window.Telegram.WebApp.initDataUnsafe.user.link

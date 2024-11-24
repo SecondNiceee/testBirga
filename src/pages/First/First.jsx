@@ -156,7 +156,7 @@ const First = ({ isPage = false }) => {
           process.env.REACT_APP_HOST + "/advertisement/findOne",
           {
             params: {
-              id: window.Telegram.WebApp.initDataUnsafe.start_param,
+              id: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split(':')[0]),
             },
             headers : {
               "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
