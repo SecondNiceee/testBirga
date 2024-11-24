@@ -152,11 +152,13 @@ const First = ({ isPage = false }) => {
   const detailsAdertisement = useMemo(() => {
     async function getAdvertisement() {
       try {
+
+        console.log(String(window.Telegram.WebApp.initDataUnsafe.start_param.split(':')[0]))
         let advertisement = await axios.get(
           process.env.REACT_APP_HOST + "/advertisement/findOne",
           {
             params: {
-              id: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split(':')[0]),
+              id: String(window.Telegram.WebApp.initDataUnsafe.start_param.split(':')[0]),
             },
             headers : {
               "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
