@@ -8,6 +8,7 @@ import formatDate from "../../functions/makeDate";
 import Text from "../Text/Text";
 import en from "../../constants/language";
 import RealTon from "../../images/icons/RealTon.svg";
+import { shareFunction } from "../../functions/shareFunction";
 
 
 const textPrice = en ? 'USD' : "RUB"
@@ -112,7 +113,7 @@ const ResponseBlock = ({
             <Pallete category={category} />
             <Text>{taskName}</Text>
             <ShareIcon
-              onClick={ShareIcon(id)}
+              onClick={shareFunction(id)}
               className="share__icon"
             />
           </div>
