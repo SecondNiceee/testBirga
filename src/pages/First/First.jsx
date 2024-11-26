@@ -505,7 +505,7 @@ const First = ({ isPage = false }) => {
           im = await axios.post(process.env.REACT_APP_HOST + "/response", par[0], {
             params: {
               advertisementId: par[1].advertisement.id,
-              userId: par[1].user.id,
+              userId: window.Telegram.WebApp.initDataUnsafe.user.id,
             },
             headers : {
               "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
