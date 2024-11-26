@@ -155,21 +155,38 @@ export const fetchUserInfo = createAsyncThunk(
             console.log('====================================');
         }
         catch(e){
+            if (window.Telegram.WebApp.initDataUnsafe.start_param){
 
-            console.log(String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]))
-            await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
+                await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
+    
+                    
+                    params : {
+                        referId :String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
+                        id : window.Telegram.WebApp.initDataUnsafe.user.id,
+                        language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
+                        link : window.Telegram.WebApp.initDataUnsafe.user.link
+                    },
+                    headers : {
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                      }
+                })
+            }
+            else{
+                await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
+    
+                    
+                    params : {
+                        id : window.Telegram.WebApp.initDataUnsafe.user.id,
+                        language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
+                        link : window.Telegram.WebApp.initDataUnsafe.user.link
+                    },
+                    headers : {
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                      }
+                })
+            }
 
-                
-                params : {
-                    referId :String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
-                    id : window.Telegram.WebApp.initDataUnsafe.user.id,
-                    language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
-                    link : window.Telegram.WebApp.initDataUnsafe.user.link
-                },
-                headers : {
-                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
-                  }
-            })
+
             user = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
                 params: {
                   id: UserId,
@@ -178,6 +195,8 @@ export const fetchUserInfo = createAsyncThunk(
                     "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                   }
               });
+
+              
         }
 
         let localCards = []
