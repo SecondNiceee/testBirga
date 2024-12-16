@@ -181,5 +181,25 @@
     "Удалить из избранного?" : "Remove from favorites?",
     "Вы хотите удалить этот шаблон?" : "Do you want to delete this template?",
     "Вы хотите удалить этот кейс?" : "Do you want to delete this case?",
-    "Ccылка на Dropfile" : "Dropfile link"
+    "Ccылка на Dropfile" : "Dropfile link",
+    "Перейти?" : "Forward?",
+    "Вы уверены, что хотите перейти по ссылке " : "Are you sure you want to click on the link ",
+    "Внимание" : "Attention",
+    "Продолжить" : "Continue",
+    "Прочитать" : "Read",
+    "Да" : "Yes",
+    "Нет" : "No",
+    "Изменить?" : "Update?",
+    "Изменить этот кейс?" : "Update this case?",
+    "Ошибка" : "Error",
+    "Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик." : "You have already responded to this task. The customer will definitely see your response.",
+    "Вы хотите удалить это задание?" : "Do you want to delete this task?",
+    "Вы еще не создали задание, поэтому оно неактивно." : "You have not created a task yet, so it is inactive.",
+    "Заказчик еще не выбрал исполнителя, вы можете им стать." : "The customer has not yet chosen an executor, you can become one.",
+    "Заказчик уже выбрал исполнителя." : "The customer has already chosen the contractor.",
+    "Задание уже выполнено." : "The assignment has already been completed.",
+    "Извините, подверждение не удалось отправить заказчику. Обратитесь в поддержку." : "Sorry, the confirmation could not be sent to the customer. Please contact support.",
+    "Завершено" : "Completed",
+    "Мы пока не добавили возможность делиться откликами:(" : "We haven't added the ability to share feedback yet:("
+    
 }                                    

@@ -2,8 +2,8 @@ import React, { memo, useRef } from "react";
 import cl from "./BudgetInput.module.css";
 import Info from "../../../images/icons/info.svg";
 import Text from "../../../components/Text/Text";
+import en from "../../../constants/language";
 
-const en = true
 const textPrice = en ? "USD" : "RUB"
 
 const BudgetInput = ({

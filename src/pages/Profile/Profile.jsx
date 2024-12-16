@@ -34,6 +34,8 @@ import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import CardsArray from "./components/CardsArray/CardsArray";
 import Text from "../../components/Text/Text";
 import translation from "../../functions/translate";
+import PayBlock from "./components/PayBlock/PayBlock";
+import en from "../../constants/language";
 
 const lett = translation("лет");
 const goda = translation("года");
@@ -47,10 +49,10 @@ const variants = {
 let aboutULocal = null;
 
 let userInfoLocal = null;
-const en = true;
 
-const Yes = translation("Yes");
-const No = translation("No");
+
+const Yes = translation("Да");
+const No = translation("Нет");
 const menu = document.documentElement.querySelector(".FirstMenu");
 const Profile = () => {
   const mainRef = useRef(null);
@@ -394,6 +396,8 @@ const Profile = () => {
                 : userInfo.firstName}
             </Text>
 
+            <PayBlock className="pay-block" />
+
             <Options />
 
             <Compact title={"О себе"} className={"compact-block"}>
@@ -473,6 +477,18 @@ const Profile = () => {
               setCardsOpen={setChangeActive}
             />
           </CSSTransition>
+
+
+
+          
+          {/* <CSSTransition
+            mountOnEnter
+            unmountOnExit
+            in={true}
+            timeout={400}
+          >
+            <PaymentPageOne />
+          </CSSTransition> */}
 
 
         </motion.div>

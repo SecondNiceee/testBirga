@@ -5,8 +5,6 @@ import AdCreatingTwo from "./ADCreatingTwo/AdCreatingTwo/AddCreatingTwo";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeMyAds,
-  fetchMyOrders,
   postMyTask,
 } from "../store/information";
 import BackButton from "../constants/BackButton";
@@ -15,16 +13,16 @@ import { useNavigate } from "react-router-dom";
 import PostLoader from "../loaders/PostLoader";
 import pagesHistory from "../constants/pagesHistory";
 import FirstDetails from "../components/First/FirstDetails/FirstDetails";
-import axios from "axios";
 import translation from "../functions/translate";
+import { CSSTransition } from "react-transition-group";
 
 
 const textButton = translation("Вы уверены, что хотите создать новое задание?")
 let create = translation("Создать?")
 let spet = 0;
 const menu = document.documentElement.querySelector(".FirstMenu")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const AdCreating = () => {
 
 const endText = translation("СОЗДАТЬ ЗАДАНИЕ")
@@ -217,8 +215,8 @@ const translateText = translation("Вы уверены, что хотите со
   }
   async function post(el) {
     let myFormData = new FormData();
-    // myFormData.append("userId", 2144832745 );
-     myFormData.append("userId", String(2144832745)  );
+    // myFormData.append("userId", 858931156 );
+     myFormData.append("userId", String(858931156)  );
     myFormData.append("title", String(el.taskName.trim()));
     myFormData.append("description", String(el.taskDescription.trim()));
     myFormData.append("deadline", "1");
@@ -246,7 +244,7 @@ const translateText = translation("Вы уверены, что хотите со
     // for (let i = 0 ; i < 1; i++){
     //   try{
     //     console.log("Создание задания")
-    //     await axios.post("https://back-birga.ywa.su/advertisement", myFormData, {
+    //     await axios.post("https://www.connectbirga.ru/advertisement", myFormData, {
     //       headers: {
     //         "Content-Type" :'multipart/form-data',
     //         "Access-Control-Allow-Origin": "*"
@@ -265,7 +263,7 @@ const translateText = translation("Вы уверены, что хотите со
 
     
     //   let state = await axios.post(
-    //   "https://back-birga.ywa.su/advertisement",
+    //   "https://www.connectbirga.ru/advertisement",
     //   myFormData,
     //   {
     //     headers: {
@@ -291,6 +289,26 @@ const translateText = translation("Вы уверены, что хотите со
   //     pagesHistory.push('/AdCreating')
   //   }
   // } , [] )
+  useEffect( () => {
+      if (spet === 2){
+        if (mainRef.current){
+          mainRef.current.style.height = "100vh"
+          mainRef.current.style.paddingBottom = "76px"
+        }
+      }
+      else{
+        if (mainRef.current){
+          if (spet === 1){
+            mainRef.current.style.height = "100vh"
+            mainRef.current.style.paddingBottom = "0px"
+          }
+          else{
+            mainRef.current.style.paddingBottom = "76px"
+            mainRef.current.style.height = "100%"
+          }
+        }
+      }
+  } , [spet]  )
   const mainRef = useRef(null)
   function checking() {
     let taskName = false;
@@ -584,8 +602,14 @@ const translateText = translation("Вы уверены, что хотите со
             taskInformation={secondPage}
             tonConstant={tonConstant}
           />
-          <FirstDetails   style = {{position : "static" ,  minHeight : "unset" , overflowY : "unset" ,minWidth : "100vw", transform : "translateX(0%)"}} end = {true} orderInformation={{...firstPage , ...secondPage , category : firstPage.category.id , whichOne : whichOne } } />
-          {/* <AdCreatingThree taskInformation={secondPage} /> */}
+          <div className="adCreatingThree-wrapper">
+            <CSSTransition timeout={0}
+            in = {spet !== 0}
+            unmountOnExit mountOnEnter>
+              <FirstDetails   style = {{position : "static" ,  minHeight : "unset" , "height" : "unset", overflowY : "unset" ,minWidth : "100vw", transform : "translateX(0%)"}} end = {true} orderInformation={{...firstPage , ...secondPage , category : firstPage.category.id , whichOne : whichOne } } />
+            </CSSTransition>
+            {/* <AdCreatingThree taskInformation={secondPage} /> */}
+          </div>
         </>
       )}
 

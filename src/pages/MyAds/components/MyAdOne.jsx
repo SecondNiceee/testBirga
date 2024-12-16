@@ -16,10 +16,8 @@ const MyAdOne = ({
   setTwoValue,
   valueTwo ,
   valueOne,
-  details,
-  myResponse,
   setMyResponse,
-  setDetails,
+
   responsesArr
   
 }) => {
@@ -66,13 +64,9 @@ const MyAdOne = ({
 
   const containerRef = useRef()
 
-  
 
   return (
-    <>
-        {status === "loading" ? 
-      <MyLoader />
-      :
+  
     <div ref={containerRef} className="my-ad-one">
 
 
@@ -80,9 +74,6 @@ const MyAdOne = ({
       <MyAdsBlock valueOne = {valueOne} valueTwo = {valueTwo} setOneValue = {setOneValue}  setTwoValue = {setTwoValue} setNowKey={setNowKey} nowValue = {nowValue} greyIntWidth={GreyIntWidth} greyWidth={GreyWidth} deals={1} finishedDeals={"0%"} />
           <PickerContent
           responsesArr = {responsesArr}
-          details={details}
-          setDetails={setDetails}
-          myResponse={myResponse}
           setMyResponse={setMyResponse}
           nowValue={nowValue}
           valueOne = {valueOne}
@@ -91,8 +82,7 @@ const MyAdOne = ({
             setSecondPage = {setSecondPage}
           />
     </div>
-}
-    </>
+
   );
 };
 

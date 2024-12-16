@@ -23,10 +23,13 @@
     z-index: 200;
 }
 .caseTop img{
-    border-radius: 7px;
+    min-width: calc(0.48* 100vw);
+    height: calc(0.35* 100vw);
+    border-radius: 6.67px;
     object-fit: cover;
-    min-width: 183px;
-    height: 133px;
+    border-radius: 6.67px;
+    -o-object-fit: cover;
+       object-fit: cover;
 }
 .caseBottom{
     display: flex;
@@ -38,6 +41,7 @@
     align-items: center;
 }
 .caseLeft{
+    gap: 2px;
     display: flex;
     flex-direction: column;
     align-self: self-start;

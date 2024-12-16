@@ -262,8 +262,10 @@
   border-radius: 6.67px;
 }
 .First__block .first__photos .first__photo {
-  min-width: 183.33px;
-  height: 133.67px;
+  min-width: calc(0.48* 100vw);
+  height: calc(0.35* 100vw);
+  border-radius: 6.67px;
+  object-fit: cover;
   border-radius: 6.67px;
   -o-object-fit: cover;
      object-fit: cover;
@@ -3472,7 +3474,6 @@ body {
 
 .MainContainer {
   background: rgb(24, 34, 45);
-  max-width: 430px;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   height: auto;

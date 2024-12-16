@@ -5,19 +5,20 @@ import Dedline from './Dedline'
 import Status from './Status'
 import Customer from './Customer'
 import Block from "../Block";
+import translation from "../../../functions/translate";
 
 const TaskDetailsContainer = ({orderInformation , setProfile, end = false}) => {
   const text = useMemo(() => {
     if (end){
-      return "Вы еще не создали задание, поэтому оно неактивно"
+      return translation("Вы еще не создали задание, поэтому оно неактивно.")
     }
     switch (orderInformation.status){
       case "active":
-        return "Заказчик еще не выбрал исполнителя, вы можете им стать"
+        return translation("Заказчик еще не выбрал исполнителя, вы можете им стать.")
       case "inProcess":
-        return "Заказчик уже выбрал исполнителя"
+        return translation("Заказчик уже выбрал исполнителя.")
       case "completed":
-        return "Задание уже выполнено"
+        return translation("Задание уже выполнено.")
       default :
 
     }

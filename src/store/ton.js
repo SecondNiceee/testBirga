@@ -1,6 +1,7 @@
 import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
+import en from "../constants/language";
 
-const en = true
+
 export const fetchTon = createAsyncThunk(
     'ton/fetchTon',
     async function () {
@@ -22,7 +23,7 @@ export const fetchTon = createAsyncThunk(
           }
           let one = await getCurrencies();
           let two = await getTonPrice();
-          return en ? 1 : one;
+          return en ? two : one * two;
     }
 )
 const ton = createSlice ({

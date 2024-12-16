@@ -5,11 +5,13 @@ import makeNewFile from "../functions/newMakeFile";
 
 
 
+
+
 export const deleteServerCard = createAsyncThunk(
     "telegramUserInfo/putCard",
     async function (data){
         try{
-            await axios.delete("https://back-birga.ywa.su/card" , {
+            await axios.delete("https://www.connectbirga.ru/card" , {
                 params : {
                     id : data
                 }
@@ -29,14 +31,16 @@ export const putCard = createAsyncThunk(
     "telegramUserInfo/putCard",
     async function (data){
         try{
-            let im = await axios.put("https://back-birga.ywa.su/card" , data[0] , 
+            let im = await axios.put("https://www.connectbirga.ru/card" , data[0] , 
                 {
                     params : {
                         id : data[1]
                     },
                     headers: {
                         "Content-Type" :'multipart/form-data',
-                        "Access-Contrsol-Allow-Origin": "*"
+                        "Access-Contrsol-Allow-Origin": "*",
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+
                       },
                 }
             )
@@ -63,14 +67,15 @@ export const postCard = createAsyncThunk(
     "telegramUserInfo/postUserInfo",
     async function (data){
         try{
-            let im = await axios.post("https://back-birga.ywa.su/card" , data[0] , 
+            let im = await axios.post("https://www.connectbirga.ru/card" , data[0] , 
                 {
                     params : {
                         userId : data[1]
                     },
                     headers: {
                         "Content-Type" :'multipart/form-data',
-                        "Access-Control-Allow-Origin": "*"
+                        "Access-Control-Allow-Origin": "*",
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                       },
                 }
              )
@@ -100,12 +105,13 @@ export const putUserInfo = createAsyncThunk(
     "telegramUserInfo/putUserInfo",
     async function (data){
         try{
-            await axios.put('https://back-birga.ywa.su/user' , data[0] , {
+            await axios.put('https://www.connectbirga.ru/user' , data[0] , {
                 params : {
                     userId : data[1],
                     headers: {
                         "Content-Type" :'multipart/form-data',
-                        "Access-Control-Allow-Origin": "*"
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
+                        "Access-Control-Allow-Origin": "*",
                       },
                 }
             })
@@ -121,38 +127,50 @@ export const fetchUserInfo = createAsyncThunk(
   async function () {
     try {
 
-        //2144832745
+        //858931156
         let firstName = "Коля"
         let lastName = "Титов"
-        let UserId = 2144832745
+        let UserId = 858931156
         let user;
         try{
 
-             user = await axios.get("https://back-birga.ywa.su/user/findOne", {
+             user = await axios.get("https://www.connectbirga.ru/user/findOne", {
               params: {
                 id: UserId,
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             });
         }
         catch(e){
-            await axios.post("https://back-birga.ywa.su/user/createByBot" , {}, {
+            await axios.post("https://www.connectbirga.ru/user/createByBot" , {}, {
                 params : {
-                    id : 2144832745
-                }
+                    id : 858931156
+                },
+                headers : {
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                  }
             })
-            user = await axios.get("https://back-birga.ywa.su/user/findOne", {
+            user = await axios.get("https://www.connectbirga.ru/user/findOne", {
                 params: {
                   id: UserId,
                 },
+                headers : {
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                  }
               });
         }
 
         let localCards = []
 
-        let allCards = await axios.get("https://back-birga.ywa.su/card/findByUser" , {
+        let allCards = await axios.get("https://www.connectbirga.ru/card/findByUser" , {
             params : {
                 userId : UserId
-            }
+            },
+            headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
         })
         for (let e of allCards.data)
             {
@@ -174,6 +192,8 @@ export const fetchUserInfo = createAsyncThunk(
         return ( {
             firstName: firstName,
             lastName: lastName,
+            address : user.data.address,
+            mnemonic : user.data.mnemonic,
             id: UserId,
             link : user.data.link,
             photo: user.data.photo,
@@ -247,6 +267,8 @@ const telegramUserInfo = createSlice({
       state.profile.userId = action.payload.id
       state.completedTasks = action.payload.completedTasks
       state.deals = action.payload.deals
+      state.mnemonic = action.payload.mnemonic
+      state.address = action.payload.address
       state.profile.cards.sort((a, b) => a.id - b.id)
     });
     builder.addCase(fetchUserInfo.rejected, (state) => {

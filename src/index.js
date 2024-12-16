@@ -12,6 +12,9 @@ import './css/Fonts.css'
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
+
+window.Buffer = window.Buffer || require("buffer").Buffer;
+
 root.render(
     // <React.StrictMode>
         <Provider store={store}>

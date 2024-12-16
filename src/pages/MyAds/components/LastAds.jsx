@@ -19,6 +19,7 @@ const LastAds = ({
     if (
       responce.isWatched !== "watched" &&
       responce.isWatched !== "inProcess"
+      && responce.isWatched !== "completed"
     ) {
       dispatch(postResponse(responce.id));
     }

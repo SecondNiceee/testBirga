@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import SmallDimond from '../../UI/SmallDimond/SmallDimond';
 import Text from '../../Text/Text';
-const en = true
+import en from '../../../constants/language';
 const textPrice = en ? 'USD' : "RUB"
 const FirstMainBottomLeft = ({tonValue, tonConstant}) => {
     return (
@@ -12,8 +12,8 @@ const FirstMainBottomLeft = ({tonValue, tonConstant}) => {
         </div>
         <div className='FirstMain__price-bottom'>
           <p>
-            ~ {Number((tonValue * tonConstant).toFixed(2)).toLocaleString(
-              "en-EN"
+            ~ {Number((tonValue * tonConstant).toFixed(0)).toLocaleString(
+              "ru-RU"
             )}
           </p>
             <Text>

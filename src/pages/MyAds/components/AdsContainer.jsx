@@ -1,17 +1,19 @@
-import React, {  memo,  useCallback, useEffect, useRef, useState } from 'react';
+import React, {  memo,  useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MyLoader from '../../../components/UI/MyLoader/MyLoader';
 import SuspenseBlock from '../../../components/MyAds/SuspenseBlock';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyOrders } from '../../../store/information';
+import { clearMyOrders, fetchMyOrders } from '../../../store/information';
+import MyAnimation from './MyAnimation';
 
-const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber , deleteFunction}) => {
+const AdsContainer = ({setSecondPage,  viewsNumber , setViewsNumber , valueTwo, myAdsArray}) => {
 
 
-    const [page , setPage] = useState(2)
+    const [page , setPage] = useState(1)
     const orderStatus = useSelector(state => state.information.myOrderStatus)
     const elementRef = useRef(null)
     const dispatch = useDispatch()
 
+  
     const getMore = useCallback(async () => {
       dispatch(fetchMyOrders(page));
       setPage(page + 1);
@@ -40,20 +42,47 @@ const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber 
       // eslint-disable-next-line
     }, [myAdsArray]);
 
+    const text = useMemo( () => {
+      switch (valueTwo){
+  
+        case "all":
+          return "У вас нет созданных заданий"
+        case "active":
+          return "У вас нет активных заданий"
+        case "inProcess":
+          return "У вас нет заданий в работе"
+        case "completed":
+          return "У вас нет завершенных заданий"
+        default :
+          
+      }
+    } , [valueTwo] )
+  
 
 
-
+    console.log(viewsNumber);
+    
     return (
-        <div className="AdsContainer">
-          {myAdsArray.map((e, i) => {
-            return (
-                <SuspenseBlock  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} key={i} e={e} i={i} setSecondPage={setSecondPage} />
+      <>
+      
+        {myAdsArray.lenght === 0 ?
+        
+            <MyAnimation style = {{height : "calc(calc(100vh) - 300px)"}} text={text}/>
 
-            );
-          })}
-          {orderStatus !== "all" &&  <MyLoader ref={elementRef}  style = {{ height : "90px" , marginLeft : "-16px"}} />}
+            :
 
-        </div>
+            <div className="AdsContainer">
+              {myAdsArray.map((e, i) => {
+                return (
+                    <SuspenseBlock  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} key={i} e={e} i={i} setSecondPage={setSecondPage} />
+
+                );
+              })}
+              { (orderStatus !== "all")  &&  <MyLoader ref={elementRef}  style = {{ height : "200px" , marginLeft : "-16px"}} />}
+
+            </div>
+        }
+      </>
     );
 };
 

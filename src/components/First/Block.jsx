@@ -23,7 +23,6 @@ const Block = ({
   isWatched,
   index,
   id,
-  setSlideActive,
   tonValue,
   task,
   agree = false,
@@ -32,7 +31,9 @@ const Block = ({
   category,
   endTime,
   singleTime,
-  whichOne
+  whichOne,
+  status,
+  showStatus = false
 }) => {
   const dispatch = useDispatch();
   const tonConstant = useSelector((state) => state.ton.value);
@@ -51,6 +52,7 @@ const Block = ({
     }
   } , [] )
 
+  
   return (
     <>
       {photos && (
@@ -61,7 +63,7 @@ const Block = ({
         >
           <Photos photos={photos} />
 
-          <MyAdsTop isMyAds={isMyAds} isResponce={isResponce} viewsNumber={viewsNumber} responseCounter={responseCounter} />
+          <MyAdsTop showStatus = {showStatus} status = {status} isMyAds={isMyAds} isResponce={isResponce} viewsNumber={viewsNumber} responseCounter={responseCounter} />
 
           <FirstMainTop isMyAds={isMyAds} category={category} isWatched={isWatched} taskName={taskName} id={id}  end={end} />
 

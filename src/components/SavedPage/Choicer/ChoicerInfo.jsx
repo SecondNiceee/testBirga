@@ -8,7 +8,6 @@ import Case from "../../UI/Case/Case";
 import { useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../UI/MyLoader/MyLoader";
 import { fetchSavedAdvertisements, fetchSavedCards, fetchSavedResponses } from "../../../store/saves";
-import { fetchMyOrders } from "../../../store/information";
 import Text from "../../Text/Text";
 
 const ChoicerInfo = forwardRef(

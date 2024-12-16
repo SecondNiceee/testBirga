@@ -8,7 +8,9 @@ import MyButton from "../../../components/UI/MyButton/MyButton";
 import userPhoto from "../../../images/userPhoto/user.png"
 import breakShare from "../../../functions/breakShare";
 import Text from "../../../components/Text/Text";
-const en = true
+import en from "../../../constants/language";
+
+
 const Reaction = ({
   blue = false,
   setOpen,
@@ -53,12 +55,13 @@ const Reaction = ({
       /// какая - то логика лет 
     }
   } , []  )
+  console.log(responce)
   return (
     <>
       <div
         className="reaction"
         style={
-          responce.isWatched === "inProcess" && writeButton
+          (responce.isWatched === "inProcess" || responce.isWatched === "completed")  && writeButton
             ? { border: "1.67px solid #2ea5ff" }
             : {}
         }
@@ -137,9 +140,9 @@ const Reaction = ({
               <path
                 d="M1.21484 8.14672L3.67722 10.4449L10.141 4.41211M14.4501 4.55575L7.98639 10.5886L7.2169 9.87039"
                 stroke="#2EA5FF"
-                stroke-width="1.33333"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.33333"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </div>}
@@ -208,10 +211,10 @@ const Reaction = ({
               Написать
             </MyButton>
             {/* <svg style={{
-                stroke-width : "1.67px",
+                strokeWidth : "1.67px",
                 stroke : "#2ea5ff"
               }} width="18" height="21" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14.0978 1.80176C15.8171 1.80176 16.247 3.18964 16.247 3.88358V19.2571C16.247 20.2179 15.4204 19.8976 14.0978 19.2571L9.46867 17.1752C9.46867 17.1752 9.08075 17.0151 8.64205 17.0151C8.20335 17.0151 7.81542 17.1752 7.81542 17.1752L3.18633 19.2571C1.86373 19.8976 1.03711 20.2179 1.03711 19.2571V3.88358C1.03711 2.21812 2.46992 1.80176 3.18633 1.80176H14.0978Z" stroke="#2EA5FF" stroke-width="1.66667" />
+  <path d="M14.0978 1.80176C15.8171 1.80176 16.247 3.18964 16.247 3.88358V19.2571C16.247 20.2179 15.4204 19.8976 14.0978 19.2571L9.46867 17.1752C9.46867 17.1752 9.08075 17.0151 8.64205 17.0151C8.20335 17.0151 7.81542 17.1752 7.81542 17.1752L3.18633 19.2571C1.86373 19.8976 1.03711 20.2179 1.03711 19.2571V3.88358C1.03711 2.21812 2.46992 1.80176 3.18633 1.80176H14.0978Z" stroke="#2EA5FF" strokeWidth="1.66667" />
 </svg> */}
             <FalseTie
               agree={agree}

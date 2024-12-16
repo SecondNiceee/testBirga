@@ -30,4 +30,4 @@ const MyLoader = forwardRef(({text, ...props}, ref) => {
       </div>
     );
   } );
-  export default MyLoader
+export default MyLoader

@@ -62,13 +62,10 @@ const Responce = forwardRef(({ orderInformation, responce, setResponce , left = 
   //     document.documentElement.style.overflowY = "scroll"
   //   }
   // } , [])
-
-  const focusText = useCallback( () => {
-    ref.current.scrollTo(0, 100)
-    setTimeout( () => {
-      ref.current.scrollTo(0, 100)
-    } , 400 )
-  } , [] )
+  const onFocus = useCallback((e) => {
+    e.preventDefault()
+    e.target.preventDefault()
+} , [] )
 
   return (
     
@@ -122,7 +119,7 @@ const Responce = forwardRef(({ orderInformation, responce, setResponce , left = 
        
           {(shablonsArr.length > 0 || !responce.isShablon) && 
                     <DescriptionAndPhoto
-                    textFocus = {focusText}
+                    onFocus={onFocus}
                     clearPhoto={clearPhoto}
                     className={"responce-descriprion"}
                     text={responce.text}

@@ -23,8 +23,10 @@ const MyResponses = forwardRef(
     const me = useSelector((state) => state.telegramUserInfo);
 
     const getMore = useCallback(async () => {
-      dispatch(fetchResponses([me, page]));
-      setPage(page + 1);
+      if (me.id){
+        dispatch(fetchResponses([me, page]));
+        setPage(page + 1);
+      }
     }, [page, setPage, dispatch, me]);
 
     const onIntersaction = useCallback(

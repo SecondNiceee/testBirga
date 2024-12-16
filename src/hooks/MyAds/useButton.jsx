@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import BackButton from "../../constants/BackButton";
 import MainButton from "../../constants/MainButton";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMyOrders, fetchMyOrders, putMyTask, setStartTask } from "../../store/information";
+import { putMyTask, setStartTask } from "../../store/information";
 import { setStartResponse } from "../../store/responses";
 import sortFiles from "../../functions/sortFiles";
 import translation from "../../functions/translate";
@@ -12,8 +12,8 @@ const choiceText = translation("ВЫБРАТЬ")
 const choiceTextTwo = translation("Перед выбором исполнителя\n ознакомьтесь с FAQ Биржи.")
 const lastChoice = translation("Вы уверены, что хотите выбрать\n этого исполнителя?")
 let isTake = translation("Выбрать?")
-const Yes = translation("Yes")
-const No = translation("No")  
+const Yes = translation("Да")
+const No = translation("Нет")  
 export const useButton = ({
   setOpen,
   setSecondPage,
@@ -68,24 +68,15 @@ export const useButton = ({
     setDetails((value) => ({...value , isActive : false}))
     
   } , [details] ) 
-  const bedTask = useMemo(() => {
-    let k = myAdsArray.find((e) => e.id === secondPage.task.id)
-    if (!k){
-      return myAdsArray[0]
-    }
-    else{
-      return k
-    }
-  }, [myAdsArray, secondPage.task.id]);
   useEffect(() => {
     async function writeFucntion() {
       window.Telegram.WebApp.showPopup(
         {
-          title: "Внимание",
+          title: translation("Внимание"),
           message: choiceTextTwo,
           buttons: [
-            { id: "delete", type: "default", text: "Continue" },
-            { id: "save", type: "destructive", text: "Read" },
+            { id: "delete", type: "default", text: translation("Продолжить") },
+            { id: "save", type: "destructive", text: translation("Прочитать") },
           ],
         },
         (buttonId) => {
@@ -104,12 +95,14 @@ export const useButton = ({
                   
                   
   
-                  dispatch(clearMyOrders())
+                  // dispatch(clearMyOrders())
                   dispatch(setStartTask(myAdOneAdvertisement.id));
                   dispatch(setStartResponse([myAdOneResponse , myAdOneAdvertisement]));
                   setOpen({ ...isOpen, isActive: false });
                   setSecondPage({ ...secondPage, isActive: false });
-                  dispatch(fetchMyOrders(1));
+                  // dispatch(fetchMyOrders(1));
+
+
                 }
                 if (buttonId === "delete" || buttonId === null) {
                   console.log("Он отказался");
@@ -207,7 +200,7 @@ export const useButton = ({
 
     BackButton.show();
 
-    if (isOpen.isActive && secondPage.task.status !== "inProcess") {
+    if (isOpen.isActive && secondPage.task.status !== "inProcess" && secondPage.task.status !== "completed") {
       menu.classList.add("disappearAnimation")
       menu.classList.remove("appearAnimation")
       MainButton.show();
@@ -215,7 +208,9 @@ export const useButton = ({
       MainButton.setParams({
         color: "#2ea5ff",
         text_color: "#ffffff",
+        is_active: true,
       });
+
       MainButton.setText(choiceText);
       MainButton.onClick(writeFucntion);
     } else {
@@ -283,6 +278,11 @@ export const useButton = ({
 
     BackButton.onClick(goBack);
     return () => {
+      MainButton.setParams({
+        color: "#2ea5ff",
+        text_color: "#ffffff",
+        is_active: true,
+      });
       BackButton.offClick(goBack);
       MainButton.offClick(writeFucntion);
       MainButton.offClick(putTask)

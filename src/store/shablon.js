@@ -6,7 +6,7 @@ export const deleteShablon = createAsyncThunk(
   "shablon/deleteShablon",
   async function(id){
     try{
-      await axios.delete("https://back-birga.ywa.su/template" , {
+      await axios.delete("https://www.connectbirga.ru/template" , {
         params : {
           id : id
         }
@@ -22,10 +22,13 @@ export const putShablon = createAsyncThunk(
   "shablon/putShablon" ,
   async function(data){
     try{
-      let im = await axios.put("https://back-birga.ywa.su/template" , data[0] , 
+      let im = await axios.put("https://www.connectbirga.ru/template" , data[0] , 
         {
           params : {
             id : data[1]
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         }
       )
@@ -48,14 +51,15 @@ export const postShablon = createAsyncThunk(
   "shablon/postShablon",
   async function(data){
     try{
-        let im = await axios.post("https://back-birga.ywa.su/template" , data[0] , 
+        let im = await axios.post("https://www.connectbirga.ru/template" , data[0] , 
         {
           params : {
-            userId : 2144832745
+            userId : 858931156
           },
           headers: {
             "Content-Type" :'multipart/form-data',
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
         )
@@ -80,11 +84,14 @@ export const fetchAllShablons = createAsyncThunk(
   "shablon/fetchAllShablons",
   async function(id){
     try{
-        let im = await axios.get("https://back-birga.ywa.su/template/findByUser" , 
+        let im = await axios.get("https://www.connectbirga.ru/template/findByUser" , 
             {
                 params : {
-                    userId : 2144832745 
-                    // userId : 2144832745 
+                    userId : 858931156 
+                    // userId : 858931156 
+                },
+                headers : {
+                  "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                 }
             }
         )

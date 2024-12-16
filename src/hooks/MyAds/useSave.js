@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { putMyTask } from "../../store/information";
 import translation from "../../functions/translate";
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sortFiles, dispatch, setDetails, details }) =>{
 
     const save = useCallback( () => {

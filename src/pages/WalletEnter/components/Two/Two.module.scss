@@ -1,0 +1,20 @@
+
+.container{
+    min-width: 100vw;
+    left: 0;
+    top: 0;
+    background: rgb(24, 34, 45);
+    z-index: 10;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+.UpTextContainer{
+    margin-top: 51px;
+}
+.inputBlocks{
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

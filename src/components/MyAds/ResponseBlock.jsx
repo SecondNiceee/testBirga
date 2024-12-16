@@ -7,9 +7,10 @@ import { useSelector } from "react-redux";
 import MyButton from "../UI/MyButton/MyButton";
 import formatDate from "../../functions/makeDate";
 import Text from "../Text/Text";
+import en from "../../constants/language";
 
 
-const en = true
+
 const textPrice = en ? 'USD' : "RUB"
 
 const ResponseBlock = ({
@@ -94,7 +95,7 @@ const ResponseBlock = ({
                     alt=""
                   />
                 );
-                // return <img className='first__photo' src = {'https://back-birga.ywa.su/' + e} />
+                // return <img className='first__photo' src = {'https://www.connectbirga.ru/' + e} />
               })}
             </div>
           ) : (

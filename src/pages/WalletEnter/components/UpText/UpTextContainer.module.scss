@@ -1,0 +1,28 @@
+.upText{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    
+    .upTitleBlock{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    h3{
+        font-family: "SF Compact Rounded";
+        font-weight: 500;
+        font-size: 23px;
+        text-align: center;
+        color: #daf5fe;
+    }
+    p{
+        font-family: "SF Pro Display";
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 120%;
+        text-align: center;
+        color: #fff;
+        
+    }
+}

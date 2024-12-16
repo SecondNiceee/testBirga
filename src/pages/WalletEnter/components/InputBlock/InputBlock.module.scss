@@ -1,0 +1,30 @@
+.container{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    padding-top: 10px;
+    padding-right: 16px;
+    padding-bottom: 11px;
+    padding-left: 22px;
+    border-radius: 10px;
+    background-color:  #20303f;
+    p{
+        font-family: "SF Compact Rounded";
+        font-weight: 400;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+        text-align: center;
+        color: #daf5fe;
+        max-width: 80%;
+    }
+    input{
+        background-color: transparent;
+        font-family: "SF Pro Text";
+        font-weight: 400;
+        font-size: 17px;
+        letter-spacing: -0.02em;
+        color: #fff;
+        width: 100%;
+    }
+}

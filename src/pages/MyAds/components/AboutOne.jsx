@@ -11,8 +11,9 @@ import translation from "../../../functions/translate";
 
 
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
+const showStatus = true
 const AboutOne = ({
   task,
   setMenuActive,
@@ -36,8 +37,8 @@ const AboutOne = ({
     (e) => {
       window.Telegram.WebApp.showPopup(
         {
-          title: "Удалить?",
-          message: "Вы хотите удалить это задание?",
+          title: translation("Удалить?"),
+          message: translation("Вы хотите удалить это задание?"),
           buttons: [
             { id: "save", type: "default", text: Yes },
             { id: "delete", type: "destructive", text: No },
@@ -105,10 +106,11 @@ const AboutOne = ({
 
       {task && (putStatus !== "pending")  ? (
         <Block
+          showStatus = {showStatus}
           deleteFunction={deleteCallback}
           setDetailsActive={setDetailsCallback}
-          isResponce={task.status !== "inProcess" }
-          isButton={task.status !== "inProcess" }
+          isResponce={task.status !== "inProcess" && task.status !== "completed"}
+          isButton={task.status !== "inProcess" && task.status !== "completed"}
           className={"FirstAdsBlock"}
         
           {...task}

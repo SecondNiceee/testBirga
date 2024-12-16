@@ -1,0 +1,18 @@
+.copyText{
+    left: calc(50% - 75px);
+    margin-top: 12px;
+    align-items: center;
+    font-family: "SF Pro Display";
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 120%;
+    text-align: center;
+    color: #fff;
+    z-index: 20;
+    background: #20303f;
+    position: fixed;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    top: -100px;
+}

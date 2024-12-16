@@ -29,6 +29,7 @@ import { addResponce, clearTasks } from "../../store/information";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import FirstDetails from "../../components/First/FirstDetails/FirstDetails";
 import translation from "../../functions/translate";
+import en from "../../constants/language";
 
 let isDetailsActiveVar = false;
 let pageValue = true;
@@ -43,10 +44,10 @@ let resp = translation("Откликнуться?")
 const textButton = translation("Вы действительно хотите откликнуться?")
 const buttonText = translation("ОТКЛИКНУТЬСЯ")
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 
-const en = true
+
 
 
 const First = ({ isPage = false }) => {
@@ -187,9 +188,9 @@ const First = ({ isPage = false }) => {
     function forward() {
       if (gotIt) {
         window.Telegram.WebApp.showPopup({
-          title: "Ошибка",
+          title: translation("Ошибка"),
           message:
-            "Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик.",
+            translation("Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик."),
         });
       } else {
         if (step === 0) {
@@ -370,15 +371,18 @@ const First = ({ isPage = false }) => {
         setPutStatus(true)
         responseRef.current.style.overflowY = "hidden"
         for (let i = 0; i < 1; i++) {
-          im = await axios.post("https://back-birga.ywa.su/response", par[0], {
+          im = await axios.post("https://www.connectbirga.ru/response", par[0], {
             params: {
               advertisementId: par[1].advertisement.id,
               userId: par[1].user.id,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           });
         }
 
-        await axios.get("https://back-birga.ywa.su/user/sendMessage", {
+        await axios.get("https://www.connectbirga.ru/user/sendMessage", {
           params: {
             chatId: par[1].advertisement.user.chatId,
             text:
@@ -393,6 +397,9 @@ const First = ({ isPage = false }) => {
               String(im.data.id),
               languageCode : en ? "en" : "ru"
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         });
 
 
@@ -508,11 +515,14 @@ const First = ({ isPage = false }) => {
     async function getAdvertisement() {
       try {
         let advertisement = await axios.get(
-          "https://back-birga.ywa.su/advertisement/findOne",
+          "https://www.connectbirga.ru/advertisement/findOne",
           {
             params: {
               id: window.Telegram.WebApp.initDataUnsafe.start_param,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           }
         );
         let order = advertisement.data;
@@ -528,11 +538,14 @@ const First = ({ isPage = false }) => {
         let files = await makeNewFile(order.folder, order.photos);
 
         let imTwo = await axios.get(
-          "https://back-birga.ywa.su/advertisement/findCount",
+          "https://www.connectbirga.ru/advertisement/findCount",
           {
             params: {
               userId: order.user.id,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           }
         );
 
@@ -602,7 +615,7 @@ const First = ({ isPage = false }) => {
   }, [step, isDetailsActive.isOpen]);
 
   useEffect(() => {
-    const input = document.querySelectorAll('input');
+    const input = document.querySelectorAll('input'); 
     const textarea = document.querySelectorAll("textarea");
     for (let smallInput of input) {
       smallInput.addEventListener("focus", () => {
@@ -701,7 +714,7 @@ const First = ({ isPage = false }) => {
         mountOnEnter
         unmountOnExit
       >
-        <CardPage style={{ paddingBottom: "74px" }} card={isCardOpen.card} />
+        <CardPage style={{ paddingBottom: "74px" , left : "100vw" }} card={isCardOpen.card} />
       </CSSTransition>
 
       <CSSTransition
@@ -714,6 +727,7 @@ const First = ({ isPage = false }) => {
         <AboutReaction
           style={{
             paddingBottom: "74px",
+            left : "100vw"
           }}
           setOneCard={setCardOpen}
           responce={
@@ -736,17 +750,16 @@ const First = ({ isPage = false }) => {
           isDetailsActive={isDetailsActive.isOpen}
           breakRef={firstRef}
           setProfile={setProfile}
-          style={pageValue && isPage ? { transform: "translateX(0%)" } : {}}
+          // style={pageValue && isPage ? { transform: "translateX(0%)" } : {}}
           // className={}
           orderInformation={detailsAdertisement}
         />
       </CSSTransition>
 
       <CSSTransition
-        in={step === 1 ? true : false}
+         in={step === 1 ? true : false}
         // in = {true}
         timeout={400}
-        // classNames="left-right"
         mountOnEnter
         unmountOnExit
       >

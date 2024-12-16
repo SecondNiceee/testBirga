@@ -1,5 +1,5 @@
+import en from "../constants/language";
 
-const en = true
 function formatDate(date , isCapitalize = false) {
   if (en){
     const now = new Date();

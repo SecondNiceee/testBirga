@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import cl from "./Stage.module.css"
 import Text from '../../Text/Text';
 import translation from '../../../functions/translate';
-const en = true
+import en from '../../../constants/language';
+
 const Stage = ({className, numberB}) => {
     const kk = useMemo(() => {
       if (!numberB || numberB === null){

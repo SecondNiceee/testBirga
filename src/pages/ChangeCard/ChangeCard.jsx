@@ -24,8 +24,8 @@ let cardStart;
 const menu = document.documentElement.querySelector(".FirstMenu")
 const changeText = translation("Изменить кейс")
 const saveText = translation("Сохранить")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
 
@@ -210,8 +210,8 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
         window.Telegram.WebApp
         .showPopup({
-          title: "Изменить?",
-          message: `Изменить этот кейс?`,
+          title: translation("Изменить?"),
+          message: translation(`Изменить этот кейс?`),
           buttons: [
             { id: "save", type: "default", text: Yes },
             { id: "delete", type: "destructive", text: No },

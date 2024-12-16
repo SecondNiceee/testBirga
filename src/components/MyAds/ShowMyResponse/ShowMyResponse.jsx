@@ -15,8 +15,8 @@ const menu = document.documentElement.querySelector(".FirstMenu");
 const textButtonOne = translation("ВЫПОЛНИЛ")
 const isTake = translation("Вы выполнили это задание?")
 const bigText = translation("Мы выслали подтверждение заказчику.\nПожалуйста, не нажимайте эту кнопку много раз.\nПодтверждение точно было выслано. ")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const ShowMyResponse = ({
   response = { advertisement: { user: {} }, id: 0, user: { fuck: "fuck" } },
   openDetails,
@@ -25,12 +25,11 @@ const ShowMyResponse = ({
   setLastAds,
   openAboutReaction,
 }) => {
-  const dispatch = useDispatch();
   useEffect(() => {
     function click() {
       window.Telegram.WebApp.showPopup(
         {
-          title: "Выбрать?",
+          title: translation("Выбрать?"),
           message: isTake,
           buttons: [
             { id: "save", type: "default", text: Yes },
@@ -49,7 +48,7 @@ const ShowMyResponse = ({
     }
     async function clickHandler() {
       try {
-        await axios.get("https://back-birga.ywa.su/bot/notification", {
+        await axios.get("https://www.connectbirga.ru/bot/notification", {
           params: {
             executorId: String(response.user.id),
             consumerId: String(response.advertisement.user.id),
@@ -57,6 +56,9 @@ const ShowMyResponse = ({
             chatId: String(response.advertisement.user.id),
             advertisementId: String(response.advertisement.id),
           },
+         headers : {
+          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+         } 
         });
 
         window.Telegram.WebApp.showAlert(
@@ -64,7 +66,7 @@ const ShowMyResponse = ({
         );
       } catch (e) {
         window.Telegram.WebApp.showAlert(
-          "Извините, подверждение не удалось отправить заказчику. Обратитесь в поддержку."
+          translation("Извините, подверждение не удалось отправить заказчику. Обратитесь в поддержку.")
         );
         window.Telegram.WebApp.showAlert(JSON.stringify(e));
         console.log(e);
@@ -75,6 +77,11 @@ const ShowMyResponse = ({
       menu.classList.add("disappearAnimation")
       menu.classList.remove("appearAnimation")
       MainButton.show();
+      MainButton.setParams({
+        color: "#2ea5ff",
+        text_color: "#ffffff",
+        is_active: true,
+      });
       
       MainButton.setText(textButtonOne);
       MainButton.onClick(click);

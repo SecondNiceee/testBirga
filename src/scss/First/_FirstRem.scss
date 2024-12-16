@@ -123,7 +123,7 @@
   gap: calc(8px);
   border-radius: 10px;
   overflow-x: hidden;
-  min-height: calc(calc(100vh));
+  min-height: unset;
 }
 
 
@@ -196,8 +196,8 @@
         overflow-x: scroll;
         border-radius: 6.67px;
         .first__photo{
-            min-width: 183.33px;
-            height: 133.67px;
+            min-width: calc(0.48* 100vw);
+            height: calc(0.35* 100vw);
             border-radius: 6.67px;
             object-fit: cover;
         }

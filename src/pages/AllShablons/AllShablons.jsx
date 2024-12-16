@@ -15,8 +15,8 @@ import MyAnimation from "../MyAds/components/MyAnimation";
 import translation from "../../functions/translate";
 const menu = document.documentElement.querySelector(".FirstMenu");
 
-const Yes = translation("Yes");
-const No = translation("No");
+const Yes = translation("Да");
+const No = translation("Нет");
 const AllShablons = () => {
   window.Telegram.WebApp.disableVerticalSwipes();
   const dispatch = useDispatch();

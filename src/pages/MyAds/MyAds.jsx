@@ -39,8 +39,8 @@ let localIsOpen;
 let localDetails;
 let detailsVar;
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 
 const sureText = translation("Вы уверены, что хотите удалить этот отклик?")
 
@@ -131,6 +131,7 @@ const MyAds = ({isPage = false}) => {
   const myAdsArray = useSelector((state) => state.information.myAdsArray);
 
 
+  console.log(valueTwo);
 
   const filteredArray = useMemo( () => {
     switch (valueTwo){
@@ -148,6 +149,9 @@ const MyAds = ({isPage = false}) => {
         window.Telegram.WebApp.showAlert("Что - то пошло не так MyAds второй")
     }
   } , [myAdsArray , valueTwo] )
+
+  console.log(filteredArray);
+  
 
 
   
@@ -296,9 +300,6 @@ const MyAds = ({isPage = false}) => {
 
 
 
-  function setDetailsActive(value) {
-    setDetails({ ...details, isActive: value });
-  }
 
   const [mistakes, setMistakes] = useState({
     taskName: false,
@@ -372,11 +373,14 @@ const MyAds = ({isPage = false}) => {
 
       
       let im = await axios.get(
-        "https://back-birga.ywa.su/response/findOne",
+        "https://www.connectbirga.ru/response/findOne",
         {
           params: {
             id: responseId,
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         }
       );
       let responce = im.data;
@@ -386,9 +390,12 @@ const MyAds = ({isPage = false}) => {
           photos = await makeNewFile(responce.folder, responce.photos);
         }
 
-        let b = await axios.get("https://back-birga.ywa.su/card/countByUser" , {
+        let b = await axios.get("https://www.connectbirga.ru/card/countByUser" , {
             params : {
                 advertisementId: responce.user.id,
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             }
         } )
 
@@ -397,11 +404,14 @@ const MyAds = ({isPage = false}) => {
         responce.user.cardsNumber = b.data
 
           let imTwo = await axios.get(
-            "https://back-birga.ywa.su/advertisement/findCount",
+            "https://www.connectbirga.ru/advertisement/findCount",
             {
               params: {
                 userId: Number(responce.user.id),
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             }
           );
           responce.createNumber = imTwo.data;
@@ -447,16 +457,20 @@ const MyAds = ({isPage = false}) => {
     async function getAdvertisement() {
       try{
 
-        let im = await axios.get("https://back-birga.ywa.su/advertisement/findOne" , {
+        let im = await axios.get("https://www.connectbirga.ru/advertisement/findOne" , {
           params : {
             id : advertisementId
           }
         })
         let order = im.data
         let files = await makeNewFile(order.folder, order.photos);
-        let responseCounter = await axios.get("https://back-birga.ywa.su/response/countByAdvertisement" , {
+        let responseCounter = await axios.get("https://www.connectbirga.ru/response/countByAdvertisement" , {
           params : {
-            "advertisementId" : order.id
+            "advertisementId" : order.id,
+            
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         })
         return {
@@ -514,7 +528,7 @@ const MyAds = ({isPage = false}) => {
   const deleteFunction = useCallback( (index) => {
     window.Telegram.WebApp
     .showPopup({
-      title: "Удалить?",
+      title: translation("Удалить?"),
       message: sureText,
       buttons: [
         { id: "save", type: "default", text: Yes },
@@ -609,7 +623,6 @@ const MyAds = ({isPage = false}) => {
     setSecondPage( (value) => ({...value , isActive : false}) )
   
   } , [changer])
-
   // const putStatus = useSelector((state) => state.information.putTaskStatus);
 
   // useEffect( () => {
@@ -619,8 +632,6 @@ const MyAds = ({isPage = false}) => {
 
 
 
-  console.log("Это секонд page :" + secondPage.task)
-  console.log(secondPage.task)
 
 
   return (
@@ -639,9 +650,7 @@ const MyAds = ({isPage = false}) => {
 
           <MyAdOne
           responsesArr = {filteredResponses}
-          myResponse = {myResponse}
           setMyResponse = {setMyResponse}
-          details = {detailsTwo}
             setOneValue = {setValueOne}
             setTwoValue = {setValueTwo}
             nowValue={nowValue}
@@ -650,14 +659,13 @@ const MyAds = ({isPage = false}) => {
             setNowKey={setNowKey}
             myAdsArray={filteredArray}
             setSecondPage={setSecondPage}
-            setDetails={setDetailsTwo}
           />
 
 
 
 
 
-        <CSSTransition classNames="details" in={details.isActive} timeout={300}
+        <CSSTransition classNames="left-right" in={details.isActive} timeout={400}
           mountOnEnter unmountOnExit>
             <AdCreatingOne
               style = {{
@@ -768,6 +776,7 @@ const MyAds = ({isPage = false}) => {
           >
             <FirstDetails
               // className={}
+              style = {{paddingBottom : "96px"}}
               orderInformation={filteredResponses[detailsTwo.id] ? filteredResponses[detailsTwo.id].advertisement : ""  }
 
             />
