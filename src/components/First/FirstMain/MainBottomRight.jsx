@@ -18,6 +18,8 @@ const MainBottomRight = ({
   dispatch,
   deleteFunction
 }) => {
+
+  
   return (
     <div className="FirstMain__bottom-right">
       <QOne isMyAds={isMyAds} myAdsFunc={myAdsFunc} isButton={isButton} />

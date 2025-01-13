@@ -5,8 +5,6 @@ import AdCreatingTwo from "./ADCreatingTwo/AdCreatingTwo/AddCreatingTwo";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeMyAds,
-  fetchMyOrders,
   postMyTask,
 } from "../store/information";
 import BackButton from "../constants/BackButton";
@@ -15,22 +13,25 @@ import { useNavigate } from "react-router-dom";
 import PostLoader from "../loaders/PostLoader";
 import pagesHistory from "../constants/pagesHistory";
 import FirstDetails from "../components/First/FirstDetails/FirstDetails";
-import axios from "axios";
 import translation from "../functions/translate";
+import { CSSTransition } from "react-transition-group";
 
 
 const textButton = translation("Вы уверены, что хотите создать новое задание?")
 let create = translation("Создать?")
 let spet = 0;
 const menu = document.documentElement.querySelector(".FirstMenu")
-const Yes = translation("Yes")
-const No = translation("No")
-const AdCreating = () => {
-
+const Yes = translation("Да")
+const No = translation("Нет")
 const endText = translation("СОЗДАТЬ ЗАДАНИЕ")
 const continueText = translation("ДАЛЕЕ")
 
-const translateText = translation("Вы уверены, что хотите создать новое задание?")
+const AdCreating = () => {
+
+
+
+
+
 
 
   useEffect( () => {
@@ -67,7 +68,7 @@ const translateText = translation("Вы уверены, что хотите со
     photos: [],
     customerName : me.firstName,
     creationTime : new Date(),
-    userPhoto : me.photo,
+    userPhoto : me.photo ? me.photo : "",
     time : {start : new Date() , end : new Date(),
 
     }
@@ -94,6 +95,10 @@ const translateText = translation("Вы уверены, что хотите со
   const blurRef = useRef(null);
 
   const status = useSelector((state) => state.information.postTaskStatus);
+
+  const subCategorysStatus = useSelector(state => state.categorys.subCategoryStatus)
+
+  const categorysStatus = useSelector(state => state.categorys.categoryStatus)
 
   const categorys = useSelector((state) => state.categorys.category);
 
@@ -139,7 +144,7 @@ const translateText = translation("Вы уверены, что хотите со
       }
     }
     if (spet === 1) {
-      if (error.ton && secondPage.tonValue >= 5) {
+      if (error.ton && secondPage.tonValue >= 0.1) {
         setError({ ...error, ton: false });
       }
       if (document.getElementById("dateSwapper").style.transform) {
@@ -210,15 +215,15 @@ const translateText = translation("Вы уверены, что хотите со
     // dispatch(addMyAds(taskInformationCopy))
 
     
-    navigate("/MyAds");
+    
     
     // MainButton.hide();
     spet = 0;
   }
   async function post(el) {
     let myFormData = new FormData();
-    // myFormData.append("userId", 2144832745 );
-     myFormData.append("userId", String(2144832745)  );
+    // myFormData.append("userId", window.Telegram.WebApp.initDataUnsafe.user.id );
+     myFormData.append("userId", String(window.Telegram.WebApp.initDataUnsafe.user.id)  );
     myFormData.append("title", String(el.taskName.trim()));
     myFormData.append("description", String(el.taskDescription.trim()));
     myFormData.append("deadline", "1");
@@ -242,11 +247,13 @@ const translateText = translation("Вы уверены, что хотите со
       }
     }
     window.Telegram.WebApp.HapticFeedback.notificationOccurred("success")
-    dispatch(postMyTask([myFormData, el.photos]));
+    await dispatch(postMyTask([myFormData, el.photos]))
+    navigate("/MyAds")
+    
     // for (let i = 0 ; i < 1; i++){
     //   try{
     //     console.log("Создание задания")
-    //     await axios.post("https://back-birga.ywa.su/advertisement", myFormData, {
+    //     await axios.post("https://www.connectbirga.ru/advertisement", myFormData, {
     //       headers: {
     //         "Content-Type" :'multipart/form-data',
     //         "Access-Control-Allow-Origin": "*"
@@ -265,7 +272,7 @@ const translateText = translation("Вы уверены, что хотите со
 
     
     //   let state = await axios.post(
-    //   "https://back-birga.ywa.su/advertisement",
+    //   "https://www.connectbirga.ru/advertisement",
     //   myFormData,
     //   {
     //     headers: {
@@ -291,6 +298,26 @@ const translateText = translation("Вы уверены, что хотите со
   //     pagesHistory.push('/AdCreating')
   //   }
   // } , [] )
+  useEffect( () => {
+      if (spet === 2){
+        if (mainRef.current){
+          mainRef.current.style.height = "100vh"
+          mainRef.current.style.paddingBottom = "76px"
+        }
+      }
+      else{
+        if (mainRef.current){
+          if (spet === 1){
+            mainRef.current.style.height = "100vh"
+            mainRef.current.style.paddingBottom = "0px"
+          }
+          else{
+            mainRef.current.style.paddingBottom = "76px"
+            mainRef.current.style.height = "100%"
+          }
+        }
+      }
+  } , []  )
   const mainRef = useRef(null)
   function checking() {
     let taskName = false;
@@ -309,7 +336,7 @@ const translateText = translation("Вы уверены, что хотите со
         );
       }
       case 1: {
-        if (secondPage.tonValue < 5) {
+        if (secondPage.tonValue < 0.1) {
           ton = true;
         }
         if (document.getElementById("dateSwapper").style.transform) {
@@ -372,12 +399,21 @@ const translateText = translation("Вы уверены, что хотите со
   } , [firstPage.taskDescription, navigate] )
 
 
-  function clearInput(){
+  useEffect( () => {
+    setTimeout( () => {
+      MainButton.setText(translation("ДАЛЕЕ"))
+  } , 2000 ) 
+  } , []  )
+
+  useEffect( () => {
     var inputs = document.getElementsByTagName('input');
+
+    // Проходим по каждому инпуту и удаляем фокус
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].blur();
     }
-  }
+  } , [] )
+  MainButton.setText(translation("ДАЛЕЕ"))
 
   // eslint-disable-next-line
   const goForward = () => {
@@ -388,13 +424,9 @@ const translateText = translation("Вы уверены, что хотите со
       mainRef.current.classList.remove('oneBack')
       mainRef.current.classList.remove('twoBack')
       if (spet === 0){
-
-
-          clearInput()
           mainRef.current.classList.add('stepOne')
       }
       if (spet === 1){
-        clearInput()
         mainRef.current.classList.add('stepTwo')
       }
 
@@ -409,7 +441,6 @@ const translateText = translation("Вы уверены, что хотите со
         }
         if (spet === 3){
 
-          clearInput()
           window.Telegram.WebApp.showPopup({
             title: create,
             message: textButton,
@@ -425,6 +456,7 @@ const translateText = translation("Вы уверены, что хотите со
             if (buttonId === "save") {
               finish();
             }
+            
           } )
 
 
@@ -450,11 +482,11 @@ const translateText = translation("Вы уверены, что хотите со
       endError: false})
     if (isCategoryChoiceOpen || isSubcategoryChoiceOpen){
       if (isCategoryChoiceOpen){
-        clearInput()
+
         setCatagoryChoiceOpen(false)
       }
       else{
-        clearInput()
+
         setSubcategoryChoiceOpen(false)
       }
     }
@@ -469,20 +501,20 @@ const translateText = translation("Вы уверены, что хотите со
       } else {
         
         if (spet === 1){
-          clearInput()
+
             mainRef.current.classList.remove('stepOne')
             mainRef.current.classList.remove('stepTwo')
             mainRef.current.classList.add('oneBack')
           
         }
         if (spet === 2){
-          clearInput()
+
             mainRef.current.classList.remove('stepTwo')
             mainRef.current.classList.remove('stepOne')
             mainRef.current.classList.add('twoBack')
           
         }
-        clearInput()
+
         spet -= 1;
         MainButton.setText(continueText)
         // backAnimte();
@@ -554,7 +586,7 @@ const translateText = translation("Вы уверены, что хотите со
       ref={mainRef}
       className="AdCreating__container"
     >
-      {status === "pending" ? (
+      {status === "pending" || categorysStatus !== "OK" || subCategorysStatus !== "OK" ? (
         <>
           <PostLoader />
         </>
@@ -584,8 +616,14 @@ const translateText = translation("Вы уверены, что хотите со
             taskInformation={secondPage}
             tonConstant={tonConstant}
           />
-          <FirstDetails   style = {{position : "static" ,  minHeight : "unset" , overflowY : "unset" ,minWidth : "100vw", transform : "translateX(0%)"}} end = {true} orderInformation={{...firstPage , ...secondPage , category : firstPage.category.id , whichOne : whichOne } } />
-          {/* <AdCreatingThree taskInformation={secondPage} /> */}
+          <div className="adCreatingThree-wrapper">
+            <CSSTransition timeout={0}
+            in = {spet !== 0}
+            unmountOnExit mountOnEnter>
+              <FirstDetails   style = {{position : "static" ,  minHeight : "unset" , "height" : "unset", overflowY : "unset" ,minWidth : "100vw", transform : "translateX(0%)"}} end = {true} orderInformation={{...firstPage , ...secondPage , category : firstPage.category.id , whichOne : whichOne } } />
+            </CSSTransition>
+            {/* <AdCreatingThree taskInformation={secondPage} /> */}
+          </div>
         </>
       )}
 

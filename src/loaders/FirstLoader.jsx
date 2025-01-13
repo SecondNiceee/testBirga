@@ -2,9 +2,9 @@ import React from "react";
 import {Triangle } from "react-loader-spinner";
 import "./loaders.css";
 import Text from "../components/Text/Text";
-const FirstLoader = () => {
+const FirstLoader = ({...props}) => {
   return (
-    <div className="firstLoader">
+    <div {...props} className="firstLoader">
         <Triangle
           visible={true}
           height="80"

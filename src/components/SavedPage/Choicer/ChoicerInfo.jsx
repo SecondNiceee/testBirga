@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLottie } from "lottie-react";
 import sleeping from "../../../animation/tired.json";
 import cl from "./Choicer.module.css";
@@ -8,7 +8,6 @@ import Case from "../../UI/Case/Case";
 import { useDispatch, useSelector } from "react-redux";
 import MyLoader from "../../UI/MyLoader/MyLoader";
 import { fetchSavedAdvertisements, fetchSavedCards, fetchSavedResponses } from "../../../store/saves";
-import { fetchMyOrders } from "../../../store/information";
 import Text from "../../Text/Text";
 
 const ChoicerInfo = forwardRef(
@@ -27,22 +26,13 @@ const ChoicerInfo = forwardRef(
               return responsesStatus
           case "card":
               return cardStatus
+          default :
+              console.log("Странно че-то")
       }
   } , [navigate , orderStatus , responsesStatus, cardStatus] )
 
 
 
-    const isReady = useMemo(() => {
-      if (navigate === "task") {
-        return orderStatus === "complete";
-      }
-      if (navigate === "response") {
-        return responsesStatus === "complete";
-      }
-      if (navigate === "card") {
-        return cardStatus === "complete";
-      }
-    }, [orderStatus, cardStatus, responsesStatus, navigate]);
 
     const options = {
       animationData: sleeping,
@@ -143,7 +133,7 @@ const ChoicerInfo = forwardRef(
           getMore();
         }
       },
-      [allStatus, getMore]
+      [allStatus, getMore, orderStatus]
     );
 
 
@@ -165,8 +155,10 @@ const ChoicerInfo = forwardRef(
 
 
     return (
-      <>
+      <div ref={ref} className={cl.choicerContainer}>
+          {arr.length === 0 ? 
           <>
+            <MyLoader style = { allStatus !== "all" ? {transform : "translateX(-16px)"} : {display : "none"}} />
             <div
               
               style={(arr.length === 0 && allStatus === "all") ? { } : {display: "none" }}
@@ -184,6 +176,8 @@ const ChoicerInfo = forwardRef(
               </div>
               <Text className={cl.text}>{text}</Text>
             </div>
+          </>
+            :
 
             <div
             ref={ref}
@@ -191,11 +185,13 @@ const ChoicerInfo = forwardRef(
               className={cl.blocksWrapper}
             >
               {array}
-              {allStatus === "all" ? <></>  :  <MyLoader ref={elementRef}  style = {{ height : "90px" , marginLeft : "-16px" , height : "80vh"}} />}
+              {allStatus === "all" ? <></>  :  <MyLoader ref={elementRef}  style = {{ marginLeft : "-16px" , height : "80vh"}} />}
             </div>
-          </>
+          }
 
-      </>
+          </div>
+
+      
     );
   }
 );

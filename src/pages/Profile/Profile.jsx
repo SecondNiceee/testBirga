@@ -6,11 +6,9 @@ import React, {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
 
 import { CSSTransition } from "react-transition-group";
 
-import Burger from "../../components/UI/Burger/Burger";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../constants/BackButton";
 import userPhoto from "../../images/userPhoto/user.png";
@@ -34,23 +32,19 @@ import MyLoader from "../../components/UI/MyLoader/MyLoader";
 import CardsArray from "./components/CardsArray/CardsArray";
 import Text from "../../components/Text/Text";
 import translation from "../../functions/translate";
+import PayBlock from "./components/PayBlock/PayBlock";
+import en from "../../constants/language";
 
 const lett = translation("лет");
 const goda = translation("года");
 const god = translation("год");
-const variants = {
-  initial: { opacity: 1 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.4 },
-};
 let aboutULocal = null;
 
 let userInfoLocal = null;
-const en = true;
 
-const Yes = translation("Yes");
-const No = translation("No");
+
+const Yes = translation("Да");
+const No = translation("Нет");
 const menu = document.documentElement.querySelector(".FirstMenu");
 const Profile = () => {
   const mainRef = useRef(null);
@@ -60,6 +54,7 @@ const Profile = () => {
   const [index, setIndex] = useState(1);
 
   useEffect(() => {
+    MainButton.hide()
     return () => {
       pagesHistory.push("/Profile");
     };
@@ -141,11 +136,10 @@ const Profile = () => {
   }, []);
 
   const save = useCallback(() => {
-    dispatch(changeProfile(aboutULocal));
+    dispatch(changeProfile({...aboutULocal , about : aboutULocal.about.trim()}));
     dispatch(
       putUserInfo([
-        { stage: Number(aboutULocal.stage), about: aboutULocal.about },
-        userInfoLocal.id,
+        { stage: Number(aboutULocal.stage), about: aboutULocal.about.trim() },  
       ])
     );
     const input = document.querySelectorAll("input");
@@ -182,9 +176,14 @@ const Profile = () => {
       // }
       // return true;
     }
-
+    
+    
     if (!cardsActive && !changeActive) {
-      if (compare2Objects(userInfoLocal.profile, aboutULocal) === false) {
+      if (compare2Objects(userInfo.profile, {...aboutU, about : aboutU.about.trim()}) === false && userInfo.state === "yes" && userInfo.profile.about !== null && aboutU.about !== null) {
+        console.log('====================================');
+        console.log(userInfo.profile);
+        console.log(aboutU);
+        console.log('====================================');
         MainButton.enable();
         MainButton.setParams({
           text: translation("Сохранить"),
@@ -230,6 +229,7 @@ const Profile = () => {
       // })
     }
   }, [
+    userInfo.state,
     aboutU,
     changeActive,
     cardsActive,
@@ -241,7 +241,7 @@ const Profile = () => {
   useEffect(() => {
     BackButton.show();
     function goBack() {
-      navigate("/");
+      navigate(-1);
     }
     if (cardsActive || changeActive) {
       BackButton.offClick(goBack);
@@ -363,27 +363,32 @@ const Profile = () => {
     return {
       transform: "translate3d(0, 0, 0)",
     };
-  }, [cardsActive, changeActive, changer]);
+  }, [cardsActive, changeActive]);
+
+  useEffect( () => {
+    MainButton.hide()
+    return () => {
+      if (pagesHistory[pagesHistory.length - 1] === "/AdCreating"){
+        MainButton.hide()
+      }
+    }
+  } , [] )
 
   return (
     <>
       {userInfo.state !== "yes" ? (
         <MyLoader />
       ) : (
-        <motion.div
+        <div
+        
           ref={mainRef}
           className="profile__wrapper"
-          variants={variants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition="transition"
           style={profileStyle}
         >
           <div className="profile__container">
             <img
               style={{ objectFit: "cover" }}
-              src={userInfo.photo.length > 0 ? userInfo.photo : userPhoto}
+              src={userInfo.photo.length > 0 ? userInfo.photo.split('https://').length === 2 ? userInfo.photo : `${process.env.REACT_APP_HOST}/${userInfo.id}/${userInfo.photo}` : userPhoto}
               className="profile__icon icon"
               alt=""
             />
@@ -393,6 +398,8 @@ const Profile = () => {
                 ? userInfo.firstName.slice(0, 22) + ".."
                 : userInfo.firstName}
             </Text>
+
+            <PayBlock className="pay-block" />
 
             <Options />
 
@@ -475,7 +482,19 @@ const Profile = () => {
           </CSSTransition>
 
 
-        </motion.div>
+
+          
+          {/* <CSSTransition
+            mountOnEnter
+            unmountOnExit
+            in={true}
+            timeout={400}
+          >
+            <PaymentPageOne />
+          </CSSTransition> */}
+
+
+        </div>
       )}
     </>
   );

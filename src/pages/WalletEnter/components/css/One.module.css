@@ -1,0 +1,81 @@
+.container {
+  min-width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgb(24, 34, 45);
+  z-index: 10;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+}
+.container .listInput {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 32px;
+}
+.container .listInputItem {
+  background-color: #2e3641;
+}
+
+.padding {
+  padding-left: 42px;
+  padding-right: 42px;
+  padding-bottom: 30px;
+}
+
+.resetAll {
+  font-family: "SF Pro Display";
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 92%;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #2ea5ff;
+  margin-top: 13px;
+}
+
+.title {
+  margin-top: 51px;
+  text-align: center;
+  font-family: "SF Compact Rounded";
+  font-weight: 500;
+  font-size: 23px;
+  text-align: center;
+  color: #daf5fe;
+}
+
+.walletInitGreyButton {
+  margin-top: 10px;
+}
+
+.WalletInitCreateButton {
+  margin-top: 32px;
+}
+
+.buttonContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 8px;
+}
+
+.topText {
+  margin-top: 12px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "SF Pro Display";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 120%;
+  text-align: center;
+  color: #fff;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.createButton {
+  margin-top: 10px;
+}

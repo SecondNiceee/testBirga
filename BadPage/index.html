@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.3/lottie.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .lottieAnimation {
+        width: 240px;
+        height: 240px;
+      }
+      .container {
+        margin: auto;
+        background: rgb(24, 34, 45);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+      }
+
+      p {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-weight: 500;
+        font-size: 23px;
+        text-align: center;
+        color: #daf5fe;
+        margin-top: 20px;
+        max-width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div class="container">
+      <div id="lottie-animation" class="lottieAnimation"></div>
+      <p>An update is underway right now, log in to the app later</p>
+    </div>
+  </body>
+</html>
+    <script>
+        setTimeout(() => {
+          if (!sessionStorage.getItem('pageRefreshed')) {
+              sessionStorage.setItem('pageRefreshed', true);
+              location.reload();  
+          }
+          
+        }, 0);
+        
+        const animation = lottie.loadAnimation({
+          container: document.getElementById("lottie-animation"), // контейнер для анимации
+          renderer: "svg", // тип рендерера (может быть 'svg', 'canvas' или 'html')
+          loop: true, // зацикливание анимации
+          autoplay: true, // автоматический запуск анимации
+          path: "https://lottie.host/23c7c0c1-2ed6-4de7-a3b2-68643bed584f/7PHK2syx24.json", // путь к вашему JSON-файлу с анимацией
+        });
+  
+        animation.play();
+    </script>

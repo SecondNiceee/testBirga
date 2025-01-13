@@ -1,12 +1,10 @@
-import React, { memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 import cl from './CreateInput.module.css'
-const CreateInput = ({className , value , setValue ,  ...props }) => {
-
-
+const CreateInput = forwardRef(({className , noLength = false, maxLength = false, value , setValue , type , inputMode, mistake = false,   ...props }, ref) => {
     return (
-        <input  spellCheck="false" autoComplete="off" value={value} onChange={(e) => {
-            setValue(e.target.value)}} className = {className ? [cl.CreateInput , className].join(' ') : cl.CreateInput} type="text" {...props}  />
+        <input maxLength={ !maxLength ? noLength ? 100 : 50 : maxLength} style={mistake ? {border : "1px solid #fe6766", color : "#fe6766" } : {}} ref={ref} inputMode={inputMode} spellCheck="false" autoComplete="off" value={value} onChange={(e) => {
+            setValue(e.target.value)}} className = {className ? [cl.CreateInput , className].join(' ') : cl.CreateInput} type={type} {...props}  />
     );
-};
+});
 
-export default memo(CreateInput);
+    export default memo(CreateInput);

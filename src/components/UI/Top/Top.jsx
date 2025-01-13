@@ -18,7 +18,7 @@ const Top = ({setMenuActive , name , className, ...props}) => {
                 }}
             />
             <Text className={cl.MyAds}>{name}</Text>
-            <img style={{objectFit : "cover"}} className={cl.topIcon} src={userInfo.photo.length > 0 ? userInfo.photo : userPhoto} alt="" />
+            <img style={{objectFit : "cover"}} className={cl.topIcon} src={userInfo.photo.length > 0 ? userInfo.photo.split('https://').length === 2 ? userInfo.photo : `${process.env.REACT_APP_HOST}/${userInfo.id}/${userInfo.photo}` : userPhoto} alt="" />
 
         </div>
     );

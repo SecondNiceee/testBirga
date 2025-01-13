@@ -18,6 +18,12 @@
 
 }
 @font-face{
+    font-family: 'SF Pro Display 700';
+    src: url('../assets/San\ Francisco\ Pro\ Display/SF-Pro-Display-Bold.otf');
+    font-weight: 700;
+
+}
+@font-face{
     font-family: 'SF Pro Display 400';
     src: url('../assets/San\ Francisco\ Pro\ Display/SF-Pro-Display-Regular.otf');
     font-weight: 400;
@@ -45,4 +51,19 @@
     font-family: "SF Pro Text";
     src: url('../assets//San\ Francisco\ Pro\ Text/SFProText-Medium.ttf ');
     font-weight: 500;
+}
+@font-face{
+    font-family: "SF Pro Rounded";
+    src: url('../assets/Sf-Pro-Rounded/SF-Pro-Rounded-Medium.otf');
+    font-weight: 500;
+}
+@font-face{
+    font-family: "SF Pro Rounded 400";
+    src: url('../assets/Sf-Pro-Rounded/SF-Pro-Rounded-Regular.otf');
+    font-weight: 400;
+}
+@font-face{
+    font-family: "SF Pro Rounded 600";
+    src: url('../assets/Sf-Pro-Rounded/SF-Pro-Rounded-Semibold.otf');
+    font-weight: 600;
 }

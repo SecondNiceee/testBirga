@@ -6,16 +6,24 @@ import makeNewFile from "../functions/newMakeFile";
 export const addWatch = createAsyncThunk(
   "information/addWatch",
   async function (advertisement) {
-    try {
-      let myData = new FormData();
-      myData.append("views", String(Number(advertisement.viewsNumber) + 1));
-      await axios.put("https://back-birga.ywa.su/advertisement", myData, {
-        params: {
-          id: String(advertisement.id),
-        },
-      });
-    } catch (e) {
-      console.warn(e);
+    if (advertisement.viewsNumber !== undefined && advertisement.viewsNumber !== null) {
+      try {
+        let myData = new FormData();
+        myData.append("views", String(Number(advertisement.viewsNumber) + 1));
+        
+        await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
+          params: {
+            id: String(advertisement.id),
+          },
+          headers : {
+            "Content-Type": "multipart/form-data",
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
+        });
+      } catch (e) {
+        // alert(e)
+        console.warn(e);
+      }
     }
   }
 );
@@ -23,14 +31,16 @@ export const deleteAd = createAsyncThunk(
   "information/deleteMyAd",
   async function (id) {
     try {
-      await axios.delete("https://back-birga.ywa.su/advertisement", {
+      await axios.delete(`${process.env.REACT_APP_HOST}/advertisement`, {
         params: {
           id: id,
         },
+        headers : {
+          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+        }
       });
       return id;
     } catch (e) {
-      alert(JSON.stringify(e));
       console.warn(e);
     }
   }
@@ -41,7 +51,7 @@ export const putMyTask = createAsyncThunk(
     console.log("ЭТО ПОСТ")
     try {
       let answ = await axios.put(
-        "https://back-birga.ywa.su/advertisement",
+        `${process.env.REACT_APP_HOST}/advertisement`,
         data[0],
         {
           params: {
@@ -50,6 +60,8 @@ export const putMyTask = createAsyncThunk(
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            
           },
         }
       );
@@ -79,13 +91,14 @@ export const putMyTask = createAsyncThunk(
 export const postMyTask = createAsyncThunk(
   "information/postMytask",
   async function (arr) {
-    try {
+
       for (let i = 0 ; i < 1; i++){
         try{
           console.log("Создание задания")
-          await axios.post("https://back-birga.ywa.su/advertisement", arr[0], {
+          await axios.post(`${process.env.REACT_APP_HOST}/advertisement`, arr[0], {
             headers: {
               "Content-Type" :'multipart/form-data',
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             },
           });
         }
@@ -98,68 +111,72 @@ export const postMyTask = createAsyncThunk(
 
 
 
-      let tasks = [];
-      let task = await axios.get(
-        "https://back-birga.ywa.su/advertisement/findByUser",
-        {
-          params: {
-            page: 1,
-            userId: 2144832745,
-            limit: 4,
-            // userId : 2144832745
-          },
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
+      // let tasks = [];
+      // let task = await axios.get(
+      //   `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
+      //   {
+      //     params: {
+      //       page: 1,
+      //       userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+      //       limit: 4,
+      //       // userId : window.Telegram.WebApp.initDataUnsafe.user.id
+      //     },
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       "Access-Control-Allow-Origin": "*",
+      //       "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+      //     },
+      //   }
+      // );
 
 
-      if (task.data.length === 0) {
-        return [];
-      } else {
-        for (let order of task.data) {
-          let files = await makeNewFile(order.folder, order.photos);
-          let responseCounter = await axios.get("https://back-birga.ywa.su/response/countByAdvertisement" , {
-            params : {
-              "advertisementId" : order.id
-            }
-          })
-          tasks.push({
-            id: order.id,
-            taskName: order.title,
-            executionPlace: "Можно выполнить удаленно",
-            time: {
-              start: new Date(order.startTime),
-              end: new Date(order.endTime),
-            },
-            tonValue: order.price,
-            taskDescription: order.description,
-            photos: files,
-            photosNames: order.photos,
-            rate: "5",
-            isActive: true,
-            creationTime: order.createdAt,
-            viewsNumber: order.views,
-            removedFiles: [],
-            addedFiles: [],
-            status: order.status,
-            user : order.user,
-            responseCounter : responseCounter.data,
-            category : order.category.id
-          });
-        }
-        return tasks;
-      }
+      // if (task.data.length === 0) {
+      //   return [];
+      // } else {
+      //   for (let order of task.data) {
+      //     let files = await makeNewFile(order.folder, order.photos);
+      //     let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
+      //       params : {
+      //         "advertisementId" : order.id
+      //       },
+      //       headers : {
+      //         "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+      //       }
+      //     })
+      //     tasks.push({
+      //       id: order.id,
+      //       taskName: order.title,
+      //       executionPlace: "Можно выполнить удаленно",
+      //       time: {
+      //         start: new Date(order.startTime),
+      //         end: new Date(order.endTime),
+      //       },
+      //       tonValue: order.price,
+      //       taskDescription: order.description,
+      //       photos: files,
+      //       photosNames: order.photos,
+      //       rate: "5",
+      //       isActive: true,
+      //       creationTime: order.createdAt,
+      //       viewsNumber: order.views,
+      //       removedFiles: [],
+      //       addedFiles: [],
+      //       status: order.status,
+      //       user : order.user,
+      //       responseCounter : responseCounter.data,
+      //       category : order.category.id
+      //     });
+      //   }
+      //   return tasks;
+      // }
 
 
 
-    } catch (e) {
-      alert(e)
-      alert("Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже");
-      console.log(e);
-    }
+    // } catch (e) {
+    //   alert(e)
+    //   alert("Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже");
+    //   console.log(e);
+    // }
 
     return true;
   }
@@ -171,10 +188,13 @@ export const setStartTask = createAsyncThunk(
     try {
       let myData = new FormData();
       myData.append("status", "inProcess");
-      await axios.put("https://back-birga.ywa.su/advertisement", myData, {
+      await axios.put(`${process.env.REACT_APP_HOST}/advertisement`, myData, {
         params: {
           id: id,
         },
+        headers : {
+          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+        }
       });
       return id;
     } catch (e) {
@@ -191,17 +211,19 @@ export const fetchMyOrders = createAsyncThunk(
     try {
       let tasks = [];
       let task = await axios.get(
-        "https://back-birga.ywa.su/advertisement/findByUser",
+        `${process.env.REACT_APP_HOST}/advertisement/findByUser`,
         {
           params: {
             page: page,
-            userId: 2144832745,
-            limit: 4,
-            // userId : 2144832745
+            userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+            limit: 1,
+            // userId : window.Telegram.WebApp.initDataUnsafe.user.id
           },
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+
           },
         }
       );
@@ -212,9 +234,12 @@ export const fetchMyOrders = createAsyncThunk(
       } else {
         for (let order of task.data) {
           let files = await makeNewFile(order.folder, order.photos);
-          let responseCounter = await axios.get("https://back-birga.ywa.su/response/countByAdvertisement" , {
+          let responseCounter = await axios.get(`${process.env.REACT_APP_HOST}/response/countByAdvertisement` , {
             params : {
-              "advertisementId" : order.id
+              "advertisementId" : order.id,
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             }
           })
           tasks.push({
@@ -264,16 +289,22 @@ export const fetchTasksInformation = createAsyncThunk(
     
     try {
       task = await axios.get(
-        "https://back-birga.ywa.su/advertisement/findAll",
+        `${process.env.REACT_APP_HOST}/advertisement/findAll`,
         {
           params: {
-            limit: 4,
+            limit: 2,
             page: par,
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         }
       );
+      console.log('====================================');
+      console.log(task);
+      console.log('====================================');
     } catch (e) {
-      alert(e);
+      alert("Сейчас идет обновление, пожалуйста перезайдите через минуту")
       console.log(e);
     }
 
@@ -294,13 +325,40 @@ export const fetchTasksInformation = createAsyncThunk(
           let files = await makeNewFile(order.folder, order.photos);
 
           let imTwo = await axios.get(
-            "https://back-birga.ywa.su/advertisement/findCount",
+            `${process.env.REACT_APP_HOST}/advertisement/findCount`,
             {
               params: {
                 userId: order.user.id,
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             }
           );
+
+          const newUser = {...order.user}
+          try{
+            if (newUser.photo.includes('http')){
+              const response = await axios.get(newUser.photo)
+            }
+          }
+          catch{
+            try{
+              console.log("photo update")
+            const responce = await axios.put(`${process.env.REACT_APP_HOST}/user/photo`, {}, {
+              params : {
+                userId : newUser.id
+              },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
+            })
+            newUser.photo = responce.data
+          }
+          catch(e){ 
+            newUser.photo = ""
+          }
+          }
 
           tasks.push({
             id: order.id,
@@ -312,14 +370,14 @@ export const fetchTasksInformation = createAsyncThunk(
             photos: files,
             photosName: order.photos,
             customerName: order.user.fl,
-            userPhoto: order.user.photo || "",
+            userPhoto: order.user.photo ? order.user.photo : "",
             rate: "5",
             isActive: true,
             creationTime: order.createdAt,
             viewsNumber: order.views,
             responces: order.responses,
             status: order.status,
-            user: order.user,
+            user: newUser,
             createNumber : imTwo.data,
             category : order.category.id,
             subCategory : order.subCategory[0].id
@@ -341,6 +399,7 @@ const information = createSlice({
     changeOrderStatus: null,
     postTaskStatus: null,
     putTaskStatus: null,
+    ordersIds : [],
     taskInformation: {
       category: { name: "", value: "" },
       subCategory: "Выбрать",
@@ -354,6 +413,7 @@ const information = createSlice({
       singleTime: "",
       isPrivate: false,
       time: { start: null, end: null },
+
     },
 
     orderInformations: [],
@@ -364,6 +424,7 @@ const information = createSlice({
   reducers: {
     clearMyOrders(state,action){
       state.myAdsArray = []
+      state.ordersIds = []
       state.myOrderStatus = null
     },
     getMoreMyAds(state, action) {
@@ -398,6 +459,7 @@ const information = createSlice({
     },
     changeMyAds(state, action) {
       state.myAdsArray = action.payload;
+      state.ordersIds = []
     },
     putMyAds(state, action) {
       let changedAd = action.payload;
@@ -425,11 +487,12 @@ const information = createSlice({
     });
 
     builder.addCase(setStartTask.fulfilled, (state, action) => {
+      state.myAdsArray = state.myAdsArray.map((e, i) => e.id === action.payload ? {...e, status : "inProcess"} : e)
     });
 
     builder.addCase(fetchTasksInformation.fulfilled, (state, action) => {
       state.orderStatus = "complete";
-      if (action.payload.length < 4) {
+      if (action.payload.length < 2) {
         state.orderStatus = "all";
       }
       state.orderInformations.push(...action.payload);
@@ -439,16 +502,14 @@ const information = createSlice({
     });
 
     builder.addCase(fetchMyOrders.pending, (state) => {
-      if (state.myAdsArray.length > 0){
-        state.myOrderStatus = "completed";
-      }
-      else{
+      
         state.myOrderStatus = "loading";
-      }
+      
     });
     builder.addCase(fetchMyOrders.fulfilled, (state, action) => {
-      state.myAdsArray.push(...action.payload);
-      if (action.payload.length < 4) {
+      state.myAdsArray.push(...action.payload.filter(e => !state.ordersIds.includes(e.id)));
+      state.ordersIds.push(...action.payload.map(e => e.id))
+      if (action.payload.length < 1) {
         state.myOrderStatus = "all";
       } else {
         state.myOrderStatus = "completed";
@@ -457,14 +518,14 @@ const information = createSlice({
     builder.addCase(fetchMyOrders.rejected, (state, action) => {
       state.myOrderStatus = "error";
 
-      alert();
     });
     builder.addCase(postMyTask.pending, (state) => {
       state.postTaskStatus = "pending";
     });
     builder.addCase(postMyTask.fulfilled, (state, action) => {
-      state.postTaskStatus = "complete";
-      state.myAdsArray = action.payload;
+      state.postTaskStatus = "completed";
+      state.myOrderStatus = null
+      state.myAdsArray = [] 
     });
     builder.addCase(postMyTask.rejected, (state) => {
       state.postTaskStatus = "error";

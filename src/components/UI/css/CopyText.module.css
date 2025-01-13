@@ -1,0 +1,43 @@
+.copyText {
+  margin-top: 12px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  color: #fff;
+  z-index: 20;
+  position: fixed;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: calc(100vw - 32px);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  top: -100px;
+  left: 16px;
+  font-family: "SF Pro Text 400";
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #fff;
+  -webkit-backdrop-filter: blur(79.7771606445px);
+          backdrop-filter: blur(79.7771606445px);
+  background: #2c2c2c;
+  border-radius: 13px;
+}
+
+.modal-copy-enter-active {
+  -webkit-animation: modal-animate 1.5s both;
+          animation: modal-animate 1.5s both;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+
+.modal-copy-exit-active {
+  -webkit-animation: modal-animate 1.5s both;
+          animation: modal-animate 1.5s both;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}

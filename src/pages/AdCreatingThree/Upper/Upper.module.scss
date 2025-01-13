@@ -1,0 +1,38 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+    h3{
+        font-family: "SF Pro Display 700";
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        color: #fff;
+    }
+    p:first-of-type{
+        font-family: "SF Pro Display";
+        font-weight: 500;
+        font-size: 17px;
+        line-height: 128%;
+        text-align: center;
+        color: #fff;
+        margin-top: 12px;
+    }
+    p:last-of-type{
+        font-family: "SF Pro Display";
+        font-weight: 500;
+        font-size: 17px;
+        line-height: 128%;
+        text-align: center;
+        color: #fff;
+        margin-top: 8.33px;
+        span{
+            color: #2ea5ff;
+            cursor: pointer;
+        }
+    }
+}

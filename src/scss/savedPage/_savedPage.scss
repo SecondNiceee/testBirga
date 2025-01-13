@@ -47,6 +47,7 @@
 .FullDescription-top{
     display: flex;
     gap: calc(4px);
+    align-items: center;
     p{
         /* Default text */
         color: rgb(149, 151, 158);
@@ -65,13 +66,15 @@
     }
 }
 .FullDescriptionBottom{
+    resize: none;
     background-color: transparent;
     /* Default text */
     color: rgb(255, 255, 255);
     font-family: "SF Pro Display";
     font-size: 14.67px;
     font-weight: 500;
-    line-height: 17.67px;
+    line-height: 19.7px;
     letter-spacing: 0%;
     text-align: left;
+    overflow-y: hidden;
 }

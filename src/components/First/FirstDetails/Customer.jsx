@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import galks from '../../../images/icons/Subtract.svg'
 import userImage from "../../../images/userPhoto/user.png"
 import Text from '../../Text/Text';
-const Customer = ({customerName, rate, userPhoto, setProfile}) => {
+import { useSelector } from 'react-redux';
+const Customer = ({customerName, rate, userPhoto, setProfile, id}) => {
+    const userInfo = useSelector(state => state.telegramUserInfo)
+    const urId = useMemo( () => {
+        if (id){
+            return id
+        }
+        else{
+            return userInfo.id
+        }
+    } , [id, userInfo.id] )
     return (
         <div onClick={() => {
             setProfile(true)
@@ -12,7 +22,7 @@ const Customer = ({customerName, rate, userPhoto, setProfile}) => {
                 <img style={{
                     borderRadius : '50%',
                     objectFit : "cover"
-                }} className='information-icon' src={userPhoto.length > 0 ? userPhoto : userImage} alt="" />
+                }} className='information-icon' src={userPhoto.length > 0 ? userPhoto.split('https://').length === 2 ? userPhoto : `${process.env.REACT_APP_HOST}/${urId}/${userPhoto}` : userImage} alt="" />
                 <div className="customer__information-right">
                     <div className="customer__information-right-name">
                         <Text>{customerName.length > 15 ? 

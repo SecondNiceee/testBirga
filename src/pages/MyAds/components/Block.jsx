@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import MyFirstBlock from '../../../components/MyAds/MyFirstBlock';
 
 const Block = ({e, i, setSecondPage }) => {

@@ -1,0 +1,33 @@
+.listContainer{
+    margin-top: 28px;
+    display: flex;
+    gap: 8px;
+}
+.list{
+    width: 100%;
+    background-color: #20303f;
+    border-radius: 10px;
+}
+.listItem{
+    padding-left: 25px;
+    padding-top: 8px;
+    display: flex;
+    gap: 17px;
+    p{
+        font-family: "SF Compact Rounded";
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 110%;
+        letter-spacing: -0.02em;
+        text-align: center;
+        color: #daf5fe;
+    }
+    input:last-of-type{
+        border-bottom: 0.5px solid rgba(84, 84, 88, 0.36);
+        padding-bottom: 9px;
+        width: 100%;
+        text-align: left;
+    }
+    
+    
+}

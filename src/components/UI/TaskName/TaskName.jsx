@@ -5,10 +5,12 @@ import CreateInput from '../CreateInput/CreateInput';
 import Text from '../../Text/Text';
 import translation from '../../../functions/translate';
 const menu = document.documentElement.querySelector(".FirstMenu")
-const TaskName = ({className , text , title , setText , errorValue , underText, placeholder,  ...props}) => {
+const TaskName = ({className , text , title , setText , noLength = false, maxLength, errorValue , underText, placeholder,  ...props}) => {
     const place = useMemo( () => {
         return translation(placeholder)
     }  , [placeholder])
+    console.warn(noLength)
+    console.warn(maxLength)
     useEffect( () => {
     
         const input = document.querySelectorAll('input');
@@ -35,10 +37,13 @@ const TaskName = ({className , text , title , setText , errorValue , underText, 
     return (
         <div {...props} className = { className ? [ cl.TaskName, className].join(' ') : cl.TaskName}>
             <GreyText className={cl.GreyText}>{title}</GreyText>
-            <CreateInput style = {errorValue
+            <CreateInput
+            maxLength = {maxLength}
+            noLength = {noLength}
+             style = {errorValue
                 ? {border : 'solid 1px #FF6767'}
                 : {}
-            } value={text} setValue={ setText } className={cl.CreateInput} placeholder = {place} />
+            } value={text}  setValue={ setText } className={cl.CreateInput} placeholder = {place} />
             <Text style={errorValue ? {color : '#FF6767',
                 fontFamily : "SF Pro Display 400"
             } : {}}>

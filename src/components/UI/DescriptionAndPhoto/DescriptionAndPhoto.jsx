@@ -1,9 +1,8 @@
-import React, { memo, useCallback, useEffect,  useMemo,  useRef } from "react";
+import React, { memo, useEffect,  useMemo,  useRef } from "react";
 import cl from "./DescriptionAndPhoto.module.css";
 import GreyText from "../../../components/UI/GreyText/GreyText";
 import FileInput from "../../../components/UI/FileInput/FileInput";
 import TextArea from "../../../components/UI/TextArea/TextArea";
-import Text from "../../Text/Text";
 import translation from "../../../functions/translate";
 const DescriptionAndPhoto = ({
   className,
@@ -17,7 +16,8 @@ const DescriptionAndPhoto = ({
   textPlaceholder,
   fileError,
   clearPhoto,
-  textFocus
+  textError = false,
+  onFocus = () => {}
 }) => {
 
   const hiddenRef = useRef(null)
@@ -46,12 +46,13 @@ const DescriptionAndPhoto = ({
       }
     >
       <GreyText className={cl.GreyText}>{textTitle}</GreyText>
-      <div className={cl.InputContainer}>
+      <div style={ textError ? {border : "1px solid rgb(255, 103, 103)"} : {}} className={cl.InputContainer}>
         
         <textarea ref={hiddenRef} value={text} className={cl.hiddenText}/>
 
         <TextArea
-        onFocus = {textFocus}
+        
+        onFocus = {onFocus}
         ref={myRef}
           value={text}
           className={cl.DescriptionInput}

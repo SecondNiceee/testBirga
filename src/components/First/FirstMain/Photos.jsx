@@ -12,7 +12,7 @@ const Photos = ({ photos }) => {
         else{
             return {}
         }
-    } )
+    }, [photos] )
   return (
     <>
       {photos.length ? (

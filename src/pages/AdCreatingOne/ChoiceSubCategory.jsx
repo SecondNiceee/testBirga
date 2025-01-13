@@ -8,7 +8,7 @@ import Text from '../../components/Text/Text';
 import translation from '../../functions/translate';
 const menu = document.documentElement.querySelector(".FirstMenu")
 const place = translation("Поиск по подкатегориям")
-const ChoiceSubCategory = ({taskInformation , setSubcategoryChoiceOpen , setTaskInformation, subCategorysPar}) => {
+const ChoiceSubCategory = ({taskInformation , setSubcategoryChoiceOpen , setTaskInformation, subCategorysPar, ...props}) => {
 
   useEffect( () => {
     document.documentElement.style.overflowY = "hidden"
@@ -111,7 +111,7 @@ const ChoiceSubCategory = ({taskInformation , setSubcategoryChoiceOpen , setTask
     } , [inputValue , subCategorys] )
 
     return (
-    <div className="subCategory__container">
+    <div className="subCategory__container" {...props}>
       <OneInput
         placeholder={place}
         inputValue={inputValue}

@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import cl from "./DatePicker.module.css";
 import GreyText from "../../../components/UI/GreyText/GreyText";
 import CatchDate from "../CatchDate/CatchDate";

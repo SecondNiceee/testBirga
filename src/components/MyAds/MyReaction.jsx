@@ -43,7 +43,7 @@ const MyReaction = ({
             }}
             className="icon"
             style={{objectFit : "cover"}}
-            src={responce.user.photo.length > 0 ? responce.user.photo  : userPhoto}
+            src={responce.user.photo.length > 0 ? responce.user.photo.split('https://').length === 2 ? responce.user.photo : `${process.env.REACT_APP_HOST}/${responce.user.id}/${responce.user.photo}` : userPhoto}
             alt=""
           />
           <div
@@ -71,7 +71,7 @@ const MyReaction = ({
                 response : responce
               })
             }}>Подробнее</MyButton>
-            {responce.isWatched !== "inProcess"  && (
+            { (responce.isWatched !== "inProcess" && responce.isWatched !== "completed")   && (
               <div
                 onClick={() => {
                   deleteFunction(responce.id);

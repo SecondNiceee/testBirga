@@ -1,22 +1,23 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-
+import cl from "./AdCreatingOne.module.scss";
 import Cap from "../../../components/UI/Cap/Cap";
 import Categories from "../Categories/Categories";
 import TaskName from "../../../components/UI/TaskName/TaskName";
 import DescriptionAndPhoto from "../../../components/UI/DescriptionAndPhoto/DescriptionAndPhoto";
 import ChoiceCategory from "../ChoiceCategory/ChoiceCategory";
 import ChoiceSubCategory from "../ChoiceSubCategory";
-import cl from "./AdCreatingOne.module.css";
+
 import CatchDate from "../../ADCreatingTwo/CatchDate/CatchDate";
 import "../../ADCreatingTwo/AdCreatingTwo/SecondAddCreating.module.css";
 import MyDatePicker from "../../../components/AdCreating/MyDatePicker/MyDatePicker";
 import Text from "../../../components/Text/Text";
 import translation from "../../../functions/translate";
+import en from "../../../constants/language";
+
+
 
 // eslint-disable-next-line
-
-const en = true
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
   return this;
@@ -144,7 +145,7 @@ const AdCreatingOne = ({
           startTime: time,
         }));
         if (taskInformation.myAds) {
-          setTaskInformation( (value) => ({...value, task : {...value.task , time : {...value.task.time , start : time}} }))
+          setTaskInformation( (value) => ({...value, time : {...value.time , start : time}} ))
         } else {
           setTaskInformation((value) => ({ ...value, startTime: time }));
         }
@@ -168,13 +169,13 @@ const AdCreatingOne = ({
           endTime: time,
         });
         if (taskInformation.myAds) {
-          setTaskInformation( (value) => ({...value, task : {...value.task , time : {...value.task.time , end : time}} }))
+          setTaskInformation( (value) => ({...value , time : {...value.time , end : time}} ))
         } else {
           setTaskInformation((value) => ({ ...value, endTime: time }));
         }
       }
     },
-    [setTaskInformation, state, taskInformation.time, taskInformation]
+    [setTaskInformation, state, taskInformation.myAds]
   );
 
   const handleCancel = useCallback(() => {
@@ -226,32 +227,19 @@ const AdCreatingOne = ({
 
   const setTextDescription = useCallback( (e) => {
     console.log("Вызов этой штуки")
-    if (taskInformation.myAds){
-      console.log("Вызов этой фигни")
-      setTaskInformation( (value) => ({...value , task : {...value.task , taskDescription : e }}) )
-    }
-    else{
+    
       setTaskInformation( (value) => ({...value, taskDescription : e}) )
-    }
-  } , [taskInformation , setTaskInformation] )
+
+  } , [ setTaskInformation] )
 
   const setTextTitle = useCallback( (e) => {
-    if (taskInformation.myAds){
-      setTaskInformation( (value) => ({...value , task : {...value.task , taskName : e }}) )
-    }
-    else{
       setTaskInformation((value) =>  ({...value , taskName : e}) )
-    }
-  } , [taskInformation , setTaskInformation] )
+  } , [setTaskInformation] )
 
   const setFile = useCallback( (e) => {
-    if (taskInformation.myAds){
-      setTaskInformation( (value) => ({...value , task : {...value.task , photos : e}}) )
-    }
-    else{
-      setTaskInformation( (value) => ({...value , photos : e}) )
-    }
-  } )
+    setTaskInformation( (value) => ({...value , photos : e}) )
+    
+  } , [setTaskInformation] )
 
 
   return (
@@ -277,8 +265,6 @@ const AdCreatingOne = ({
           taskInformation={taskInformation}
           setCatagoryChoiceOpen={setCatagoryChoiceOpen}
           setSubcategoryChoiceOpen={setSubcategoryChoiceOpen}
-          categorys={categorys}
-          subCategorys={subCategorys}
         />
       )}
 
@@ -293,6 +279,7 @@ const AdCreatingOne = ({
       />
 
       <DescriptionAndPhoto
+      
         MyInformation={MyInformation}
         taskInformation={taskInformation}
         setTaskInformation={setTaskInformation}
@@ -342,7 +329,7 @@ const AdCreatingOne = ({
         unmountOnExit
       >
         <ChoiceCategory
-          
+          style = {{top:document.documentElement.scrollTop + "px"}}
           taskInformation={taskInformation}
           setTaskInformation={setTaskInformation}
           setCatagoryChoiceOpen={setCatagoryChoiceOpen}
@@ -358,6 +345,7 @@ const AdCreatingOne = ({
         mountOnEnter
       >
         <ChoiceSubCategory
+         style = {{top:document.documentElement.scrollTop + "px"}}
           subCategorysPar={subCategorys}
           setTaskInformation={setTaskInformation}
           setSubcategoryChoiceOpen={setSubcategoryChoiceOpen}

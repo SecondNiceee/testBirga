@@ -1,6 +1,4 @@
 import React, {
-  lazy,
-  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -17,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Responce from "./Responce";
 import { CSSTransition } from "react-transition-group";
 import pagesHistory from "../../constants/pagesHistory";
-import { clearResponses, fetchResponses } from "../../store/responses";
 import { useFilteredArr } from "../../hooks/useFilteredArr";
 import FirstChoiceCategory from "../AdCreatingOne/ChoiceCategory/FirstChoiceCategory";
 import FirstChoiceSubCategory from "../AdCreatingOne/FirstChoiceSubCategory";
@@ -25,13 +22,14 @@ import AboutReaction from "../MyAds/components/AboutReaction";
 import CardPage from "../CardPage/CardPage";
 import axios from "axios";
 import makeNewFile from "../../functions/newMakeFile";
-import { addResponce, clearTasks } from "../../store/information";
-import MyLoader from "../../components/UI/MyLoader/MyLoader";
+import {  clearTasks } from "../../store/information";
 import FirstDetails from "../../components/First/FirstDetails/FirstDetails";
 import translation from "../../functions/translate";
+import en from "../../constants/language";
+import { useNavigate } from "react-router-dom";
+import makeNewUser from "../../functions/makeNewUser";
 
 let isDetailsActiveVar = false;
-let pageValue = true;
 let localResponce;
 let localStep;
 
@@ -43,16 +41,21 @@ let resp = translation("Откликнуться?")
 const textButton = translation("Вы действительно хотите откликнуться?")
 const buttonText = translation("ОТКЛИКНУТЬСЯ")
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 
-const en = true
+
 
 
 const First = ({ isPage = false }) => {
+
+  const [pageValue, setPageValue] = useState(true)
   const firstRef = useRef(null);
 
   const [step, setStep] = useState(0);
+
+  const address = useSelector( state => state.telegramUserInfo.address )
+  const navigate = useNavigate()
   localStep = step;
 
   const dispatch = useDispatch();
@@ -64,7 +67,7 @@ const First = ({ isPage = false }) => {
   }, []);
 
   const [isDetailsActive, setDetailsActive] = useState({
-    id: 0,
+    id: -1,
     isOpen: false,
   });
 
@@ -141,28 +144,133 @@ const First = ({ isPage = false }) => {
   }, [filteredArr, filters, tonConstant]);
 
 
+  
+  const [pageAdvertisement, setPageAdvertisement] = useState(null);
 
-  // const gotIt = useMemo( () => {
-  //   if (secFilteredArray !== null && secFilteredArray.length > 0 && secFilteredArray[isDetailsActive.id]){
 
-  //     if (secFilteredArray[isDetailsActive.id].responces){
-  //       if (secFilteredArray[isDetailsActive.id].responces.find((e) =>
-  //         Number(e.user.id) === window.Telegram.WebApp.initDataUnsafe.user.id))
 
-  //       {
-  //         return true
-  //       }
-  //       else{
+  const detailsAdertisement = useMemo(() => {
+    async function getAdvertisement() {
+      try {
 
-  //         return false
-  //       }
-  //     }
-  //   }
-  //   return false
-  //   // eslint-disable-next-line
-  // },[secFilteredArray, isDetailsActive.id,isDetailsActive.isOpen ] )
+        console.log(String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[0]))
+        let advertisement = await axios.get(
+          process.env.REACT_APP_HOST + "/advertisement/findOne",
+          {
+            params: {
+              id: String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[0]),
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
+              
+            }
+          }
+        );
+        let order = advertisement.data;
+        let one = new Date(order.startTime);
 
-  const gotIt = false;
+        let two;
+        if (order.endTime) {
+          two = new Date(order.endTime);
+        } else {
+          two = "";
+        }
+
+        let files = await makeNewFile(order.folder, order.photos);
+
+        let imTwo = await axios.get(
+          process.env.REACT_APP_HOST + "/advertisement/findCount",
+          {
+            params: {
+              userId: order.user.id,
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
+          }
+        );
+
+        const newUser = await makeNewUser(order)
+
+        return {
+          id: order.id,
+          taskName: order.title,
+          executionPlace: "Можно выполнить удаленно",
+          time: { start: one, end: two },
+          tonValue: order.price,
+          taskDescription: order.description,
+          photos: files,
+          photosName: order.photos,
+          customerName: order.user.fl,
+          userPhoto: order.user.photo ? order.user.photo : "",
+          rate: "5",
+          isActive: true,
+          creationTime: order.createdAt,
+          viewsNumber: order.views,
+          responces: order.responses,
+          status: order.status,
+          user: newUser,
+          createNumber: imTwo.data,
+          category: order.category.id,
+        };
+      } catch (e) {
+        setPageValue(false)
+        setDetailsActive({ isOpen: false, id: 1 });
+      }
+    }
+
+    if (ordersInformation === null) {
+      return "";
+    } else {
+      if (pageValue && isPage) {
+        if (pageAdvertisement === null) {
+          getAdvertisement().then((value) => setPageAdvertisement(value));
+        }
+
+        return pageAdvertisement;
+      } else {
+        return secFilteredArray[isDetailsActive.id];
+      }
+    }
+  }, [  
+    isPage,
+    pageAdvertisement,
+    isDetailsActive.id,
+    ordersInformation,
+    secFilteredArray,
+    pageValue
+  ]);
+
+
+
+
+
+  const gotIt = useMemo( () => {
+    console.log(detailsAdertisement);
+    
+    if (detailsAdertisement){
+
+      if (detailsAdertisement.responces){
+        console.log(detailsAdertisement)
+        if (detailsAdertisement.responces.find((e) =>
+          String(e.user.id) === String(window.Telegram.WebApp.initDataUnsafe.user.id)) || String(detailsAdertisement.user.id) === String(window.Telegram.WebApp.initDataUnsafe.user.id))
+
+        {
+          return true
+        }
+        else{
+          return false
+        }
+      }
+    }
+    return false
+    // eslint-disable-next-line
+  },[detailsAdertisement,isDetailsActive.isOpen ] )
+
+
+  console.log(gotIt);
+  
+
 
   useEffect(() => {
     if (isDetailsActive.isOpen) {
@@ -179,6 +287,9 @@ const First = ({ isPage = false }) => {
     card: {},
   });
 
+
+
+
   useEffect(() => {
     function closeDetails() {
       setDetailsActive((value) => ({ ...value, isOpen: false }));
@@ -187,14 +298,16 @@ const First = ({ isPage = false }) => {
     function forward() {
       if (gotIt) {
         window.Telegram.WebApp.showPopup({
-          title: "Ошибка",
+          title: translation("Ошибка"),
           message:
-            "Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик.",
+            translation("Задание ваше или вы откликнулись уже на него."),
         });
       } else {
-        if (step === 0) {
-          // mainRef.current.classList.add('secondStep')
-          setStep(1);
+        if (step === 0){
+        
+            setStep(1)
+          
+
         }
       }
     }
@@ -233,8 +346,7 @@ const First = ({ isPage = false }) => {
                     shablonMaker: false,
                   });
                   closeDetails();
-
-                  pageValue = false;
+                  setPageValue(false)
                 }
               }
             }
@@ -257,12 +369,28 @@ const First = ({ isPage = false }) => {
           text_color: "#606060",
         });
       } else {
-        if (localStep === 0) {
-          MainButton.setParams({
-            is_active: true,
-            color: "#2ea5ff",
-            text_color: "#ffffff",
-          });
+        if (localStep === 0 ) {
+
+          if (isDetailsActive.isOpen){
+            if (detailsAdertisement){
+              if (detailsAdertisement.status === "active"){
+
+                MainButton.setParams({
+                  is_active: true,
+                  color: "#2ea5ff",
+                  text_color: "#ffffff",
+                });
+
+              }
+              else{
+                MainButton.setParams({
+                  is_active: false, //неизвесетно
+                  color: "#2f2f2f",
+                  text_color: "#606060",
+                });
+              }
+            } 
+          }
         }
       }
     } else {
@@ -290,6 +418,9 @@ const First = ({ isPage = false }) => {
     isCardOpen.isOpen,
     setProfile,
     setCardOpen,
+    detailsAdertisement,
+    navigate,
+    address
   ]);
 
   useEffect(() => {
@@ -304,10 +435,10 @@ const First = ({ isPage = false }) => {
 
   localResponce = responce;
 
+
   useEffect(() => {
     if (localResponce.text.length < 3 && localStep === 1) {
       MainButton.setParams({
-        is_active: false, //неизвесетно
         color: "#2f2f2f",
         text_color: "#606060",
       });
@@ -337,7 +468,8 @@ const First = ({ isPage = false }) => {
 
   useEffect(() => {
     dispatch(clearTasks());
-  }, []);
+  }, [dispatch]);
+
 
   useEffect(() => {
     let inputs = document.querySelectorAll("input");
@@ -370,30 +502,43 @@ const First = ({ isPage = false }) => {
         setPutStatus(true)
         responseRef.current.style.overflowY = "hidden"
         for (let i = 0; i < 1; i++) {
-          im = await axios.post("https://back-birga.ywa.su/response", par[0], {
+          im = await axios.post(process.env.REACT_APP_HOST + "/response", par[0], {
             params: {
               advertisementId: par[1].advertisement.id,
-              userId: par[1].user.id,
+              userId: window.Telegram.WebApp.initDataUnsafe.user.id,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           });
         }
+        try{
 
-        await axios.get("https://back-birga.ywa.su/user/sendMessage", {
-          params: {
-            chatId: par[1].advertisement.user.chatId,
-            text:
-            messageOne +
-              par[1].advertisement.taskName.bold() +
-              messageTwo +
-              par[1].user.fl,
-            buttonUrl:
-              "https://birga.ywa.su/ResponsePage?advertisemet=" +
-              String(par[1].advertisement.id) +
-              "&response=" +
-              String(im.data.id),
-              languageCode : en ? "en" : "ru"
-          },
-        });
+          await axios.get( process.env.REACT_APP_HOST + "/user/sendMessage", {
+            params: {
+              chatId: par[1].advertisement.user.chatId,
+              text:
+              messageOne +
+                par[1].advertisement.taskName.bold() +
+                messageTwo +
+                par[1].user.fl,
+              buttonUrl:
+                "https://connectbirga.ru/ResponsePage?advertisement=" +
+                String(par[1].advertisement.id) +
+                "&response=" +
+                String(im.data.id),
+                languageCode : en ? "en" : "ru"
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
+          });
+        }
+        
+        catch(e){
+          console.warn(e)
+        }
+
 
 
 
@@ -437,12 +582,12 @@ const First = ({ isPage = false }) => {
       try {
         let gibrid = { ...responce };
         gibrid.isWatched = "";
-        gibrid.advertisement = secFilteredArray[isDetailsActive.id];
+        gibrid.advertisement = detailsAdertisement;
         gibrid.user = {
           id: me.id,
           fl: me.firstName,
           link: me.link,
-          photo: me.photo,
+          photo: me.photo ? me.photo : "",
           about: me.profile.about,
           stage: me.profile.stage,
         };
@@ -456,40 +601,46 @@ const First = ({ isPage = false }) => {
     }
 
     if (step !== 0 && !responce.shablonMaker) {
-      window.Telegram.WebApp.showPopup(
-        {
-          title: resp,
-          message: textButton,
-          buttons: [
-            { id: "save", type: "default", text: Yes },
-            { id: "delete", type: "destructive", text: No },
-          ],
-        },
-        (buttonId) => {
-          if (buttonId === "delete" || buttonId === null) {
-            // setShablon({...shablon , isActive : false})
+          if (localResponce.text.length < 3){
+            window.Telegram.WebApp.showAlert(translation("Ваш отклик пуст!"))
           }
-          if (buttonId === "save") {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(
-              "success"
-            );
-            postResponce(ordersInformation[isDetailsActive.id].id, window.Telegram.WebApp.initDataUnsafe.user.id);
-            // mainRef.current.classList.remove('secondStep')
+          else{
 
+            window.Telegram.WebApp.showPopup(
+              {
+                title: resp,
+                message: textButton,
+                buttons: [
+                  { id: "save", type: "default", text: Yes },
+                  { id: "delete", type: "destructive", text: No },
+                ],
+              },
+              (buttonId) => {
+                if (buttonId === "delete" || buttonId === null) {
+                  // setShablon({...shablon , isActive : false})
+                }
+                if (buttonId === "save") {
+                  window.Telegram.WebApp.HapticFeedback.notificationOccurred(
+                    "success"
+                  );
+                  postResponce(detailsAdertisement.id, window.Telegram.WebApp.initDataUnsafe.user.id);
+                  // mainRef.current.classList.remove('secondStep')
+      
+                }
+              }
+            );
           }
-        }
-      );
+      
     }
   }, [
+
     responce,
     step,
-    ordersInformation,
-    isDetailsActive.id,
+    
     setDetailsActive,
-    dispatch,
     setStep,
     me,
-    secFilteredArray,
+    detailsAdertisement
   ]);
 
   const categorys = useSelector((state) => state.categorys.category);
@@ -503,87 +654,7 @@ const First = ({ isPage = false }) => {
     };
   }, [responce, forwardFunction]);
 
-  const [pageAdvertisement, setPageAdvertisement] = useState(null);
-  const detailsAdertisement = useMemo(() => {
-    async function getAdvertisement() {
-      try {
-        let advertisement = await axios.get(
-          "https://back-birga.ywa.su/advertisement/findOne",
-          {
-            params: {
-              id: window.Telegram.WebApp.initDataUnsafe.start_param,
-            },
-          }
-        );
-        let order = advertisement.data;
-        let one = new Date(order.startTime);
 
-        let two;
-        if (order.endTime) {
-          two = new Date(order.endTime);
-        } else {
-          two = "";
-        }
-
-        let files = await makeNewFile(order.folder, order.photos);
-
-        let imTwo = await axios.get(
-          "https://back-birga.ywa.su/advertisement/findCount",
-          {
-            params: {
-              userId: order.user.id,
-            },
-          }
-        );
-
-        return {
-          id: order.id,
-          taskName: order.title,
-          executionPlace: "Можно выполнить удаленно",
-          time: { start: one, end: two },
-          tonValue: order.price,
-          taskDescription: order.description,
-          photos: files,
-          photosName: order.photos,
-          customerName: order.user.fl,
-          userPhoto: order.user.photo || "",
-          rate: "5",
-          isActive: true,
-          creationTime: order.createdAt,
-          viewsNumber: order.views,
-          responces: order.responses,
-          status: order.status,
-          user: order.user,
-          createNumber: imTwo.data,
-          category: order.category.id,
-        };
-      } catch (e) {
-        pageValue = false;
-        setDetailsActive({ isOpen: false, id: 1 });
-      }
-    }
-
-    if (ordersInformation === null) {
-      return "";
-    } else {
-      if (pageValue && isPage) {
-        if (pageAdvertisement === null) {
-          getAdvertisement().then((value) => setPageAdvertisement(value));
-        }
-
-        return pageAdvertisement;
-      } else {
-        /// НЕ попал сюда
-        return secFilteredArray[isDetailsActive.id];
-      }
-    }
-  }, [
-    isPage,
-    pageAdvertisement,
-    isDetailsActive.id,
-    ordersInformation,
-    secFilteredArray,
-  ]);
 
   const firsStyle = useMemo(() => {
     if (step === 1) {
@@ -602,7 +673,7 @@ const First = ({ isPage = false }) => {
   }, [step, isDetailsActive.isOpen]);
 
   useEffect(() => {
-    const input = document.querySelectorAll('input');
+    const input = document.querySelectorAll('input'); 
     const textarea = document.querySelectorAll("textarea");
     for (let smallInput of input) {
       smallInput.addEventListener("focus", () => {
@@ -639,6 +710,9 @@ const First = ({ isPage = false }) => {
     setStep(0)
     setSubCategory(false)
   } , [changer] )
+
+
+  console.warn(detailsAdertisement)
 
   return (
     <div style={firsStyle} className="first-container">
@@ -701,7 +775,7 @@ const First = ({ isPage = false }) => {
         mountOnEnter
         unmountOnExit
       >
-        <CardPage style={{ paddingBottom: "74px" }} card={isCardOpen.card} />
+        <CardPage style={{ paddingBottom: "74px" , left : "100vw" }} card={isCardOpen.card} />
       </CSSTransition>
 
       <CSSTransition
@@ -712,17 +786,14 @@ const First = ({ isPage = false }) => {
         unmountOnExit
       >
         <AboutReaction
+        isTelesgramVisible={false}
           style={{
             paddingBottom: "74px",
+            left : "100vw"
           }}
           setOneCard={setCardOpen}
           responce={
-            filteredArr[isDetailsActive.id]
-              ? {
-                  createNumber: filteredArr[isDetailsActive.id].createNumber,
-                  user: filteredArr[isDetailsActive.id].user,
-                }
-              : {}
+            detailsAdertisement
           }
         />
       </CSSTransition>
@@ -736,17 +807,16 @@ const First = ({ isPage = false }) => {
           isDetailsActive={isDetailsActive.isOpen}
           breakRef={firstRef}
           setProfile={setProfile}
-          style={pageValue && isPage ? { transform: "translateX(0%)" } : {}}
+          // style={pageValue && isPage ? { transform: "translateX(0%)" } : {}}
           // className={}
           orderInformation={detailsAdertisement}
         />
       </CSSTransition>
 
       <CSSTransition
-        in={step === 1 ? true : false}
+         in={step === 1 ? true : false}
         // in = {true}
         timeout={400}
-        // classNames="left-right"
         mountOnEnter
         unmountOnExit
       >
@@ -756,11 +826,14 @@ const First = ({ isPage = false }) => {
           responce={responce}
           setResponce={setResponce}
           orderInformation={
+            (pageValue && isPage) ? 
+            pageAdvertisement
+            :
             secFilteredArray[isDetailsActive.id]
               ? secFilteredArray[isDetailsActive.id]
               : "he"
           }
-        />
+        /> 
       </CSSTransition>
     </div>
   );

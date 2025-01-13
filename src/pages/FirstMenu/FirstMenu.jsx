@@ -1,11 +1,7 @@
-import React, { forwardRef, useCallback, useRef } from "react";
+import React, { forwardRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, unstable_HistoryRouter, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import userPhoto from '../../images/userPhoto/user.png'
-import one from "../../images/menu/one.svg";
-import two from "../../images/menu/two.svg";
-import three from "../../images/menu/three.svg";
-import four from "../../images/menu/four.svg";
 import Text from "../../components/Text/Text";
 import { setChanger } from "../../store/menuSlice";
 
@@ -14,8 +10,6 @@ const FirstMenu = forwardRef(({...props} , ref) => {
 
   const isMenuActive = useSelector((state) => state.menuSlice.value);
 
-
-  const myRef = useRef(null);
 
   const location = useLocation();
 
@@ -27,7 +21,7 @@ const FirstMenu = forwardRef(({...props} , ref) => {
     navigate(par)
     ref.current.classList.add("fuckNuubs")
     ref.current.classList.remove("disappearAnimation")
-  } , [navigate] )
+  } , [navigate, dispatch, ref] )
 
   return (
     <div ref={ref} className={isMenuActive ? "FirstMenu" : "FirstMenu hidden"}>
@@ -76,7 +70,7 @@ const FirstMenu = forwardRef(({...props} , ref) => {
         </Link>
         <div className={ (location.pathname === "/Profile" || location.pathname === "/AllShablons") ? "menuLink active" : "menuLink"} onClick={() => {onClick("/Profile")}}>
           <div className="menuCircle">
-            <img className="menuPhoto" src={me.photo.length > 0 ? me.photo : userPhoto} alt="" />
+            <img className="menuPhoto" src={me.photo.length > 0 ? me.photo.split('https://').length === 2 ? me.photo : `${process.env.REACT_APP_HOST}/${me.id}/${me.photo}` : userPhoto} alt="" />
           </div>
         </div>
         <div className={ location.pathname === "/MyAds" ? "menuLink active" : "menuLink"} onClick={() => {onClick("/MyAds")}}>

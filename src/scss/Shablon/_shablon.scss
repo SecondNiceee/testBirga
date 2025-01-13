@@ -4,8 +4,8 @@
     padding-top: 23px;
     padding-left: 16px;
     padding-right: 16px;
-    left: 0;
-    transform: translateX(100%);
+    left: 100vw;
+    transform: translateX(0);
     top: 0;
     position: fixed;
     z-index: 200;
@@ -14,6 +14,7 @@
     min-height: calc(100vh);
     height: calc(100vh);
     overflow-y: scroll;
+    padding-bottom: 78px;
     .shablon-name{
         margin-top: 18px;
     }

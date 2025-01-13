@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import TaskName from "../../components/UI/TaskName/TaskName";
 import DescriptionAndPhoto from "../../components/UI/DescriptionAndPhoto/DescriptionAndPhoto";
 import BackButton from "../../constants/BackButton";
@@ -13,7 +13,7 @@ import translation from "../../functions/translate";
 const menu = document.documentElement.querySelector(".FirstMenu")
 const updateText = translation("Изменить шаблон")
 const addText = translation("Добавить шаблон")
-const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, ...props}) => {
+const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, mistakes, ...props}) => {
   const dispatch = useDispatch()
   let localShablon = shablon
 
@@ -22,7 +22,7 @@ const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, ...
   useEffect( () => {
     function forward(){
       let myFormData = new FormData()
-      // myFormData.append("userId" ,  2144832745 )
+      // myFormData.append("userId" ,  window.Telegram.WebApp.initDataUnsafe.user.id )
       myFormData.append("name" , String(localShablon.name.trim()) )
       myFormData.append("text" , String(localShablon.text.trim()))
       if (put){
@@ -147,30 +147,33 @@ const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, ...
       <Text className="shablon-title">{put ? shablon.name : "Новый шаблон"}</Text>
       {/* <button onClick={forward}>Сделать!</button> */}
       <TaskName
+        
         className={"shablon-name"}
         title={"НАЗВАНИЕ ШАБЛОНА"}
         text={shablon.name}
         setText={(e) => {
-          setShablon((value) => ({...value, shablon : {...value.shablon , name : e }}));
+          setShablon( (value ) => ({...value , name : e}) )
         }}
-        errorValue={false}
+        errorValue={mistakes.name}
         underText={""}
         placeholder={translation("Введите название шаблона")}
       />
       <DescriptionAndPhoto
+      textError = {mistakes.text}
       className={'shablon-description'}
         text={shablon.text}
         setText={(e) => {
-          setShablon((value) => ({...value, shablon : {...value.shablon , text : e }}));
+          setShablon( (value ) => ({...value , text : e}) )
         }}
         photos={shablon.photos}
         setPhotos={(e) => {
-          setShablon((value) => ({...value, shablon : {...value.shablon , photos : e }}));
+          setShablon( (value ) => ({...value, photos :e}) )
         }}
         textTitle={"ТЕКСТ ОТКЛИКА"}
         filesTitle={""}
         MyInformation={false}
         textPlaceholder={translation("Почему задание нужно доверить именно вам")}
+        
       />
 
       <Text className="shablon-notice">Расскажите о себе и своем опыте работы. Прикрепите примеры.</Text>
@@ -181,4 +184,4 @@ const Shablon = ({shablon, setShablon, setActive, put, isExitShow, exitText, ...
   );
 };
 
-export default Shablon;
+export default memo(Shablon);

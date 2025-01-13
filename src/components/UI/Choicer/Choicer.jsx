@@ -20,16 +20,16 @@ const Choicer = ({ className, text, arr, isActive, setActive, onChoice  }) => {
         <path
           d="M1.33073 4.73236L5.9974 0.999023L10.6641 4.73236"
           stroke="#2EA5FF"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokoWidth ="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M10.6654 8.3321L5.9987 12.0654L1.33203 8.3321"
           stroke="#2EA5FF"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
 

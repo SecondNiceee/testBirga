@@ -4,10 +4,6 @@ import Text from "../../Text/Text";
 const CategoryBlock = ({ name, value , func, ...props }) => {
 
   const myRef = useRef(null)
-  const vibrate = useCallback( () => {
-      // window.navigator.vibrate(100);
-      myRef.current.style.backgroundColor = "#3D444E"
-  }  , [])
   const clickHandler = useCallback( (e) => {
     myRef.current.style.backgroundColor = "#3D444E"
       
@@ -38,16 +34,16 @@ const CategoryBlock = ({ name, value , func, ...props }) => {
           <path
             d="M0.998697 5.46944L5.66536 1.66699L10.332 5.46944"
             stroke="white"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M10.3333 8.86455L5.66667 12.667L1 8.86455"
             stroke="white"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </div>

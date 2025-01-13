@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import makeNewFile from "../functions/newMakeFile";
+
+
 
 
 
@@ -9,10 +10,13 @@ export const deleteServerCard = createAsyncThunk(
     "telegramUserInfo/putCard",
     async function (data){
         try{
-            await axios.delete("https://back-birga.ywa.su/card" , {
+            await axios.delete(`${process.env.REACT_APP_HOST}/card` , {
                 params : {
                     id : data
-                }
+                },
+                headers : {
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                  }
             }
             )
 
@@ -29,14 +33,18 @@ export const putCard = createAsyncThunk(
     "telegramUserInfo/putCard",
     async function (data){
         try{
-            let im = await axios.put("https://back-birga.ywa.su/card" , data[0] , 
+            //window.Telegram.WebApp.initDataUnsafe.user.id 
+            //
+            let im = await axios.put(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
                     params : {
-                        id : data[1]
+                        id : String(window.Telegram.WebApp.initDataUnsafe.user.id),
                     },
                     headers: {
                         "Content-Type" :'multipart/form-data',
-                        "Access-Contrsol-Allow-Origin": "*"
+                        "Access-Contrsol-Allow-Origin": "*",
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+
                       },
                 }
             )
@@ -63,14 +71,15 @@ export const postCard = createAsyncThunk(
     "telegramUserInfo/postUserInfo",
     async function (data){
         try{
-            let im = await axios.post("https://back-birga.ywa.su/card" , data[0] , 
+            let im = await axios.post(`${process.env.REACT_APP_HOST}/card` , data[0] , 
                 {
                     params : {
-                        userId : data[1]
+                        userId : String(window.Telegram.WebApp.initDataUnsafe.user.id),
                     },
                     headers: {
                         "Content-Type" :'multipart/form-data',
-                        "Access-Control-Allow-Origin": "*"
+                        "Access-Control-Allow-Origin": "*",
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                       },
                 }
              )
@@ -99,15 +108,18 @@ export const postCard = createAsyncThunk(
 export const putUserInfo = createAsyncThunk(
     "telegramUserInfo/putUserInfo",
     async function (data){
+        console.log("------------------------------------")
+        console.log("------------------------------------")
+        console.log(data[0])
         try{
-            await axios.put('https://back-birga.ywa.su/user' , data[0] , {
+            await axios.put(`${process.env.REACT_APP_HOST}/user` , data[0] , {
                 params : {
-                    userId : data[1],
-                    headers: {
-                        "Content-Type" :'multipart/form-data',
-                        "Access-Control-Allow-Origin": "*"
-                      },
-                }
+                    userId : String(window.Telegram.WebApp.initDataUnsafe.user.id),
+                },
+                headers: {
+                    "Content-Type" :'application/json',
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY,
+                  },
             })
             return true
         }
@@ -121,38 +133,81 @@ export const fetchUserInfo = createAsyncThunk(
   async function () {
     try {
 
-        //2144832745
-        let firstName = "Коля"
-        let lastName = "Титов"
-        let UserId = 2144832745
+        //window.Telegram.WebApp.initDataUnsafe.user.id
+        let firstName = window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.first_name : "Коля"
+        let lastName = window.Telegram.WebApp.initDataUnsafe.user ?  window.Telegram.WebApp.initDataUnsafe.user.last_name : "Титов"
+        let UserId = window.Telegram.WebApp.initDataUnsafe.user.id
         let user;
+        
         try{
 
-             user = await axios.get("https://back-birga.ywa.su/user/findOne", {
+
+             user = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
               params: {
                 id: UserId,
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             });
+            console.log('====================================');
+            console.log(user);
+            console.log('====================================');
         }
         catch(e){
-            await axios.post("https://back-birga.ywa.su/user/createByBot" , {}, {
-                params : {
-                    id : 2144832745
-                }
-            })
-            user = await axios.get("https://back-birga.ywa.su/user/findOne", {
+            if (window.Telegram.WebApp.initDataUnsafe.start_param){
+
+                await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
+    
+                    
+                    params : {
+                        referId :String(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
+                        id : window.Telegram.WebApp.initDataUnsafe.user.id,
+                        language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
+                        link : window.Telegram.WebApp.initDataUnsafe.user.link
+                    },
+                    headers : {
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                      }
+                })
+            }
+            else{
+                await axios.post(`${process.env.REACT_APP_HOST}/user/createByBot` , {}, {
+    
+                    
+                    params : {
+                        id : window.Telegram.WebApp.initDataUnsafe.user.id,
+                        language_code : window.Telegram.WebApp.initDataUnsafe.user ? window.Telegram.WebApp.initDataUnsafe.user.language_code : "en",
+                        link : window.Telegram.WebApp.initDataUnsafe.user.link
+                    },
+                    headers : {
+                        "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                      }
+                })
+            }
+
+
+            user = await axios.get(`${process.env.REACT_APP_HOST}/user/findOne`, {
                 params: {
                   id: UserId,
                 },
+                headers : {
+                    "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+                  }
               });
+
+              
         }
 
         let localCards = []
 
-        let allCards = await axios.get("https://back-birga.ywa.su/card/findByUser" , {
+        let allCards = await axios.get(`${process.env.REACT_APP_HOST}/card/findByUser` , {
             params : {
                 userId : UserId
-            }
+            },
+            headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
         })
         for (let e of allCards.data)
             {
@@ -167,21 +222,32 @@ export const fetchUserInfo = createAsyncThunk(
                     dribbbleLink : e.dribble,
                     dropfileLink : e.dropFile,
                     photosNames : e.photos,
-                    photos : files
+                    photos : files,
+                    
                 })
             }
-        
+
+        //window.Telegram.WebApp.initDataUnsafe.user.id
+        //window.Telegram.WebApp.initDataUnsafe.user.id  window.Telegram.WebApp.initDataUnsafe.user.id
+
+        let photoUrl = user.data.photo ? user.data.photo : ""
+
         return ( {
             firstName: firstName,
             lastName: lastName,
+            address : user.data.address,
+            mnemonic : user.data.mnemonic,
             id: UserId,
             link : user.data.link,
-            photo: user.data.photo,
+            photo: photoUrl,
             about : user.data.about,
             stage : user.data.stage,
             deals : user.data.deals,
             completedTasks : user.data.completedAdvertisements,
-            cards : localCards
+            cards : localCards,
+            congradulations : user.data.congradulations,
+            lastTransaction : user.data.lastTransaction,
+            congratulate : user.data.congratulate
           } );
     }
     catch (e){
@@ -207,8 +273,10 @@ const telegramUserInfo = createSlice({
     lastName: "",
     completedTasks : [],
     deals : 0,
+    lastTransaction : "NO",
+    congratulate : null,
     profile : {
-        about : '',
+        about : "",
         stage : 0,
         cards : [
         ]
@@ -237,17 +305,23 @@ const telegramUserInfo = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInfo.fulfilled, (state, action) => {
-      state.state = "yes";
+      state.lastTransaction = action.payload.lastTransaction
       state.id = action.payload.id;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-      state.photo = action.payload.photo;
+      state.photo = action.payload.photo ? action.payload.photo : "";
       state.profile = {...state.profile , about : action.payload.about, stage : action.payload.stage === null ? '0' : action.payload.stage};
       state.profile.cards = action.payload.cards;
       state.profile.userId = action.payload.id
       state.completedTasks = action.payload.completedTasks
       state.deals = action.payload.deals
+      state.mnemonic = action.payload.mnemonic
+      state.address = action.payload.address
       state.profile.cards.sort((a, b) => a.id - b.id)
+      state.congradulations = action.payload.address
+      state.congratulate = action.payload.congratulate
+      state.state = "yes";
+      
     });
     builder.addCase(fetchUserInfo.rejected, (state) => {
       state.status = "error";

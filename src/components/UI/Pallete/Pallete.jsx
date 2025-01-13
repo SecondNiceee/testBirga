@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import cl from './Pallete.module.css'
-import PalleteImg from '../../../images/icons/Design.svg'
+import PalleteImg from '../../../images/icons/TrulyDesign.svg'
 import ItSvg from "../../../images/icons/IT.svg"
 import MoreSvg from "../../../images/icons/More.svg"
 const Pallete = ({className , category}) => {

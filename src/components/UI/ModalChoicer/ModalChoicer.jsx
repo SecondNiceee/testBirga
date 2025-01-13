@@ -1,23 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { Select as BaseSelect } from "@mui/base/Select";
-import { Option as BaseOption, optionClasses } from "@mui/base/Option";
+import { Option as  optionClasses } from "@mui/base/Option";
 import { styled } from "@mui/system";
 import cl from "./ModalChoicer.module.css"
-import { CssTransition } from "@mui/base/Transitions";
-import { PopupContext } from "@mui/base/Unstable_Popup";
 import { CSSTransition } from "react-transition-group";
-
-const Select = React.forwardRef(function Select(props, ref) {
-  const slots = {
-    root: CustomButton,
-    listbox: AnimatedListbox,
-    popup: Popup,
-    ...props.slots,
-  };
-
-  return <BaseSelect {...props} ref={ref} slots={slots} />;
-});
 
 export default function ModalChoicer({
   values,
@@ -38,34 +24,54 @@ export default function ModalChoicer({
     }
   } , [isOpen , setOpen] )
 
-  const closeFunction = React.useCallback( () => {
-      setOpen(false)
-  } , [setOpen] )
   const [name, setName] = React.useState(names[values.indexOf(defaultValue)])
+
+
+  // const style = React.useMemo( () => {
+  //   if (isOpen){
+  //     return {
+  //       transition : "0.3s"
+  //     }
+  //   }
+  //   return {
+  //     transition : "0.3s"
+  //   }
+  // } , [isOpen] )
+
+
+  React.useEffect( () => {
+    
+    function closeFunction(e){
+        if (!e.target.closest(".list-box") && !(e.target.closest(".custom-button"))){
+          setOpen(false)
+        }
+      
+    }
+    document.documentElement.addEventListener("touchstart" , closeFunction)
+    return () =>{
+
+      document.documentElement.removeEventListener("touchstart", closeFunction)
+    }
+    } , [] )
+
   return (
     <div {...props} className={cl.modalWrapper}>
-        <CustomButton  onClick = {clickHandler} >{name}</CustomButton>
+        <CustomButton className = "custom-button"  onClick = {clickHandler} >{name}</CustomButton>
 
-        {isOpen && 
-                <div onTouchStart={closeFunction} onClick={closeFunction} className={cl.area}>
-
-                </div>
-        }
 
         <CSSTransition in = {isOpen}
         timeout={0}
-        mountOnEnter
-        unmountOnExit
+        
+        classNames={"show-modal"}
          >
 
-                <Popup>
-
-                      <AnimatedListbox>
+                      <AnimatedListbox className = "list-box"  >
 
                           {values.map((e, i) => {
                             return (
                               <Option
                               className = {names[i] === name ? "base--selected" : ""}
+                              style={values.length === 1 ? {borderRadius : "12px", } : {}}
                               onClick={() => {
                                 
                                 setValue(values[i])
@@ -80,8 +86,6 @@ export default function ModalChoicer({
 
                       </AnimatedListbox>
 
-
-                </Popup>
 
 
         </CSSTransition>
@@ -151,30 +155,36 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
     display : flex;
     gap : 4px;
     padding : 0px;
-    text-transform : uppercase;
-    font-family: "SF Pro Display 400";
+    font-family: "SF Pro Display";
     font-weight: 400;
-    font-size: 13.33px;
     letter-spacing: 0.02em;
     text-align: right;
     color: #2ea5ff;
     background-color : transparent;
-    border : none
+    border : none;
+    font-size: 16px;
   `
 );
 
 const Listbox = styled("ul")(
   ({ theme }) => `
+  opacity : 0;
+  scale : 0;
+  transition : all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0s;
+  transform-origin : right top;
   border-radius: 12px ;
   top: 25px;
   right: -7px;
   position : absolute;
-  z-index : 300;
+  z-index : 2200;  
   backdrop-filter: blur(80px);
   box-shadow: 0 8px 84px 0 rgba(0, 0, 0, 0.1);
   display : flex;
   flex-direction : column;
   max-width : 190px;
+  webkit-backdrop-filter: blur(100px);
+  box-shadow: 0 4px 48px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0 ,50%);
   `
 );
 
@@ -195,6 +205,8 @@ AnimatedListbox.propTypes = {
 
 const Option = styled("li")(
   ({ theme }) => `
+
+  display : flex;
   position : relative;
   font-family: "SF Pro Text 400";
   font-weight: 400;
@@ -204,13 +216,14 @@ const Option = styled("li")(
   color: white;
 
 
-  background: #181d23;
   list-style: none;
-  border-bottom: 0.50px solid rgba(84, 84, 88, 0.65);
   
   padding: 11px 16px;
   width: 190px;
-  height: 44px;
+
+
+  border-bottom: 0.64px solid rgba(54, 54, 54, 0.65);
+  padding: 11px 20px;
 
 
   &:nth-child(1){
@@ -222,13 +235,10 @@ const Option = styled("li")(
   }
 
   &.${optionClasses.selected} {
-    background-color: rgba(68, 68, 68);
-    color: ${blue[100]};
   }
 
   &.${optionClasses.highlighted} {
-    background-color: rgba(68, 68, 68);;
-    color: ${grey[300]};
+    background-color: red;
   }
 
   &:focus-visible {
@@ -238,7 +248,6 @@ const Option = styled("li")(
   &.${optionClasses.highlighted}.${optionClasses.selected} {
    
      background-color: transparent;
-    color: ${blue[100]};
     position : relative;
   }
 
@@ -247,12 +256,7 @@ const Option = styled("li")(
   }
 
   &:hover:not(.${optionClasses.disabled}) {
-    background-color: ${grey[800]};
-    color: ${grey[300]};
+      background: #32373c;
   }
   `
 );
-
-const Popup = styled("div")`
-  z-index: 1;
-`;

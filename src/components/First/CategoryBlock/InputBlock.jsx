@@ -6,9 +6,9 @@ import React, {
 } from "react";
 import cl from "./CategoryBlock.module.css";
 import Text from "../../Text/Text";
+import en from "../../../constants/language";
 
-let selectionPosition = 0
-const en = true
+
 const priceText = en ? "USD" : "RUB"
 const place = en ? "300 USD" : "5000 RUB"
 const InputBlock = ({ value, setValue, func = () => {}, ...props }) => {

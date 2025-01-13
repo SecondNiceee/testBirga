@@ -5,9 +5,10 @@ import dripleIcon from "../../../images/icons/Dribble.svg";
 import dropfileIcon from "../../../images/icons/Dropfile.svg";
 import Text from '../../Text/Text';
 import translation from '../../../functions/translate';
-const Yes = translation("Yes")
-const No = translation("No")
-const LinkComp = ({navigate, link}) => {
+const Yes = translation("Да")
+const No = translation("Нет")
+
+const LinkComp = ({navigate, link, name}) => {
     const imageLink = useMemo( () => {
         switch (navigate){
             case "behance":
@@ -24,8 +25,8 @@ const LinkComp = ({navigate, link}) => {
     const linkHandler = useCallback( (par) => {
         window.Telegram.WebApp
         .showPopup({
-          title: "Перейти?",
-          message: `Вы уверены, что хотите перейти по ссылке ${par}?`,
+          title: translation("Перейти?"),
+          message: translation(`Вы уверены, что хотите перейти по ссылке `) + par + `?`,
           buttons: [
             { id: "save", type: "default", text: Yes },
             { id: "delete", type: "destructive", text: No },
@@ -43,13 +44,17 @@ const LinkComp = ({navigate, link}) => {
         } )
     } , [link] )
 
+
+
+    
+
     
     return (
         <div  onClick={(par) => {
-            linkHandler()
-        }} className={cl.cardsLink}>
+            linkHandler(link)
+        }} className={ [cl.cardsLink, cl.blue].join(' ')}>
             <img src={imageLink} alt="" />
-            <Text>{link}</Text>
+            <Text>{name}</Text>
         </div>
     );
 };

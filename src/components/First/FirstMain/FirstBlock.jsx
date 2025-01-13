@@ -126,11 +126,13 @@ const FirstBlock = ({
 
   const [isVisible, setVisible] = useState(false);
   useEffect(() => {
-    if (inView) {
-      setVisible(true);
-      setViewsNumber(viewsNumber + 1)
+    if (!isVisible){
+      if (inView) {
+        setVisible(true);
+        setViewsNumber((value) => value + 1)
+      }
     }
-  }, [setVisible, inView]);
+  }, [setVisible, inView, isVisible, setViewsNumber]);
 
   return (
     <div

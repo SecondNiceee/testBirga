@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import Case from "../../../components/UI/Case/Case";
 import Text from "../../../components/Text/Text";
 
-const ExampleWorks = ({cards , openFunc}) => {
+const ExampleWorks = ({cards , openFunc, userId}) => {
   return (
     <div className="examplesWork">
       {cards.length === 0 ? 
@@ -14,7 +14,7 @@ const ExampleWorks = ({cards , openFunc}) => {
       <div className="cards__wraaper">
         {cards.map((e) => {
           return (
-            <Case  card = {e} openFunc = {openFunc}  task = {e} title = {e.title} description={e.description} photos={e.photos} watchOnly={true} />
+            <Case userId = {userId}  card = {e} openFunc = {openFunc}  task = {e} title = {e.title} description={e.description} photos={e.photos} watchOnly={true} />
           )
         })}
       </div>

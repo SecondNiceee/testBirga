@@ -29,6 +29,7 @@
     border-bottom-right-radius: 9.97px;
     left: 0;
     top: calc(50% - 1px);
+    cursor: pointer;
 }
 .Categories__block{
     width: 100%;
@@ -61,7 +62,7 @@
 }
 .Categories__block  .Category__link::after{
     content:'';
-    background-image: url(../../../images/icons/UpDown.svg);
+    background-image: url(../../../images/icons/Selector.svg);
     display: block;
     object-fit: cover;
     background-size: cover;

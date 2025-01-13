@@ -2,6 +2,7 @@ import React from 'react';
 import cl from './MethodPayment.module.css'
 import valletIcon from '../../../images/icons/wallet.svg'
 import upDown from '../../../images/icons/UpDown.svg'
+import Text from '../../../components/Text/Text';
 const PaymentMethod = ({className}) => {
     return (
         <div className={className ? [cl.PaymentMethod , className].join(' ') : cl.PaymentMethod}>

@@ -16,6 +16,7 @@ import CardPage from "../CardPage/CardPage";
 import AboutReaction from "../MyAds/components/AboutReaction";
 import { clearAll, fetchSavedAdvertisements, fetchSavedCards, fetchSavedResponses } from "../../store/saves";
 import translation from "../../functions/translate";
+import en from "../../constants/language";
 
 const values = ["Заказы", "Отклики", "Кейсы"];
 const keys = ["advertisment", "responces", "cards"];
@@ -23,8 +24,8 @@ const keys = ["advertisment", "responces", "cards"];
 const buttonText = translation("ОТКЛИКНУТЬСЯ")
 const textButton = translation("Вы действительно хотите откликнуться?")
 const menu = document.documentElement.querySelector(".FirstMenu")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const SavedPage = () => {
 
   useEffect( () => {
@@ -113,7 +114,7 @@ const SavedPage = () => {
       dispatch(clearAll())
 
     };
-  }, []);
+  }, [dispatch]);
   const savedTasks = useSelector((state) => state.saves.tasks);
 
   const gotIt = useMemo(() => {
@@ -123,7 +124,7 @@ const SavedPage = () => {
       savedTasks[details.id]
     ) {
       if (savedTasks[details.id].responces) {
-        if (savedTasks[details.id].responces.find(e => String(e.user.id) === "2144832745")){
+        if (savedTasks[details.id].responces.find(e => String(e.user.id) === "window.Telegram.WebApp.initDataUnsafe.user.id")){
           return true
         }
         else{
@@ -146,9 +147,9 @@ const SavedPage = () => {
     function forward() {
       if (gotIt) {
         window.Telegram.WebApp.showPopup({
-          title: "Ошибка",
+          title: translation("Ошибка"),
           message:
-            "Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик.",
+            translation("Вы уже откликнулись на это задание. Заказчик обязательно увидит ваш отклик."),
         });
       } else {
         if (!responce.isOpen) {
@@ -277,12 +278,10 @@ const SavedPage = () => {
         BackButton.show()
       }
       else{
-        BackButton.hide()
         BackButton.offClick(backFunction)
       }
       return () => {
         BackButton.offClick(backFunction)
-          BackButton.hide()
         
       }
   } , [myResponse.isActive, isProfileOpen, card.isOpen, setMyResponse, setProfileOpen, extraDetails.isOpen, setCard] )
@@ -301,7 +300,6 @@ const SavedPage = () => {
     }
     else{
       if (!myResponse.isActive){
-        BackButton.hide()
       }
       BackButton.offClick(backFunction)
     }
@@ -344,19 +342,21 @@ const SavedPage = () => {
       });
       try {
         let im = await axios.post(
-          "https://back-birga.ywa.su/response",
+          "https://www.connectbirga.ru/response",
           myFormData,
           {
             params: {
               userId: userId,
               advertisementId: advertismetId,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           }
         );
         const messageOne = translation("📣 Вы получили отклик на задачу «")
         const messageTwo = translation("» от ")
-        const en = true
-        await axios.get("https://back-birga.ywa.su/user/sendMessage", {
+        await axios.get("https://www.connectbirga.ru/user/sendMessage", {
           params: {
             chatId: im.data.user.chatId,
             text:
@@ -368,6 +368,9 @@ const SavedPage = () => {
               languageCode : en ? "en" : "ru"
             
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         });
         dispatch(addResponce([savedTasks[details.id].id, im.data]));
       } catch (e) {
@@ -379,7 +382,7 @@ const SavedPage = () => {
     if (responce.isOpen && !responce.shablonMaker) {
       window.Telegram.WebApp.showPopup(
         {
-          title: "Откликнуться?",
+          title: translation("Откликнуться?"),
           message: textButton,
           buttons: [
             { id: "save", type: "default", text: Yes },
@@ -391,7 +394,7 @@ const SavedPage = () => {
             // setShablon({...shablon , isActive : false})
           }
           if (buttonId === "save") {
-            postResponce(savedTasks[details.id].id, 2144832745);
+            postResponce(savedTasks[details.id].id, window.Telegram.WebApp.initDataUnsafe.user.id);
             setResponce((value) => ({ ...value, isOpen: false }));
             setDetails((value) => ({ ...value, isOpen: false }));
           }

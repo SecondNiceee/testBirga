@@ -17,7 +17,7 @@
     line-height: 0;
 }
 .falseTie{
-    stroke-width: 1.67px;
+    strokeWidth: 1.67px;
     stroke: #2ea5ff;
 }
 .animationClass{

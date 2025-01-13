@@ -9,7 +9,7 @@ import React, {
 import MyLoader from "../../../components/UI/MyLoader/MyLoader";
 import ResponseSuspense from "./ResponseSuspense";
 import { useDispatch, useSelector } from "react-redux";
-import { clearResponses, fetchResponses } from "../../../store/responses";
+import {  fetchResponses } from "../../../store/responses";
 import MyAnimation from "./MyAnimation";
 const MyResponses = forwardRef(
   (
@@ -23,8 +23,10 @@ const MyResponses = forwardRef(
     const me = useSelector((state) => state.telegramUserInfo);
 
     const getMore = useCallback(async () => {
-      dispatch(fetchResponses([me, page]));
-      setPage(page + 1);
+      if (me.id){
+        dispatch(fetchResponses([me, page]));
+        setPage(page + 1);
+      }
     }, [page, setPage, dispatch, me]);
 
     const onIntersaction = useCallback(

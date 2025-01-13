@@ -52,10 +52,9 @@ const Responses = ({
 
   return (
     <>
-      <div style={responces.length === 0 ? {display : "none"} : {}} className="responses__up-block">
+      <div  className="responses__up-block">
         <Text>Отклики</Text>
       <ModalChoicer
-      style={responces.length === 0 ? {display : "none"} : {}}
         setValue={(value) => {
           setFilterBy(value);
         }}

@@ -22,8 +22,8 @@ let inputObject = {
 const menu = document.documentElement.querySelector(".FirstMenu")
 const textButton = translation("Добавить кейс")
 const saveText = translation("Сохранить")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const caseTtile = translation("НАЗВАНИЕ КЕЙСА")
 const placeOne = translation("Придумайте название для нового кейса")
 const placeTwo = translation("Опишите в чем особенность ваших работ")
@@ -335,7 +335,7 @@ const Cards = ({ setCardsOpen, setAboutU, aboutU , save  }) => {
           }
         }>
           <img src={dropfileIcon} alt="" />
-          <Text>{cardsSetting.dropfileLink.length > 0 ? cardsSetting.dropfileLink : translation('Ссылка на Dprofile')}</Text>
+          <Text>{'Ссылка на Dprofile'}</Text>
         </div>
         <div className="behans-link cards-link" onClick={
           () => {
@@ -351,7 +351,7 @@ const Cards = ({ setCardsOpen, setAboutU, aboutU , save  }) => {
           }
         }>
           <img src={behanceIcon} alt="" />
-          <Text>{localCardSetting.behanceLink.length > 0 ? localCardSetting.behanceLink : translation('Ссылка на Behance')}</Text>
+          <Text>{'Ссылка на Behance'}</Text>
         </div>
         <div className="behans-link cards-link" onClick={
           () => {
@@ -366,7 +366,7 @@ const Cards = ({ setCardsOpen, setAboutU, aboutU , save  }) => {
           }
         }>
           <img src={dripleIcon} alt="" />
-          <Text>{localCardSetting.dribbbleLink.length > 0 ? localCardSetting.dribbbleLink : translation('Ссылка на Dribbble')}</Text>
+          <Text>{'Ссылка на Dribbble'}</Text>
         </div>
 
       </div>

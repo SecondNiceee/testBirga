@@ -51,7 +51,7 @@ input{
   padding-bottom: 11.33px;
   align-items: center;
   border-radius: 10px;
-
+  cursor: pointer;
   /* Cards */
   background: rgb(32, 48, 63);
 }

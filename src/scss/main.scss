@@ -44,7 +44,6 @@ body { width: 100%; height: auto; overflow: hidden;   background: rgb(24, 34, 45
 
 .MainContainer{
     background: rgb(24, 34, 45);
-    max-width: 430px;
     transition: 0.5s;
     height: auto;
     overflow-x: hidden;
@@ -81,6 +80,30 @@ body { width: 100%; height: auto; overflow: hidden;   background: rgb(24, 34, 45
   transition: 0.4s;
 }
 .left-right-exit{
+  transform: translate3d(100vw , 0 , 0) !important;
+  transition: 0.4s;
+}
+.left-right-exit-active{
+  transform: translate3d(100vw , 0 , 0) !important;
+  transition: 0.4s;
+}
+
+
+.left-zero-enter{
+  transform: translate3d(-100vw , 0 , 0) !important;
+  transition: 0.4s;
+}
+.left-zero-enter-active{
+  transform: translate3d(-100vw , 0 , 0) !important;
+  transition: 0.4s;
+}
+.left-zero-enter-done{
+  transform: translate3d(-100vw , 0 , 0) !important;
+  transition: 0.4s;
+}
+
+
+.left-right-exit{
   transform: translate3d(0 , 0 , 0) !important;
   transition: 0.4s;
 }
@@ -88,6 +111,12 @@ body { width: 100%; height: auto; overflow: hidden;   background: rgb(24, 34, 45
   transform: translate3d(100% , 0 , 0) !important;
   transition: 0.4s;
 }
+.left-right-exit-done{
+  transform: translate3d(100% , 0 , 0) !important;
+  transition: 0.4s;
+}
+
+
 *::-webkit-scrollbar {display:none;}
 
 .page-enter {
@@ -224,6 +253,104 @@ body { width: 100%; height: auto; overflow: hidden;   background: rgb(24, 34, 45
 .base-Option-root:hover{
   background-color: rgba(68, 68, 68);
 }
+
+.show-modal-enter{
+  scale: 1 !important;
+  opacity: 1 !important;
+}
+.show-modal-enter-active{
+  scale: 1 !important;
+  opacity: 1 !important;
+}
+.show-modal-enter-done{
+  scale: 1 !important;
+  opacity: 1 !important;
+}
+.show-modal-exit{
+  transition: 0.4s !important;
+  scale: 1 !important;
+  opacity: 1 !important;
+}
+.show-modal-exit-active{
+  transition: 0.4s !important;
+  scale: 1 !important;
+  opacity: 1 !important;
+}
+.show-modal-exit-done{
+  transition: 0.4s !important;
+  scale: 0 !important;
+  opacity: 0 !important;
+}
+ button, li, a, img {
+  cursor: pointer;
+}
+
+@keyframes animateError{
+  0%{
+    opacity: 0;
+    scale: 0;
+    transition: 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) ;
+  }
+  6%{
+    scale: 1.10;
+    opacity: 1;
+  }
+  9%{
+    scale: 1;
+  }
+  70%{
+    scale: 1;
+    opacity: 1;
+    transition: 0.2s;
+  }
+  100%{
+    scale: 1;
+    opacity: 0;
+  }
+
+}
+
+
+@keyframes animateErrorTwo{
+  0%{
+    opacity: 0;
+    scale: 0;
+    transition: 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) ;
+  }
+  3%{
+    scale: 1.08;
+    opacity: 1;
+  }
+  6%{
+    scale: 1;
+  }
+  70%{
+    scale: 1;
+    opacity: 1;
+    transition: 0.2s;
+  }
+  100%{
+    scale: 1;
+    opacity: 0;
+  }
+
+}
+
+
+.errorModal-enter-active{
+  animation: animateError 2s both;
+}
+.errorModal-exit-active{
+  animation: animateError 2s both;
+}
+
+.errorModalTwo-enter-active{
+  animation: animateErrorTwo 10s both;
+}
+.errorModalTwo-exit-active{
+  animation: animateErrorTwo 10s both;
+}
+
 // .slider-appear-enter{
 //   opacity: 0;
 //   transition: 0.3s;
@@ -236,3 +363,28 @@ body { width: 100%; height: auto; overflow: hidden;   background: rgb(24, 34, 45
 //   opacity: 1;
 //   transition: 0.3s
 // }
+@keyframes modal-animate{
+  0%{
+    transform: translateY(0px);
+  }
+  30%{
+    transform: translateY(125px);
+  }
+  70%{
+    opacity: 1;
+    transform: translateY(125px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(125px);
+  }
+}
+
+.modal-copy-enter-active{
+  animation: modal-animate 1.5s both ;
+  animation-fill-mode: both;
+}
+.modal-copy-exit-active{
+  animation: modal-animate 1.5s both ;
+  animation-fill-mode: both;
+}

@@ -91,6 +91,7 @@
   text-align: left;
   max-width: 266.012px;
   margin-right: auto;
+  transform: translateY(1.5px);
 }
 .First__block .circle {
   min-width: 30.6096px;

@@ -26,7 +26,7 @@
 .createdAt-block{
     justify-content: center;
     display: flex;
-    gap: 4px;
+    gap: 2px;
     margin-left: auto;
     margin-right: auto;
     p{
@@ -58,6 +58,7 @@
     .FullDescription-top{
         display: flex;
         gap: calc(4px);
+        align-items: center;
         p{
             /* Default text */
             color: rgb(149, 151, 158);
@@ -76,6 +77,7 @@
         }
     }
     .FullDescriptionBottom{
+        resize: none;
         background-color: transparent;
         /* Default text */
         background-color: transparent;
@@ -83,10 +85,37 @@
         font-family: "SF Pro Display";
         font-size: 14.67px;
         font-weight: 500;                             
-        line-height: 17.67px;
+        line-height: 19.7px;
         letter-spacing: 0%;
         text-align: left;
+        overflow-y: hidden;
     }
+    @keyframes modal-animate{
+  0%{
+    transform: translateY(0px);
+  }
+  30%{
+    transform: translateY(125px);
+  }
+  70%{
+    opacity: 1;
+    transform: translateY(125px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(125px);
+  }
+}
+
+.modal-copy-enter-active{
+  animation: modal-animate 1.5s both ;
+  animation-fill-mode: both;
+}
+.modal-copy-exit-active{
+  animation: modal-animate 1.5s both ;
+  animation-fill-mode: both;
+}
+
     .TaskDetails-row{
         display: flex;
         gap: 24px;
@@ -313,7 +342,7 @@
 .timeAndWatches{
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 4px;
     margin-top: calc(10px);
     margin-left: auto;
     margin-right: auto;
@@ -329,13 +358,15 @@
         text-align: center;
     }
     .watches{
-        color: rgb(149, 151, 158);
         font-family: "SF Pro Display";
-        font-size: 11.67px;
         font-weight: 500;
-        line-height: 12.54px;
-        letter-spacing: 0%;
+        font-size: 11px;
+        line-height: 107%;
         text-align: center;
+        color: #daf5fe;
+        span{   
+            color: #2ea5ff;
+        }
     }
 
 }

@@ -1,18 +1,18 @@
 import React from 'react';
-import { ThreeCircles } from 'react-loader-spinner';
+import { Hourglass } from 'react-loader-spinner';
 
 const BlockSpinner = ({...props}) => {
     return (
     <div {...props} className="First__block loaderBlock">
-        <ThreeCircles
-            visible={true}
-            height="50"
-            width="50"
-            color="white"
-            ariaLabel="three-circles-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+        <Hourglass
+        visible={true}
+        height="45"
+        width="45"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+        />
     </div>
     );
 };

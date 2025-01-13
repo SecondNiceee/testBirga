@@ -3,7 +3,8 @@ import cl from "./CardPage.module.css";
 import InnerCase from "../../components/CardPage/InnerCase/InnerCase";
 import FullDescription from "../../components/First/FirstDetails/FullDescription";
 import LinkComp from "../../components/CardPage/Link/LinkComp";
-import MainButton from "../../constants/MainButton";
+import MyLoader from "../../components/UI/MyLoader/MyLoader";
+import translation from "../../functions/translate";
 const menu = document.documentElement.querySelector(".FirstMenu")
 const CardPage = ({ card , ...props }) => {
     window.Telegram.WebApp.disableVerticalSwipes();
@@ -35,19 +36,19 @@ const CardPage = ({ card , ...props }) => {
             return (
             <div  className={cl.cardsLinks}>
             {card.behanceLink.length > 0 ? 
-                <LinkComp navigate={"behance"} link={card.behanceLink}  />
+                <LinkComp navigate={"behance"} link={card.behanceLink} name={translation("Ссылка на Behance")}  />
                 :
                 <></>
             }
 
             {card.dribbbleLink.length > 0 ? 
-                <LinkComp navigate={"driple"} link={card.dribbbleLink}  />
+                <LinkComp navigate={"driple"} link={card.dribbbleLink} name={translation("Ссылка на Dribbble")}  />
                 :
                 <></>
             }
 
             {card.dropfileLink.length > 0 ? 
-            <LinkComp navigate={"dropfile"} link={card.dropfileLink}  />
+            <LinkComp navigate={"dropfile"} link={card.dropfileLink} name={translation("Ccылка на Dropfile")}  />
             :
             <></>
     }
@@ -61,6 +62,12 @@ const CardPage = ({ card , ...props }) => {
     } , [card.dropfileLink, card.behanceLink , card.dribbbleLink] )
 
   return (
+    <>
+    {card.id === 0 ?
+    <MyLoader style = {{
+      transform : "translateX(-32px)"
+    }} />
+    :
     <div {...props} className={cl.wrapper}>
       <InnerCase
         task={card}
@@ -75,6 +82,8 @@ const CardPage = ({ card , ...props }) => {
       {linksComponents}
       
     </div>
+}
+    </>
   );
 };
 

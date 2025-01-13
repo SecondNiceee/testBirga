@@ -29,13 +29,13 @@ const Option = ({to, index = 1, text}) => {
     }, [] )
 
     useEffect( () => {
-      let hRef = null
+
       function click(){
         window.Telegram.WebApp.HapticFeedback.impactOccurred('soft')
       }
       if (myRef.current){
         myRef.current.addEventListener("click" , click)
-        hRef = myRef.current
+
       }
       
     } , [] )

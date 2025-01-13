@@ -1,0 +1,35 @@
+.textAlertBlock {
+  border-radius: 13px;
+  padding: 11px 15px;
+  -webkit-backdrop-filter: blur(79.7771606445px);
+          backdrop-filter: blur(79.7771606445px);
+  background: #242c37;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 10px;
+  margin-top: 51px;
+}
+.textAlertBlock p:nth-child(1) {
+  font-family: "SF Pro Text 600";
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 138%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #fff;
+}
+.textAlertBlock p:nth-child(2) {
+  font-family: "SF Pro Text 400";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 138%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #fff;
+  opacity: 0.6;
+}

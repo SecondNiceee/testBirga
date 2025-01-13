@@ -1,9 +1,5 @@
 import React, { memo, useMemo } from "react";
-import Burger from "../../UI/Burger/Burger";
 import OneInput from "../../UI/OneInput/OneInput";
-import userPhoto from "../../../images/userPhoto/user.png"
-
-import { Link } from "react-router-dom";
 import translation from "../../../functions/translate";
 
 

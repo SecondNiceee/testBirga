@@ -1,5 +1,5 @@
 import React, { forwardRef,  useEffect,  useMemo, useRef } from 'react';
-import MyAnimation from './MyAnimation';
+
 import MyResponses from './MyResponses';
 import MyLoader from '../../../components/UI/MyLoader/MyLoader';
 import {  useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ const PickerOne = forwardRef(({responsesArr, buttonFunction,  oneValue ,  nowVal
 
 
 
-
+    console.warn(responsesArr)
 
 
 
@@ -44,11 +44,13 @@ const PickerOne = forwardRef(({responsesArr, buttonFunction,  oneValue ,  nowVal
     const me = useSelector(state => state.telegramUserInfo)
 
     useEffect( () => {
-        dispatch(fetchResponses([me, 1]))
+        if (me.id){
+            dispatch(fetchResponses([me, 1]))
+        }
         return () => {
             dispatch(clearResponses())
         }
-    } , [] )
+    } , [me, dispatch] )
 
 
     return (

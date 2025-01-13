@@ -1,23 +1,23 @@
-import React, { useMemo, useState } from "react";
-import FirstBlock from "../FirstMain/FirstBlock";
+import React, { useMemo } from "react";
 import FullDescription from "./FullDescription"
 import Dedline from './Dedline'
 import Status from './Status'
 import Customer from './Customer'
 import Block from "../Block";
+import translation from "../../../functions/translate";
 
 const TaskDetailsContainer = ({orderInformation , setProfile, end = false}) => {
   const text = useMemo(() => {
     if (end){
-      return "Вы еще не создали задание, поэтому оно неактивно"
+      return translation("Вы еще не создали задание, поэтому оно неактивно.")
     }
     switch (orderInformation.status){
       case "active":
-        return "Заказчик еще не выбрал исполнителя, вы можете им стать"
+        return translation("Заказчик еще не выбрал исполнителя, вы можете им стать. \n   ")
       case "inProcess":
-        return "Заказчик уже выбрал исполнителя"
+        return translation("Заказчик уже выбрал исполнителя.")
       case "completed":
-        return "Задание уже выполнено"
+        return translation("Задание уже выполнено.")
       default :
 
     }
@@ -34,14 +34,14 @@ const TaskDetailsContainer = ({orderInformation , setProfile, end = false}) => {
         return {start : orderInformation.startTime , end : orderInformation.endTime }
       }
     }
-  } , [orderInformation] )
+  } , [orderInformation, end] )
   return (
     <div className="Task__container-one">
       <Block end = {end} task={orderInformation} {...orderInformation} isButton = {false} />
       <FullDescription fullDescription={orderInformation.taskDescription} />
       <Dedline dedline={dedline} />
       <div className="TaskDetails-row">
-        <Customer setProfile = {setProfile} userPhoto = {orderInformation.user ? orderInformation.user.photo : orderInformation.userPhoto} rate={orderInformation.rate} customerName={orderInformation.user ? orderInformation.user.fl : orderInformation.customerName} />
+        <Customer id={orderInformation.user ? orderInformation.user.id : ""} setProfile = {setProfile} userPhoto = {orderInformation.user ? orderInformation.user.photo : orderInformation.userPhoto} rate={orderInformation.rate} customerName={orderInformation.user ? orderInformation.user.fl : orderInformation.customerName} />
         <Status text={text} isActive={!end && orderInformation.status === "active"} />
       </div>
     </div>

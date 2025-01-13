@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import cl from "./SmallTextarea.module.css";
 import translation from "../../../functions/translate";
 

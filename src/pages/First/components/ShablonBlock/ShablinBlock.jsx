@@ -20,12 +20,15 @@ const ShablinBlock = ({
   clearPhoto
 }) => {
   const [shablonSetting, setShablonSetting] = useState({
-    shablon : {
       text: "",
       name: "",
-      photos: [],
-    }
+      photos: []
   });
+
+
+
+
+
   return (
     <div className={className ? [cl.main, className].join(" ") : cl.main}>
       {shablonsArr.length > 0 ? (
@@ -84,19 +87,22 @@ const ShablinBlock = ({
         mountOnEnter
       >
         <Shablon
-        
+          mistakes={{text : false, name : false}}
           exitText = {exitText}
           isExitShow = {true}
+          style = {{
+            left : "0px"
+          }}
           setActive={() => {
             setResponce({
               ...responce,
               shablonMaker: false,
-              text: shablonSetting.shablon.text,
-              name: shablonSetting.shablon.name,
-              photos: shablonSetting.shablon.photos,
+              text: shablonSetting.text,
+              name: shablonSetting.name,
+              photos: shablonSetting.photos,
             });
           }}
-          shablon={shablonSetting.shablon}
+          shablon={shablonSetting}
           setShablon={setShablonSetting}
         />
       </CSSTransition>

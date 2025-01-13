@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import dateIcon from "../../../images/icons/date.svg";
 import rightArrow from "../../../images/icons/ArrowRight.svg";
-import GreyText from "../../../components/UI/GreyText/GreyText";
 import './CatchDate.css'
 import Text from "../../../components/Text/Text";
 import formatDate from "../../../functions/makeDate";

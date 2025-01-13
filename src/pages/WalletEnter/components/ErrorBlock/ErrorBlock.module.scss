@@ -1,0 +1,28 @@
+.container{
+    backdrop-filter: blur(79.77716064453125px);
+    background: #2c2c2c;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: calc(100vw - 32px);
+    left: 16px;
+    bottom: 73px;
+    backdrop-filter: blur(79.77716064453125px);
+    background: #2c2c2c;
+    justify-content: center;
+    border-radius: 13px;
+    opacity: 0;
+    scale: 0;
+   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    p{
+        font-family: "SF Pro Text 400";
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 131%;
+        letter-spacing: -0.01em;
+        text-align: center;
+        color: #fff;
+    }
+}

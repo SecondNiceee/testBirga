@@ -5,6 +5,9 @@ $height : 0.32;
 .profile__wrapper{
     transition: 0.4s;
 }
+.pay-block{
+    margin-top: 28px;
+}
 
 input {
     background: none;
@@ -323,8 +326,10 @@ input {
         }
     }
     .profile__icon{
-        width: calc(282px * $width);
-        height: calc(282px * $width);
+        width: 90.24px;
+        height: 90.24px;
+        max-width: 90.24px;
+        min-height: 90.24px;
         margin-left: auto;
         margin-right: auto;
     }

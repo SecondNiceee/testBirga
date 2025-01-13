@@ -3,11 +3,73 @@
     flex-direction: column;
     padding-left: 16px;
     padding-right: 16px;
-    margin-top: 23.33px;
+    padding-top: 42px;
     z-index: 100;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: scroll;
+    position: fixed;
     background: rgb(24, 34, 45);
+    z-index: 2300;
+    padding-bottom: 72px;
+    
     /* height: calc(100vh);
     overflow-y: scroll; */
+}
+
+.two{
+    display: flex;
+    gap: 14px;
+}
+
+.newBlock{
+    display: flex;
+    border-radius: 10px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #20303f;
+
+}
+
+.newBlock p{
+    font-family: "SF Pro Text 400";
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 129%;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+.newBlock .left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width:  100%;
+}
+.newBlock .left p{
+    color: white;
+}
+.newBlock .right p{
+    color:  #daf5fe;
+}
+.newBlock .right{
+    width:  100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+.newBlock .grob{
+    font-family: "SF Pro Text 400";
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 129%;
+    letter-spacing: -0.02em;
+    text-decoration: line-through;
+    color: #95979e !important;
 }
 .upTextContainer{
     display: flex;
@@ -38,4 +100,12 @@
 }
 .Holding{
     margin-top: calc(30px);
+}
+
+.AdCreatingThree .blocks{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
 }

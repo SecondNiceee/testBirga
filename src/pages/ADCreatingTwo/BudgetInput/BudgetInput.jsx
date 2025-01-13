@@ -2,8 +2,8 @@ import React, { memo, useRef } from "react";
 import cl from "./BudgetInput.module.css";
 import Info from "../../../images/icons/info.svg";
 import Text from "../../../components/Text/Text";
+import en from "../../../constants/language";
 
-const en = true
 const textPrice = en ? "USD" : "RUB"
 
 const BudgetInput = ({
@@ -15,7 +15,7 @@ const BudgetInput = ({
   errorTon
 }) => {
   const KisInteger = function (obj) {
-    return "0123456789".includes(obj[obj.length - 1]);
+    return "0123456789,.".includes(obj[obj.length - 1]);
   };
 
   function budgetWidth() {
@@ -28,20 +28,22 @@ const BudgetInput = ({
   }
 
   function format(strPar) {
-    let str = strPar;
-    if (str.length > 1) {
-      if (str[0] === "0") {
-        str = str.replace("0", "");
+    const newStr = strPar.replace('.' , ',')
+    console.log(newStr)
+    const one = newStr.split(',')[0]
+    const two = newStr.split(',')[1]
+    if (two){
+      return Number(one.replace(/\s/g, '')).toLocaleString("ru-RU") + ',' + two 
+    }
+    else{
+      if (newStr.includes(',')){
+        return Number(one.replace(/\s/g, '')).toLocaleString("ru-RU") + ','
+      }
+      else{
+        return Number(one.replace(/\s/g, '')).toLocaleString("ru-RU") 
       }
     }
-    str = str.replaceAll(" ", "").substring(0, 6);
-    const s = str.length;
-    const chars = str.split("");
-    const strWithSpaces = chars.reduceRight((acc, char, i) => {
-      const spaceOrNothing = (s - i) % 3 === 0 ? " " : "";
-      return spaceOrNothing + char + acc;
-    }, "");
-    return strWithSpaces[0] === " " ? strWithSpaces.slice(1) : strWithSpaces;
+
   }
 
   const ref1 = useRef(null);
@@ -56,6 +58,7 @@ const BudgetInput = ({
       <Text className={[cl.input, cl.hidden].join(" ")} ref={ref1}></Text>
       <Text style={ budget ? {display : 'none'} : {color : style.color}  }  className = { [cl.input , cl.absolute].join(' ') }> 0 </Text>
       <input 
+      autoComplete="off"
          style={style}
         value={budget}
         
@@ -71,6 +74,7 @@ const BudgetInput = ({
         id="budget"
         name="budget"
         type="text"
+        maxLength={7}
         // onFocus={(e) => {
         //   document.documentElement.style.overflowY = 'hidden'
         //   setTimeout( () => {
@@ -98,7 +102,7 @@ const BudgetInput = ({
           <Text className={cl.text}>
           Стоимость
             </Text>
-            <span> {tonValue} USDT </span> 
+            <span> {tonValue} TON </span> 
           </div>
             <img src={Info} alt="" />
       </div>
@@ -106,7 +110,7 @@ const BudgetInput = ({
       :
           <div className={cl.bottomTextContainer}>
             <Text className={cl.text} style={{color : '#FF6767'}}>
-              Сумма должна быть больше 5 USD
+              Сумма должна быть больше 0.1 TON
               </Text>
           </div>
 

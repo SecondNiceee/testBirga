@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
-import BlockSpinner from '../UI/BlockSpinner/BlockSpinner';
 import { useInView } from 'react-intersection-observer';
-const Block = lazy( () => import("../../pages/MyAds/components/Block") )
+import Block from '../../pages/MyAds/components/Block';
 
 const SuspenseBlock = ({i , e, setSecondPage ,  viewsNumber = 0, setViewsNumber = () => {}}) => {
     const { ref, inView } = useInView({
@@ -9,17 +8,19 @@ const SuspenseBlock = ({i , e, setSecondPage ,  viewsNumber = 0, setViewsNumber 
       });
     const [isVisible, setVisible] = useState(false)
     useEffect( () => {
-        if (inView){
-            setVisible(true)
-            setViewsNumber(viewsNumber + 1)
+        if (!isVisible){
+            if (inView){
+                setVisible(true)
+                setViewsNumber((value) => (value + 1))
+            }
         }
-    } , [inView] )
+    } , [inView, isVisible] )
     const style = useMemo( () =>{
         if (e.photos.length > 0){
-            return {minHeight : "314px" , position : "relative"}
+            return {minHeight : "calc(184px + 35vh)" , position : "relative"}
         }
         else{
-            return {minHeight : "178px", position : "relative"}
+            return {minHeight : "calc(178px)", position : "relative"}
         }
     } , [e.photos] )
     return (
@@ -33,9 +34,8 @@ const SuspenseBlock = ({i , e, setSecondPage ,  viewsNumber = 0, setViewsNumber 
                 left : "40px",
                 zIndex : -1
             }} className="catch_block"></div>
-            {isVisible &&  <Suspense fallback = {<BlockSpinner style = {e.photos.length > 0 ? {height : "313px"} : {height : "144px"}}   />}>
+            {isVisible &&
                         <Block e={e} i={i} setSecondPage={setSecondPage}/>
-                </Suspense>
                 }
         </div>
     );

@@ -8,8 +8,6 @@ const Categories = ({
   taskInformation,
   setCatagoryChoiceOpen,
   setSubcategoryChoiceOpen,
-  categorys,
-  subCategorys,
   categoryOnly,
 }) => {
   function format(arg) {
@@ -193,7 +191,7 @@ const Categories = ({
             className={cl.Categories__block}
           >
             <Text ref={bottomWhiteText}>Подкатегория</Text>
-            <Text ref={bottomText} className={cl.Category__link} href="">
+            <Text ref={bottomText} className={[cl.Category__link, cl.quest].join(" ")} href="">
               {taskInformation.subCategory.subCategory
                 ? format( translation(taskInformation.subCategory.subCategory))
                 : ""}

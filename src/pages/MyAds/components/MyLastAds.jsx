@@ -1,10 +1,8 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo} from "react";
 
 import Reaction from "./Reaction";
 import TextAboutMe from "../../../components/UI/AboutMeText/TextAboutMe";
-import { useDispatch } from "react-redux";
 import formatDate from "../../../functions/makeDate";
-import { postResponse } from "../../../store/responses";
 import Text from "../../../components/Text/Text";
 import MainButton from "../../../constants/MainButton";
 const MyLastAds = ({
@@ -13,7 +11,7 @@ const MyLastAds = ({
 
   responce
 }) => {
-  const dispatch = useDispatch()
+
 
   // useEffect( () => {
   //   if (responce.isWatched !== "watched" && responce.isWatched !== "inProcess"){

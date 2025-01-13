@@ -1,10 +1,11 @@
-import React, {  memo,  useCallback, useEffect, useRef, useState } from 'react';
+import React, {  memo,  useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import MyLoader from '../../../components/UI/MyLoader/MyLoader';
 import SuspenseBlock from '../../../components/MyAds/SuspenseBlock';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyOrders } from '../../../store/information';
+import { clearMyOrders, fetchMyOrders } from '../../../store/information';
+import MyAnimation from './MyAnimation';
 
-const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber , deleteFunction}) => {
+const AdsContainer = ({setSecondPage,  viewsNumber , setViewsNumber , valueTwo, myAdsArray}) => {
 
 
     const [page , setPage] = useState(2)
@@ -12,6 +13,19 @@ const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber 
     const elementRef = useRef(null)
     const dispatch = useDispatch()
 
+    // eslint-disable-next-line
+    const [reFetch, setReFetch] = useState(false)
+
+    useEffect(() =>{
+
+        dispatch(fetchMyOrders(1));
+      return () => {
+        dispatch(clearMyOrders())
+      }
+    },[dispatch] )
+
+    console.log(page)
+    console.log(orderStatus)
     const getMore = useCallback(async () => {
       dispatch(fetchMyOrders(page));
       setPage(page + 1);
@@ -20,8 +34,12 @@ const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber 
     const onIntersaction = useCallback(
       (entries) => {
         const firtEntry = entries[0];
-
-        if (firtEntry.isIntersecting && orderStatus !== "all") {
+        // if (!firtEntry.isIntersecting && orderStatus !== "all" && page === 2){
+        //   setTimeout( () => {
+        //     setReFetch( (value) => (!value) )
+        //   } , 500 )
+        // }
+        if (firtEntry.isIntersecting && orderStatus !== "all" && orderStatus !== "loading") {
           getMore();
         }
       },
@@ -38,22 +56,58 @@ const AdsContainer = ({myAdsArray, setSecondPage,  viewsNumber , setViewsNumber 
         observer.disconnect();
       };
       // eslint-disable-next-line
-    }, [myAdsArray]);
+    }, [myAdsArray, onIntersaction]);
+
+    const text = useMemo( () => {
+      switch (valueTwo){
+  
+        case "all":
+          return "У вас нет созданных заданий"
+        case "active":
+          return "У вас нет активных заданий"
+        case "inProcess":
+          return "У вас нет заданий в работе"
+        case "completed":
+          return "У вас нет завершенных заданий"
+        default :
+          
+      }
+    } , [valueTwo] )
+  
 
 
-
-
+    console.log(viewsNumber);
+    
     return (
-        <div className="AdsContainer">
-          {myAdsArray.map((e, i) => {
-            return (
-                <SuspenseBlock  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} key={i} e={e} i={i} setSecondPage={setSecondPage} />
+      <>
+      
+        {myAdsArray.lenght === 0 ?
+        
+            <MyAnimation style = {{height : "calc(calc(100vh) - 300px)"}} text={text}/>
 
-            );
-          })}
-          {orderStatus !== "all" &&  <MyLoader ref={elementRef}  style = {{ height : "90px" , marginLeft : "-16px"}} />}
+            :
 
-        </div>
+            <div className="AdsContainer">
+              {myAdsArray.map((e, i) => {
+                return (
+                    <SuspenseBlock  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} key={i} e={e} i={i} setSecondPage={setSecondPage} />
+
+                );
+              })}
+              { (orderStatus !== "all")  &&  <MyLoader   style = {{ height : "200px" , marginLeft : "-16px"}} />}
+              { (orderStatus !== "all")  &&              <div ref={elementRef} style={{
+                width : "1px",
+                height : "2000px",
+                position : "absolute",
+                bottom : "0px",
+                opacity : "0",
+                left : "150vw",
+                zIndex : -1
+            }} className="catch_block"></div>}
+
+            </div>
+        }
+      </>
     );
 };
 

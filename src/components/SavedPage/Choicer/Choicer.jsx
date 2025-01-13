@@ -24,27 +24,29 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
   const textThree = translation("У вас нет сохраненных кейсов")
 
   useEffect( () => {
-    if (nowKey === keys[0]){
-      if (pickerRef.current && containerOne.current){
-        pickerRef.current.style.overflowY = "hidden"
-        pickerRef.current.style.minHeight = String(containerOne.current.offsetHeight) + "px"
-      }
+      if (nowKey === keys[0]){
+        if (pickerRef.current && containerOne.current){
+          pickerRef.current.style.overflowY = "hidden"
+          pickerRef.current.style.minHeight = String(containerOne.current.offsetHeight + 100) + "px"
         }
-    if (nowKey === keys[1]){
-      if (pickerRef.current && containerTwo.current ){
-        pickerRef.current.style.overflowY = "hidden"
-        pickerRef.current.style.minHeight = String(containerTwo.current.offsetHeight) + "px"}
-    }
-    if (nowKey === keys[2]){
-      if (pickerRef.current && containerThree.current){
-        pickerRef.current.style.overflowY = "hidden"
-        pickerRef.current.style.minHeight = String(containerThree.current.offsetHeight) + "px"
+          }
+      if (nowKey === keys[1]){
+        if (pickerRef.current && containerTwo.current ){
+          pickerRef.current.style.overflowY = "hidden"
+          pickerRef.current.style.minHeight = String(containerTwo.current.offsetHeight + 100) + "px"}
       }
-    }
+      if (nowKey === keys[2]){
+        if (pickerRef.current && containerThree.current){
+          pickerRef.current.style.overflowY = "hidden"
+          pickerRef.current.style.minHeight = String(containerThree.current.offsetHeight + 100) + "px"
+        }
+      }
+
+
       return () => {
 
       }
-    }  , [nowKey, keys, savedTasks, savedResponces, savedCards, tasksStatus ,cardsStatus , responsesStatus ] )
+    }  , [nowKey, keys, savedTasks, savedResponces, savedCards, tasksStatus ,cardsStatus , responsesStatus, viewsNumber ] )
 
   const style = useMemo(() => {
     switch (nowKey) {
@@ -71,6 +73,7 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
   return (
     <div ref={pickerRef} style={style} className={cl.main}>
       <ChoicerInfo
+        nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
         ref={containerOne}
@@ -80,6 +83,7 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         text={textOne}
       />
       <ChoicerInfo
+      nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
         ref={containerTwo}
@@ -89,6 +93,7 @@ const Choicer = ({ nowKey, keys, setDetails, setResponce, setCard }) => {
         text={textTwo}
       />
       <ChoicerInfo
+      nowKey = {nowKey}
         viewsNumber={viewsNumber}
         setViewsNumber={setViewsNumber}
         ref={containerThree}

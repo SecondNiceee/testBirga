@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import formatDate from '../../../functions/makeDate';
 import Text from '../../Text/Text';
 

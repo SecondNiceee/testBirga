@@ -24,8 +24,8 @@ let cardStart;
 const menu = document.documentElement.querySelector(".FirstMenu")
 const changeText = translation("Изменить кейс")
 const saveText = translation("Сохранить")
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
 
@@ -38,7 +38,7 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
   useEffect(  () => {
 
     cardStart =  Object.assign({}, card);
-  } , [])
+  } , [card])
 
   window.Telegram.WebApp.disableVerticalSwipes();
   
@@ -63,6 +63,35 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
   localCardSetting = cardsSetting;
   mainLocalErrors = errors;
+
+
+  const compare2Objects = useCallback( (a , b) => {
+    if (a.title !== b.title){
+      return false
+    }
+    if (a.description !== b.description){
+      return false
+    }
+    if (a.behanceLink !== b.behanceLink){
+      return false
+    }
+    if (a.dribbbleLink !== b.dribbbleLink){
+      return false
+    }
+    if (a.dropfileLink !== b.dropfileLink){
+      return false
+    }
+    if (a.photos.length !== b.photos.length){
+      return false
+    }
+    for (let i = 0; i < a.photos.length; i++){
+      if (a.photos[i].name !== b.photos[i].name){
+        return false
+      }
+    }
+    return true
+
+  }  , [])
 
   useEffect(() => {
     let photos = false;
@@ -114,7 +143,7 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
   
       
-  }}, [cardsSetting.title, cardsSetting.photos, cardsSetting.description, modalActive, isCategoryChoiceOpen]);
+  }}, [cardsSetting.title, cardsSetting.photos, cardsSetting.description, modalActive, isCategoryChoiceOpen , card, cardsSetting, compare2Objects]);
 
 
 
@@ -210,8 +239,8 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
 
         window.Telegram.WebApp
         .showPopup({
-          title: "Изменить?",
-          message: `Изменить этот кейс?`,
+          title: translation("Изменить?"),
+          message: translation(`Изменить этот кейс?`),
           buttons: [
             { id: "save", type: "default", text: Yes },
             { id: "delete", type: "destructive", text: No },
@@ -274,38 +303,17 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
   useEffect( () => {
     return () => {
       MainButton.setText(saveText)
+      MainButton.setParams({
+        color: "#2ea5ff",
+        text_color: "#ffffff",
+        is_active: true,
+      });
     }
   } , [] )
 
   
 
-  const compare2Objects = useCallback( (a , b) => {
-    if (a.title !== b.title){
-      return false
-    }
-    if (a.description !== b.description){
-      return false
-    }
-    if (a.behanceLink !== b.behanceLink){
-      return false
-    }
-    if (a.dribbbleLink !== b.dribbbleLink){
-      return false
-    }
-    if (a.dropfileLink !== b.dropfileLink){
-      return false
-    }
-    if (a.photos.length !== b.photos.length){
-      return false
-    }
-    for (let i = 0; i < a.photos.length; i++){
-      if (a.photos[i].name !== b.photos[i].name){
-        return false
-      }
-    }
-    return true
 
-  }  , [])
 
   useEffect( () => {
     
@@ -390,9 +398,7 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
         >
           <img src={dropfileIcon} alt="" />
           <Text>
-            {cardsSetting.dropfileLink.length > 0
-              ? cardsSetting.dropfileLink
-              : "Ccылка на Dropfile"}
+            {"Ccылка на Dropfile"}
           </Text>
       </div>
 
@@ -411,9 +417,7 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
         >
           <img src={behanceIcon} alt="" />
           <Text>
-            {cardsSetting.behanceLink.length > 0
-              ? cardsSetting.behanceLink
-              : "Ссылка на Behance"}
+            {"Ссылка на Behance"}
           </Text>
         </div>
         <div
@@ -431,9 +435,7 @@ const ChangeCards = ({save, setCardsOpen, setAboutU, index, card, aboutU }) => {
         >
           <img src={dripleIcon} alt="" />
           <Text>
-            {cardsSetting.dribbbleLink.length > 0
-              ? cardsSetting.dribbbleLink
-              : "Ссылка на Dribbble"}
+            {"Ссылка на Dribbble"}
           </Text>
         </div>
 

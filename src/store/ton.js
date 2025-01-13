@@ -1,10 +1,11 @@
 import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
+import en from "../constants/language";
 
-const en = true
+
 export const fetchTon = createAsyncThunk(
     'ton/fetchTon',
     async function () {
-        async function getCurrencies() {
+        async function getCurrencies() { // Полуение долларов
             const response = await fetch(
               "https://www.cbr-xml-daily.ru/daily_json.js"
             );
@@ -13,7 +14,7 @@ export const fetchTon = createAsyncThunk(
             return result.Valute.USD.Value;
           }
       
-          async function getTonPrice() {
+          async function getTonPrice() { // получени цены ton (в долларах)
             const response = await fetch(
               "https://api.coingecko.com/api/v3/coins/the-open-network"
             );
@@ -22,7 +23,7 @@ export const fetchTon = createAsyncThunk(
           }
           let one = await getCurrencies();
           let two = await getTonPrice();
-          return en ? 1 : one;
+          return en ? two : one * two;
     }
 )
 const ton = createSlice ({

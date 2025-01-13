@@ -123,7 +123,7 @@
   gap: calc(8px);
   border-radius: 10px;
   overflow-x: hidden;
-  min-height: calc(calc(100vh));
+  min-height: unset;
 }
 
 
@@ -196,8 +196,8 @@
         overflow-x: scroll;
         border-radius: 6.67px;
         .first__photo{
-            min-width: 183.33px;
-            height: 133.67px;
+            min-width: calc(0.48* 100vw);
+            height: calc(0.35* 100vw);
             border-radius: 6.67px;
             object-fit: cover;
         }
@@ -299,7 +299,7 @@
         text-align: left;
     }
     .FirstMain__price-up{
-        opacity: 0.3;
+        opacity: 1;
         display: flex;
         gap: 5px;
         align-items: center;
@@ -316,7 +316,8 @@
             text-align: left;
         }
         img{
-
+            width: 21.67px;
+            height: 21.67px;
         }
     }
     .FirstMain__bottom-right{
@@ -510,6 +511,7 @@
         }
 
         .menuLink{
+            cursor: pointer;
             width: 100%;
             display: flex;
             flex-direction: column;

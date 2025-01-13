@@ -2,13 +2,15 @@ import React, { memo, useMemo } from "react";
 import MyButton from "../UI/MyButton/MyButton";
 import Pallete from "../UI/Pallete/Pallete";
 import ShareIcon from "../UI/ShareIcon/ShareIcon";
-import SmallDimond from "../UI/SmallDimond/SmallDimond";
 import { useSelector } from "react-redux";
 import formatDate from "../../functions/makeDate";
 import BlockSpinner from "../UI/BlockSpinner/BlockSpinner";
 import Text from "../Text/Text";
+import en from "../../constants/language";
+import RealTon from "../../images/icons/RealTon.svg"
+import translation from "../../functions/translate";
+import { shareFunction } from "../../functions/shareFunction";
 
-const en = true
 const textPrice = en ? 'USD' : "RUB"
 const MyFirstBlock = ({
   className,
@@ -81,7 +83,7 @@ const MyFirstBlock = ({
                     alt=""
                   />
                 );
-                // return <img className='first__photo' src = {'https://back-birga.ywa.su/' + e} />
+                // return <img className='first__photo' src = {'https://www.connectbirga.ru/' + e} />
               })}
             </div>
           ) : (
@@ -130,12 +132,7 @@ const MyFirstBlock = ({
             <Pallete category={category} />
             <Text className={isWatched ? "watchedTask" : ""}>{taskName}</Text>
             <ShareIcon
-              onClick={() => {
-                window.Telegram.WebApp.openTelegramLink(
-                  `https://t.me/share/url?text=%0AЗадание «${taskName}» на Коннект Бирже&url=https://t.me/ConnectexBot/task?startapp=` +
-                    String(id)
-                );
-              }}
+              onClick={shareFunction(id)}
               style={end ? { opacity: 0.5 } : {}}
               className="share__icon"
             />
@@ -148,14 +145,14 @@ const MyFirstBlock = ({
           <div className="FirstMain__bottom">
             <div className="FirstMain__bottom-left">
               <div className="FirstMain__price-up">
-                <p>{tonValue} USDT</p>
-                <SmallDimond />
+                <p>{tonValue} TON</p>
+                <img src={RealTon} alt="" />
               </div>
               <div className="FirstMain__price-bottom">
                 <p>
                 ~ {Number((tonValue * tonConstant).toFixed(2)).toLocaleString(
-                    "en-EN"
-                  )}
+                    "ru-RU"
+                  ).replace(',','.')}
                 </p>
                 <Text>{textPrice}</Text>
               </div>

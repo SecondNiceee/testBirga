@@ -11,11 +11,15 @@ const ResponseSuspense = ({func , index, buttonText , task, isWatched, advertise
       });
     const [isVisible, setVisible] = useState(false)
     useEffect( () => {
-        if (inView){
-            setVisible(true)
-            setViewsNumber(viewsNumber + 1)
+        if (!isVisible){
+
+            if (inView){
+                setVisible(true)
+                setViewsNumber((value) => (value + 1))
+            }
+
         }
-    } , [inView] )
+    } , [inView, isVisible, setViewsNumber] )
     const style = useMemo( () =>{
         if (advertisement.photos.length > 0){
             return {minHeight : "315px"}
@@ -33,7 +37,6 @@ const ResponseSuspense = ({func , index, buttonText , task, isWatched, advertise
                 </Suspense>
             }
             <div ref={ref} style={{
-                width : "1px",
                 height : "2000px",
                 position : "absolute",
                 top : "-1800px",

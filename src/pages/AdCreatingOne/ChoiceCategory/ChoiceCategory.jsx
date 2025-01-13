@@ -22,8 +22,8 @@ const ChoiceCategory = ({
   categoryOnly ,
   isBackHide = false,
   designOnly = false,
-  text = "Прочие категории скоро появятся.."
-
+  text = "Прочие категории скоро появятся..",
+  ...props
 }) => {
 
   useEffect( () => {
@@ -113,7 +113,7 @@ const ChoiceCategory = ({
   
 
   return (
-    <div className={cl.ChoiceCategory}>
+    <div className={cl.ChoiceCategory} {...props}>
       <OneInput
         placeholder={place}
         value={inputValue}

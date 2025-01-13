@@ -9,7 +9,7 @@ const urlToObject= async(url , nam)=> {
 async function makeNewFile(folder, photos){
     let files = []
     for (let i = 0; i < photos.length; i++){
-        let file = await urlToObject("https://back-birga.ywa.su/" + folder + '/' + photos[i] , photos[i])
+        let file = await urlToObject("https://www.connectbirga.ru/" + folder + '/' + photos[i] , photos[i])
         files.push(file)
     }
     return files

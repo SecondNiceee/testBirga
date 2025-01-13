@@ -11,11 +11,10 @@ import axios from "axios";
 import MyLoader from "../../../components/UI/MyLoader/MyLoader";
 import Stage from "../../../components/UI/Stage/Stage";
 import Compact from "../../../components/UI/Compact/Compact";
-import { useDispatch } from "react-redux";
 import makeNewFile from "../../../functions/newMakeFile";
 import MainButton from "../../../constants/MainButton";
 
-const AboutReaction = ({ responce , setOneCard, style,   ...props}) => {
+const AboutReaction = ({ responce , setOneCard, style, isTelesgramVisible,   ...props}) => {
 
   const [cards , setCards] = useState(null)
   useEffect( () => {
@@ -23,9 +22,12 @@ const AboutReaction = ({ responce , setOneCard, style,   ...props}) => {
       let localCards = []
       try{
 
-        let allCards = await axios.get("https://back-birga.ywa.su/card/findByUser" , {
+        let allCards = await axios.get("https://www.connectbirga.ru/card/findByUser" , {
             params : {
                 userId : responce.user.id
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             }
         })
 
@@ -75,7 +77,7 @@ const AboutReaction = ({ responce , setOneCard, style,   ...props}) => {
 
       <AboutTop responce={responce} />
 
-      <AboutInfo responce={responce} />
+      <AboutInfo isTelesgramVisible = {isTelesgramVisible} responce={responce} />
 
       <AboutMain aboutU = {responce.user.about}  />
 
@@ -88,7 +90,7 @@ const AboutReaction = ({ responce , setOneCard, style,   ...props}) => {
         transform : "translateX(-8px)",
         minHeight : "150px"
       }}/> :
-      <ExampleWorks openFunc={openFunc}   cards={cards}/>}
+      <ExampleWorks userId = {responce.user.id} openFunc={openFunc}   cards={cards}/>}
 
 
 

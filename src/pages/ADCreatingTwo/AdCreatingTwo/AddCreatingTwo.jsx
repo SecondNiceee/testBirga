@@ -10,6 +10,7 @@ import DatePicker from 'react-mobile-datepicker';
 import cl from './SecondAddCreating.module.css'
 import MainButton from '../../../constants/MainButton';
 import Text from '../../../components/Text/Text';
+import en from '../../../constants/language';
 
 
 // eslint-disable-next-line
@@ -19,7 +20,6 @@ Date.prototype.addHours = function(h) {
 }
 const menu = document.documentElement.querySelector(".FirstMenu")
 
-const en = true
 Date.prototype.addHours = function (h) {
   this.setTime(this.getTime() + h * 60 * 60 * 1000);
   return this;

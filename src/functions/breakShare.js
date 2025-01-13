@@ -1,4 +1,8 @@
+import translation from "./translate"
+
 function breakShare(){
-    window.Telegram.WebApp.showAlert("Мы пока не добавили возможность делиться откликами:(")
+
+    
+    window.Telegram.WebApp.showAlert(translation("Возможность поделиться откликом появится в следующем обновлении"))
 }
 export default breakShare

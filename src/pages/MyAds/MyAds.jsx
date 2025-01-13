@@ -2,10 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 // import myImage from '../../images/desccription.png'
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import "./MyAds.css";
 
-import { motion, transform } from "framer-motion";
 import LastAds from "./components/LastAds";
 import MyAdOne from "./components/MyAdOne";
 import AboutReaction from "./components/AboutReaction";
@@ -23,9 +21,14 @@ import CardPage from "../CardPage/CardPage";
 import makeNewFile from "../../functions/newMakeFile";
 import axios from "axios";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
-import pagesHistory from "../../constants/pagesHistory";
-import MainButton from "../../constants/MainButton";
 import translation from "../../functions/translate";
+import AdCreatingThree from "../AdCreatingThree/AdCreatingThree";
+import HappyHold from "../HappyHold/HappyHold";
+import Wallet from "../Wallet";
+import usePut from "../../hooks/MyAds/usePut";
+import useWriteFucntion from "../../hooks/MyAds/writeFunction";
+import useBack from "./components/useBack";
+import pagesHistory from "../../constants/pagesHistory";
 
 // const LastAds = lazy( () => import ("./components/LastAds") )
 // const MyAdOne = lazy( () => import ("./components/MyAdOne") )
@@ -33,14 +36,10 @@ import translation from "../../functions/translate";
 // const AboutReaction = lazy( () => import ("./components/AboutReaction") )
 
 
-let localAboutReaction;
-let localSecondPage;
-let localIsOpen;
-let localDetails;
 let detailsVar;
 
-const Yes = translation("Yes")
-const No = translation("No")
+const Yes = translation("Да")
+const No = translation("Нет")
 
 const sureText = translation("Вы уверены, что хотите удалить этот отклик?")
 
@@ -52,9 +51,8 @@ const menu = document.documentElement.querySelector(".FirstMenu")
 // const responseId = window.Telegram.WebApp.initDataUnsafe.start_param.split("m")[1]
 
 let url = new URL(window.location.href);
-let advertisementId = url.searchParams.get("advertisemet")
+let advertisementId = url.searchParams.get("advertisement")
 let responseId = url.searchParams.get("response")
-let open = url.searchParams.get("open")
 
 
 const defaultDate = new Date(0)
@@ -65,7 +63,11 @@ const defaultDate = new Date(0)
 const MyAds = ({isPage = false}) => {
   const [isPageValueOne , setPageValueOne] = useState(true)
   const [isPageValueTwo , setPageValueTwo] = useState(true)
-  
+  const [buyPage, setBuyPage] = useState(false)
+  const [walletH, setWalletH] = useState(false)
+  console.log('====================================');
+  console.log(buyPage);
+  console.log('====================================');
   const [valueOne , setValueOne] = useState("all")
 
   const [valueTwo , setValueTwo] = useState("all")
@@ -104,11 +106,9 @@ const MyAds = ({isPage = false}) => {
 
   const dispatch = useDispatch()
 
-
+  const [happyHold , setHappyHold] = useState(false)
 
   const [details, setDetails] = useState({
-    isActive: false,
-    task: {
       id: "",
       taskName: "",
       taskDescription: "",
@@ -119,9 +119,10 @@ const MyAds = ({isPage = false}) => {
       time: { start: "", end: "" },
       photos: [],
       photosNames: [],
-      myAds : true
-    },
+    
   });
+
+  const [showDetails, setShowDetails] = useState(false)
 
   detailsVar = details;
 
@@ -131,6 +132,7 @@ const MyAds = ({isPage = false}) => {
   const myAdsArray = useSelector((state) => state.information.myAdsArray);
 
 
+  console.log(valueTwo);
 
   const filteredArray = useMemo( () => {
     switch (valueTwo){
@@ -148,6 +150,9 @@ const MyAds = ({isPage = false}) => {
         window.Telegram.WebApp.showAlert("Что - то пошло не так MyAds второй")
     }
   } , [myAdsArray , valueTwo] )
+
+  console.log(filteredArray);
+  
 
 
   
@@ -191,12 +196,7 @@ const MyAds = ({isPage = false}) => {
 
 
 
-  useEffect( () => {
-    if (isPage){
-      setSecondPage((value) => ({...value , isActive : true}))
-      setOpen((value) => ({...value, isActive : true}))
-    }
-  } , [isPage] )
+
 
 
   function checkMistakes(changingTask , isSet = true) {
@@ -243,19 +243,14 @@ const MyAds = ({isPage = false}) => {
     }
   } });
 
-  localAboutReaction = openAboutReaction;
-  localIsOpen = isOpen;
-  localSecondPage = secondPage;
-  localDetails = details
 
 
 
 
 
-  const navigate = useNavigate();
 
   const save = useSave({
-    
+  
     detailsVar,
     myAdsArray : filteredArray,
     secondPage,
@@ -263,7 +258,8 @@ const MyAds = ({isPage = false}) => {
     sortFiles,
     dispatch,
     setDetails,
-    details
+    details,
+    setDetailsShow : setShowDetails
   })// функция сохранения , а также модалка телеграма
 
 
@@ -296,9 +292,6 @@ const MyAds = ({isPage = false}) => {
 
 
 
-  function setDetailsActive(value) {
-    setDetails({ ...details, isActive: value });
-  }
 
   const [mistakes, setMistakes] = useState({
     taskName: false,
@@ -310,22 +303,58 @@ const MyAds = ({isPage = false}) => {
   window.Telegram.WebApp.disableVerticalSwipes();
 
 
-  const startPosition = useMemo( () => {
-    if (open === "1"){
-      return "freelancer"
-    }
-    else{
 
+
+  
+  const [nowValue , setNowKey] = useState("customer")
+
+  useEffect( () => {
+    
+    const more = async () => {
+      const imTwo = await axios.get(
+        "https://www.connectbirga.ru/advertisement/findCount",
+        {
+          params: {
+            userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
+        }
+      );
+      const imOne = await axios.get(
+        "https://www.connectbirga.ru/response/findCount",
+        {
+          params: {
+            userId: window.Telegram.WebApp.initDataUnsafe.user.id,
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
+        }
+      );
+      const advertisemetCount = imTwo.data
+      const responseCount = imOne.data
       if (pagesHistory[pagesHistory.length - 1] === "/AdCreating"){
-        return "customer"
+        setNowKey("customer")
       }
       else{
-        return myAdsArray.length < responsesArr.length ? "freelancer" :'customer'
+
+        if (advertisemetCount < responseCount){
+          setNowKey("freelancer")
+        }
+        else{
+          setNowKey("customer")
+        }
       }
     }
-    // eslint-disable-next-line
-  } , [pagesHistory] )
-  const [nowValue , setNowKey] = useState(startPosition)
+
+    more()
+
+    
+  } , [] )
+
+
 
   // const sortedArray = useMemo( () => {
   //   let copy = [...myAdsArray]
@@ -372,11 +401,14 @@ const MyAds = ({isPage = false}) => {
 
       
       let im = await axios.get(
-        "https://back-birga.ywa.su/response/findOne",
+        "https://www.connectbirga.ru/response/findOne",
         {
           params: {
             id: responseId,
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         }
       );
       let responce = im.data;
@@ -386,9 +418,12 @@ const MyAds = ({isPage = false}) => {
           photos = await makeNewFile(responce.folder, responce.photos);
         }
 
-        let b = await axios.get("https://back-birga.ywa.su/card/countByUser" , {
+        let b = await axios.get("https://www.connectbirga.ru/card/countByUser" , {
             params : {
                 advertisementId: responce.user.id,
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             }
         } )
 
@@ -397,11 +432,14 @@ const MyAds = ({isPage = false}) => {
         responce.user.cardsNumber = b.data
 
           let imTwo = await axios.get(
-            "https://back-birga.ywa.su/advertisement/findCount",
+            "https://www.connectbirga.ru/advertisement/findCount",
             {
               params: {
                 userId: Number(responce.user.id),
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             }
           );
           responce.createNumber = imTwo.data;
@@ -447,16 +485,23 @@ const MyAds = ({isPage = false}) => {
     async function getAdvertisement() {
       try{
 
-        let im = await axios.get("https://back-birga.ywa.su/advertisement/findOne" , {
+        let im = await axios.get("https://www.connectbirga.ru/advertisement/findOne" , {
           params : {
-            id : advertisementId
+            id : advertisementId,
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         })
         let order = im.data
         let files = await makeNewFile(order.folder, order.photos);
-        let responseCounter = await axios.get("https://back-birga.ywa.su/response/countByAdvertisement" , {
+        let responseCounter = await axios.get("https://www.connectbirga.ru/response/countByAdvertisement" , {
           params : {
-            "advertisementId" : order.id
+            "advertisementId" : order.id,
+            
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         })
         return {
@@ -484,7 +529,7 @@ const MyAds = ({isPage = false}) => {
         };
       }
       catch(e){
-        window.Telegram.WebApp.showAlert("Вы удалили уже это задание.")
+        window.Telegram.WebApp.showAlert(translation("Вы удалили уже это задание."))
         setOpen((value) => ({...value , isActive : false}))
         setSecondPage((value) => ({...value , isActive : false}))
         setPageValueOne(false)
@@ -509,12 +554,17 @@ const MyAds = ({isPage = false}) => {
   } , [isPage , myAdeOneStatus  , secondPage.index , filteredArray , isPageValueOne] )
 
 
+  console.log('====================================');
+  console.log(isPage , myAdOneAdvertisement, secondPage);
+  console.log('====================================');
+
+
 
 
   const deleteFunction = useCallback( (index) => {
     window.Telegram.WebApp
     .showPopup({
-      title: "Удалить?",
+      title: translation("Удалить?"),
       message: sureText,
       buttons: [
         { id: "save", type: "default", text: Yes },
@@ -539,35 +589,75 @@ const MyAds = ({isPage = false}) => {
   const postStatus = useSelector( state => state.information.postTaskStatus )
 
 
-  useButton({
-    myAdOneResponse : myAdOneResponse,
-    myAdOneAdvertisement : myAdOneAdvertisement,
-    setPageValueOne : setPageValueOne,
-    setPageValueTwo : setPageValueTwo,
-    setDetails : setDetails,
-    checkMistakes : checkMistakes,
-    setMyResponse : setMyResponse,
-    myResponse : myResponse,
-    setDetailsTwo : setDetailsTwo,
-    detailsTwo : detailsTwo, 
-    oneCards : oneCards,
-    localDetails : localDetails,
-    localAboutReaction : localAboutReaction,
-    localIsOpen : localIsOpen,
-    setOpen : setOpen,
-    setSecondPage : setSecondPage,
-    navigate : navigate,
-    setOpenAboutReaction : setOpenAboutReaction,
-    openAboutReaction : openAboutReaction,
-    isOpen : isOpen,
+  const goBack = useBack(
+    {buyPage : buyPage,
+      details : details,
+      detailsTwo : detailsTwo,
+      happyHold : happyHold ,
+      isOpen : isOpen,
+      lastAdsTwo : lastAdsTwo ,
+      myResponse : myResponse,
+      oneCards : oneCards,
+      openAboutReaction : openAboutReaction,
+      save : save,
+      secondPage : secondPage,
+      setBuyPage : setBuyPage, 
+      setDetails : setDetails,
+      setDetailsTwo : setDetailsTwo,
+      setHappyHold : setHappyHold,
+      setLastAdsTwo : setLastAdsTwo,
+      setMyResponse : setMyResponse,
+      setOneCard : setOneCard,
+      setOpen : setOpen,
+      setOpenAboutReaction : setOpenAboutReaction,
+      setPageValueOne : setPageValueOne ,
+      setPageValueTwo : setPageValueTwo,
+      setSecondPage : setSecondPage,
+      walletH : walletH,
+      setShowDetails : setShowDetails,
+      showDetails : showDetails,
+      myAdOneAdvertisement : myAdOneAdvertisement
+    }
+  )
+
+  const putTask = usePut({
     details : details,
-    secondPage : secondPage,
-    localSecondPage : localSecondPage,
+    setSecondPage : setSecondPage,
     setDetails : setDetails,
-    save : save,
-    setOneCard : setOneCard,
-    lastAdsTwo : lastAdsTwo,
-    setLastAdsTwo : setLastAdsTwo
+    dispatch : dispatch,
+    setDetailsShow : setShowDetails
+  })
+  
+  const writeFucntion  = useWriteFucntion(
+    {
+      buyPage : buyPage,
+      happyHold : happyHold,
+      isOpen : isOpen,
+      myAdOneAdvertisement : myAdOneAdvertisement ? myAdOneAdvertisement : secondPage.task,
+      myAdOneResponse : myAdOneResponse,
+      secondPage : secondPage,
+      setBuyPage : setBuyPage,
+      setHappyHold : setHappyHold,
+      setOpen : setOpen,
+      setWalletH : setWalletH,
+      walletH : walletH,
+
+    }
+  )
+  useButton({
+    buyPage : buyPage,
+    checkMistakes : checkMistakes,
+    details : details ,
+    goBack : goBack,
+    happyHold : happyHold, 
+    isOpen : isOpen,
+    myResponse : myResponse,
+    putTask : putTask,
+    secondPage : secondPage,
+    walletH : walletH,
+    writeFucntion : writeFucntion,
+    showDetails : showDetails,
+    myAdOneAdvertisement : myAdOneAdvertisement ? myAdOneAdvertisement : secondPage.task
   })
 
 
@@ -609,7 +699,6 @@ const MyAds = ({isPage = false}) => {
     setSecondPage( (value) => ({...value , isActive : false}) )
   
   } , [changer])
-
   // const putStatus = useSelector((state) => state.information.putTaskStatus);
 
   // useEffect( () => {
@@ -617,21 +706,37 @@ const MyAds = ({isPage = false}) => {
   // } , [putStatus] )
 
 
+  const style = useMemo( () => {
+    if (walletH){
+      return {
+        transform : "translateX(-100vw)"
+      }
+    }
+    return {}
+    
+  }, [walletH] )
 
-
-  console.log("Это секонд page :" + secondPage.task)
   console.log(secondPage.task)
 
 
+  console.log(details)
+
+  useEffect( () => {
+    if (isPage){
+      setSecondPage((value) => ({...value , isActive : true}))
+      setOpen((value) => ({...value, isActive : true}))
+    }
+  } , [isPage, setSecondPage] )
+
+
+  console.warn(secondPage)
   return (
     <>
       { postStatus === "pending" ? (
         <MyLoader />
       ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.1 }}
+        <div
+          style={style}
           className="MyAdsContainer"
         >
 
@@ -639,9 +744,7 @@ const MyAds = ({isPage = false}) => {
 
           <MyAdOne
           responsesArr = {filteredResponses}
-          myResponse = {myResponse}
           setMyResponse = {setMyResponse}
-          details = {detailsTwo}
             setOneValue = {setValueOne}
             setTwoValue = {setValueTwo}
             nowValue={nowValue}
@@ -650,14 +753,13 @@ const MyAds = ({isPage = false}) => {
             setNowKey={setNowKey}
             myAdsArray={filteredArray}
             setSecondPage={setSecondPage}
-            setDetails={setDetailsTwo}
           />
 
 
 
 
 
-        <CSSTransition classNames="details" in={details.isActive} timeout={300}
+        <CSSTransition classNames="left-right" in={showDetails} timeout={400}
           mountOnEnter unmountOnExit>
             <AdCreatingOne
               style = {{
@@ -667,10 +769,10 @@ const MyAds = ({isPage = false}) => {
               }}
               mistakes={mistakes}
               className="AdCreatingMy"
-              taskInformation={details.task}
+              taskInformation={details}
               setTaskInformation={setDetails}
               MyInformation={true}
-              isDetailsActive={details.isActive}
+              isDetailsActive={showDetails}
             />
           </CSSTransition>
 
@@ -682,6 +784,7 @@ const MyAds = ({isPage = false}) => {
             unmountOnExit
           >
             <AboutOne
+            setDetailsShow={setShowDetails}
             style = { (isPageValueOne && isPage) ? {left : "0px"} : {}}
             setDetails={setDetails}
               setSecondPage={setSecondPage}
@@ -768,15 +871,46 @@ const MyAds = ({isPage = false}) => {
           >
             <FirstDetails
               // className={}
+              style = {{paddingBottom : "96px"}}
               orderInformation={filteredResponses[detailsTwo.id] ? filteredResponses[detailsTwo.id].advertisement : ""  }
 
             />
         </CSSTransition>
 
 
+        <CSSTransition in = {buyPage}
+        unmountOnExit
+        mountOnEnter
+
+        >
+          <AdCreatingThree taskInformation={{tonValue : myAdOneAdvertisement ? myAdOneAdvertisement.tonValue : 0}} />
+        </CSSTransition>
+
+        <CSSTransition             
+            in={happyHold}
+            timeout={400}
+            classNames="left-right"
+            mountOnEnter
+            unmountOnExit
+        >
+          <HappyHold task={myAdOneAdvertisement} response={myAdOneResponse} />
+        </CSSTransition>
+
+        <CSSTransition in = {walletH}
+        timeout={400}
+        classNames={""}
+        mountOnEnter
+        unmountOnExit
+        >
+          <Wallet left = {true} isFixed = {true} onClose = {setWalletH} />
+        </CSSTransition>
 
 
-        </motion.div>
+
+
+        </div>
+
+
       )}
     </>
   );

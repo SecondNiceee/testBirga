@@ -7,6 +7,11 @@
     padding-bottom: 20px;
     
 }
+.choicerContainer{
+    min-width: calc(100vw - 32px);  
+    align-self: self-start;
+    justify-self: flex-start; 
+}
 .choicerBlock{
     flex-direction: column;
     display: flex;
@@ -39,4 +44,5 @@
     flex-direction: column;
     gap: 8px;
     flex-direction: column;
+    min-width: calc(100vw - 32px);
 }

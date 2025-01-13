@@ -1,0 +1,32 @@
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 10px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: #20303f;
+}
+.container p:first-of-type {
+  width: 100%;
+  font-family: "SF Pro Text 400";
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 129%;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.container p:last-of-type {
+  width: 100%;
+  font-family: "SF Pro Text 400";
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 129%;
+  letter-spacing: -0.02em;
+  color: #daf5fe;
+}

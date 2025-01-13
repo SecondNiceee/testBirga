@@ -1,0 +1,39 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.lottieAnimation{
+    width: 200px;
+    height: 200px;
+}
+.container{
+    margin: auto;
+    background: rgb(24, 34, 45);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+@font-face{
+    font-family: "Sf Compact Rounded";
+    src: url('./assets/Sf\ Compact\ Rounded/sf-compact-rounded.ttf');
+}
+
+p{
+    font-family: "SF Compact Rounded";
+    font-weight: 500;
+    font-size: 23px;
+    text-align: center;
+    color: #daf5fe;
+    margin-top: 20px;
+    max-width: 260px;
+    margin-left: auto;
+    margin-right: auto;
+
+}

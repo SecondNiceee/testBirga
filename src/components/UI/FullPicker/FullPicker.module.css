@@ -5,6 +5,7 @@
     border-radius: 8.35px;
     background: rgba(118, 118, 128, 0.24);
     position: relative;
+    cursor: pointer;
 }
 .value{
     display: flex;

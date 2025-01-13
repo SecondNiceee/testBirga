@@ -6,9 +6,12 @@ export const deleteShablon = createAsyncThunk(
   "shablon/deleteShablon",
   async function(id){
     try{
-      await axios.delete("https://back-birga.ywa.su/template" , {
+      await axios.delete(`${process.env.REACT_APP_HOST}/template` , {
         params : {
           id : id
+        },
+        headers : {
+          "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
         }
       })
       return id
@@ -22,10 +25,13 @@ export const putShablon = createAsyncThunk(
   "shablon/putShablon" ,
   async function(data){
     try{
-      let im = await axios.put("https://back-birga.ywa.su/template" , data[0] , 
+      let im = await axios.put(`${process.env.REACT_APP_HOST}/template` , data[0] , 
         {
           params : {
             id : data[1]
+          },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           }
         }
       )
@@ -48,14 +54,15 @@ export const postShablon = createAsyncThunk(
   "shablon/postShablon",
   async function(data){
     try{
-        let im = await axios.post("https://back-birga.ywa.su/template" , data[0] , 
+        let im = await axios.post(`${process.env.REACT_APP_HOST}/template` , data[0] , 
         {
           params : {
-            userId : 2144832745
+            userId : window.Telegram.WebApp.initDataUnsafe.user.id
           },
           headers: {
             "Content-Type" :'multipart/form-data',
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
           },
         }
         )
@@ -80,11 +87,14 @@ export const fetchAllShablons = createAsyncThunk(
   "shablon/fetchAllShablons",
   async function(id){
     try{
-        let im = await axios.get("https://back-birga.ywa.su/template/findByUser" , 
+        let im = await axios.get(`${process.env.REACT_APP_HOST}/template/findByUser` , 
             {
                 params : {
-                    userId : 2144832745 
-                    // userId : 2144832745 
+                    userId : window.Telegram.WebApp.initDataUnsafe.user.id 
+                    // userId : window.Telegram.WebApp.initDataUnsafe.user.id 
+                },
+                headers : {
+                  "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
                 }
             }
         )

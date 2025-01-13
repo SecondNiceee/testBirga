@@ -1,9 +1,9 @@
-import React, { forwardRef, memo, useEffect, useRef } from 'react';
+import React, { forwardRef, memo, useEffect } from 'react';
 import TaskDetailsContainer from './TaskDetailsContainer';
 import TimeAndWatches from './TimeAndWatches';
-import SimilarAds from './SimilarAds';
 import { useDispatch } from 'react-redux';
 import { addWatch } from '../../../store/information';
+import FirstLoader from '../../../loaders/FirstLoader';
 
 const FirstDetails = forwardRef(({  orderInformation , className , setProfile, end = false, breakRef, isDetailsActive, ...props}, ref) => {
     
@@ -30,8 +30,9 @@ const FirstDetails = forwardRef(({  orderInformation , className , setProfile, e
             disatch(addWatch(orderInformation))
         }
     } , [disatch, end , orderInformation] )
+    
 
-    console.log(orderInformation)
+    console.warn(orderInformation)
     return (
         <>
         {orderInformation
@@ -42,14 +43,22 @@ const FirstDetails = forwardRef(({  orderInformation , className , setProfile, e
 
                 <TaskDetailsContainer setProfile = {setProfile} end = {end}  orderInformation = {orderInformation} />
                 
-                {end ? <></> :<TimeAndWatches time={orderInformation.creationTime} watches={orderInformation.viewsNumber} />}
+                {end ? <></> :<TimeAndWatches responses={orderInformation.responces ? orderInformation.responces.length : null} time={orderInformation.creationTime} watches={orderInformation.viewsNumber} />}
                 
+
+
     
     
             </div>
             )
             :
             <>
+            <FirstLoader style = {{
+                position : "absolute",
+                height : "100vh",
+                left : "150vw",
+                transform : "translateX(-50%)"
+            }} />
             </>
         }
         </>

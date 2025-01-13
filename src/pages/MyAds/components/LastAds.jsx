@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 import Reaction from "./Reaction";
 import TextAboutMe from "../../../components/UI/AboutMeText/TextAboutMe";
@@ -19,6 +19,7 @@ const LastAds = ({
     if (
       responce.isWatched !== "watched" &&
       responce.isWatched !== "inProcess"
+      && responce.isWatched !== "completed"
     ) {
       dispatch(postResponse(responce.id));
     }

@@ -1,7 +1,6 @@
 import React from "react";
 import { Triangle } from 'react-loader-spinner';
 import './loaders.css'
-import Text from "../components/Text/Text";
 const PostLoader = () => {
   return (
     <div className="postLoader">
@@ -15,7 +14,6 @@ const PostLoader = () => {
           wrapperClass=""
         />
         <div className="loaderText-block">
-            <Text className="loaderText">Задание сохраняется</Text>
 
             {/* <ThreeDots
           visible={true}

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useRef } from "react";
 import cl from "./Case.module.css";
 import FalseTie from "../FalseTie/FalseTie";
-import MyButton from "../MyButton/MyButton";
 import Circle from "../Circle/Circle";
 import Text from "../../Text/Text";
 
@@ -18,6 +17,7 @@ const Case = ({
   deleteFunction,
   watchOnly,
   agree = false,
+  userId = window.Telegram.WebApp.initDataUnsafe.user.id,
   ...props
 }) => {
 
@@ -121,7 +121,7 @@ const Case = ({
                   "https://t.me/share/url?text=&url=https://t.me/ConnectexBot/case?startapp=" +
                     String(card.id) +
                     "m" +
-                    2144832745
+                    userId
                 );
               }}
               className={cl.circle}
@@ -170,7 +170,7 @@ const Case = ({
                 <path
                   d="M11.1685 6.14043C8.49649 8.83967 4.96216 12.41 4.72969 12.6449C4.44872 12.9287 3.98825 12.9997 3.79314 12.9997H2.15368C1.88052 12.9997 1.3342 12.8341 1.3342 12.1718C1.3342 11.5096 1.33372 10.7527 1.3342 10.5162C1.33468 10.2796 1.4287 9.94726 1.68586 9.68832C1.78373 9.58978 5.45724 5.96071 8.23742 3.17949M11.1685 6.14043C11.7259 5.57731 12.2458 5.05211 12.6904 4.60301C12.9245 4.36648 13.2523 3.75151 12.6904 3.18385C12.4172 2.90791 11.7304 2.2141 11.1685 1.64644C10.6066 1.07878 9.99779 1.40992 9.76365 1.64644C9.31459 2.10008 8.7939 2.6228 8.23742 3.17949M11.1685 6.14043L8.23742 3.17949"
                   stroke="#F8DA3D"
-                  stroke-width="1.24667"
+                  strokeWidth="1.24667"
                 />
               </svg>
             </Circle>
@@ -180,7 +180,7 @@ const Case = ({
                   "https://t.me/share/url?text=&url=https://t.me/ConnectexBot/case?startapp=" +
                     String(card.id) +
                     "m" +
-                    2144832745
+                    window.Telegram.WebApp.initDataUnsafe.user.id
                 );
               }}
             >

@@ -22,7 +22,7 @@ const MyButton = ({
         myRef.current.style.color = "rgb(46, 165, 255)";
       }
     }, 100);
-  }, []);
+  }, [blue]);
   const clickHandler = useCallback((e) => {
     myRef.current.style.backgroundColor = "#47A2E7";
     myRef.current.style.color = "#E6E6E7";
@@ -35,7 +35,7 @@ const MyButton = ({
       myRef.current.style.backgroundColor = "transparent";
       myRef.current.style.color = "rgb(46, 165, 255)";
     }
-  }, []);
+  }, [blue]);
   const element = useRef(null);
 
   const text = useMemo( () => {
@@ -52,7 +52,7 @@ const MyButton = ({
     if (element.current) {
       element.current.addEventListener("click", click);
     }
-  }, [hard]);
+  }, [hard, blue]);
   return (
     <div
       ref={element}

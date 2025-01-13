@@ -9,17 +9,16 @@ import AboutTop from "../MyAds/components/AboutTop";
 import axios from "axios";
 import ExampleWorks from "../MyAds/components/ExampleWorks";
 import MyLoader from "../../components/UI/MyLoader/MyLoader";
-import { useDispatch } from "react-redux";
 import makeNewFile from "../../functions/newMakeFile";
 import Compact from "../../components/UI/Compact/Compact";
 import "../MyAds/MyAds.css"
 import BackButton from "../../constants/BackButton";
 import { useNavigate } from "react-router-dom";
-import MainButton from "../../constants/MainButton";
-// const parOne = 2144832745;
+// const parOne = window.Telegram.WebApp.initDataUnsafe.user.id;
 // const parTwo = 1;
 
 const menu = document.documentElement.querySelector(".FirstMenu")
+let enter = true
 const ProfilePage = ({ ...props }) => {
   useEffect( () => {
     
@@ -51,7 +50,6 @@ const ProfilePage = ({ ...props }) => {
 //   window.Telegram.WebApp.showAlert(window.Telegram.WebApp.initDataUnsafe.start_param)
   window.Telegram.WebApp.disableVerticalSwipes();
 
-  const dispatch = useDispatch();
 
   const navigate = useNavigate()
 
@@ -73,7 +71,9 @@ const ProfilePage = ({ ...props }) => {
   useEffect( () => {
     function backFunction(){
         if (oneCards.isOpen){
+            enter = false
             setOneCard((value) => ({...value , isOpen : false}))
+            
         }
         else{
             navigate("/")
@@ -94,33 +94,45 @@ const ProfilePage = ({ ...props }) => {
     async function getAllCards() {
       let localCards = [];
       try {
-        const user = await axios.get("https://back-birga.ywa.su/user/findOne", {
+        const user = await axios.get("https://www.connectbirga.ru/user/findOne", {
           params: {
             id: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
           },
+          headers : {
+            "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+          }
         });
 
         let imTwo = await axios.get(
-            "https://back-birga.ywa.su/advertisement/findCount",
+            "https://www.connectbirga.ru/advertisement/findCount",
             {
               params: {
                 userId: Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[1]),
               },
+              headers : {
+                "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+              }
             }
           );
 
-        const cardOne = await axios.get("https://back-birga.ywa.su/card/findOne" , {
+        const cardOne = await axios.get("https://www.connectbirga.ru/card/findOne" , {
             params : {
                 id : Number(window.Telegram.WebApp.initDataUnsafe.start_param.split('m')[0])
+            },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
             }
         })
 
         let allCards = await axios.get(
-          "https://back-birga.ywa.su/card/findByUser",
+          "https://www.connectbirga.ru/card/findByUser",
           {
             params: {
               userId: user.data.id,
             },
+            headers : {
+              "X-API-KEY-AUTH" : process.env.REACT_APP_API_KEY
+            }
           }
         );
 
@@ -205,7 +217,9 @@ const ProfilePage = ({ ...props }) => {
           )}
         </>
       ) : (
-        <MyLoader />
+        <MyLoader style = {{
+          transform : "translateX(-16px)"
+        }} />
       )}
     </div>
 
@@ -216,7 +230,7 @@ const ProfilePage = ({ ...props }) => {
             mountOnEnter
             unmountOnExit
           >
-            <CardPage style = {oneCards.isOpen ? {transform : "translateX(0px)"} : {}} card={oneCards.card} />
+            <CardPage style = {enter ? {transform : "translateX(0px)"} : {}} card={oneCards.card} />
           </CSSTransition>
 
 

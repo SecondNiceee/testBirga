@@ -1,50 +1,19 @@
 import React, { memo, useCallback, useEffect,  useRef, useState,  } from "react";
 
-import { deleteAd } from "../../../store/information";
-import { useDispatch, useSelector,  } from "react-redux";
-import BackButton from "../../../constants/BackButton";
+import { useSelector,  } from "react-redux";
 import PickerTwo from "./PickerTwo";
 import PickerOne from "./PickerOne";
-import translation from "../../../functions/translate";
 
 
-const Yes = translation("Yes")
-const No = translation("No")
 const PickerContent = ({
-  myAdsArray,
   nowValue,
   setSecondPage,
   valueTwo,
   valueOne,
-  myResponse,
   setMyResponse,
-  details,
-  setDetails,
-  responsesArr
+  responsesArr,
+  myAdsArray
 }) => {
-  const dispatch = useDispatch();
-  const deleteFunction = useCallback(
-    (e) => {
-      window.Telegram.WebApp.showPopup(
-        {
-          title: "Удалить?",
-          message: "Вы хотите удалить это задание?",
-          buttons: [
-            { id: "save", type: "default", text: Yes },
-            { id: "delete", type: "destructive", text: No },
-          ],
-        },
-        (buttonId) => {
-          if (buttonId === "delete" || buttonId === null) {
-          }
-          if (buttonId === "save") {
-            dispatch(deleteAd(e.id));
-          }
-        }
-      );
-    },
-    [dispatch]
-  );
 
 
   
@@ -99,7 +68,7 @@ const PickerContent = ({
     return () => {
 
     }
-  }  , [nowValue, responsesArr, myAdsArray, advertisementStatus, responsesStatus] )
+  }  , [nowValue, responsesArr, myAdsArray, advertisementStatus, responsesStatus, viewsNumber] )
   
 
 
@@ -120,7 +89,7 @@ const PickerContent = ({
 
       <PickerOne viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} ref={containerOne} oneValue = {valueOne} nowValue = {nowValue}  responsesArr = {responsesArr} buttonFunction = {buttonFunction} />
 
-      <PickerTwo  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} ref={containerTwo} valueTwo = {valueTwo} myAdsArray={myAdsArray} setSecondPage = {setSecondPage}  deleteFunction = {deleteFunction} />
+      <PickerTwo  viewsNumber = {viewsNumber} setViewsNumber = {setViewsNumber} ref={containerTwo} valueTwo = {valueTwo} myAdsArray={myAdsArray} setSecondPage = {setSecondPage}  />
 
 
 

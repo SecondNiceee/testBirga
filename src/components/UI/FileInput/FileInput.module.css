@@ -31,8 +31,10 @@
     flex-grow: 1;
     line-height: 0;
     margin-left: 6px;
+    cursor: pointer;
  }
  .ActiveMainLabel{
+   cursor: pointer;
     max-width: 100%;
     border-radius: 5.23px;
     background: rgb(34, 61, 82);

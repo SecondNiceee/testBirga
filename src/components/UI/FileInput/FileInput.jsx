@@ -10,6 +10,7 @@ import cl from "./FileInput.module.css";
 import file from "../../../images/icons/file.svg";
 import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Text from "../../Text/Text";
+import translation from "../../../functions/translate";
 let counter = 0;
 const FileInput = ({
   className,
@@ -20,13 +21,17 @@ const FileInput = ({
   clear = true,
 }) => {
   const [images, setImages] = useState([]);
+  const [isLoader, setLoader] = useState(false)
+  const [loaderSize, setLoaderSize] = useState(files.length)
 
   const addFiles = useCallback(
     (newFiles, clear = false) => {
       let localImages = [];
       let localFiles = []
-      newFiles.forEach((event) => {
-        resizeImage(event, 1000, 1000, 1).then((value) => {
+      setLoader(true)
+      setLoaderSize(newFiles.length)
+      newFiles.forEach((event) => {  
+        resizeImage(event, 700, 700, 1).then((value) => {
           // reader.readAsDataURL(value);
           localImages.push(URL.createObjectURL(value));
           localFiles.push(value)
@@ -38,9 +43,13 @@ const FileInput = ({
               // setFiles([...localFiles])
               setImages([...localImages]);
             }
+            setLoader(false)
           }
           
-        });
+        }).catch( (value) =>{
+          setLoader(false)
+          window.Telegram.WebApp.showAlert(translation("Не удалось загрузить фотку, попробуйте еще раз или перезайдите на страницу."))
+        } );
       });
       // eslint-disable-next-line
     },
@@ -152,7 +161,7 @@ const FileInput = ({
     }
     return {};
   }, [files]);
-  const [isLoader, setLoader] = useState(false)
+
   useEffect( () => {  
     if (images.length < files.length){
       setLoader(true)
@@ -174,13 +183,7 @@ const FileInput = ({
         }
       >
 
-        { isLoader && files.map((e, i) => {
-          return (
-              <div key={i} className="filesLoader">
-                <BlockSpinner style = {{...imageStyle , border : "1px solid black"}} />
-              </div>
-          )
-        })}
+
 
       
 
@@ -200,6 +203,7 @@ const FileInput = ({
                       return images.indexOf(obj) !== images.indexOf(e);
                     })
                   );
+                  myRef.current.value = ""
                 }}
                 className={[cl.removeIcon, "_icon-trash"].join(" ")}
               />
@@ -215,6 +219,15 @@ const FileInput = ({
           );
         })}
 
+
+{ isLoader && Array.from({ length: loaderSize }).map((e, i) => {
+          return (
+              <div key={i} className="filesLoader">
+                <BlockSpinner style = {{...imageStyle , border : "1px solid black"}} />
+              </div>
+          )
+        })}
+
         <label
           style={files.length === 5 ? { display: "none" } : imageStyle}
           className={images.length !== 0 ? cl.ActiveMainLabel : cl.MainLabel}
@@ -223,10 +236,9 @@ const FileInput = ({
           <input
             ref={myRef}
             onChange={(event) => {
-              myRef.current.scrollIntoView({ block: "nearest", behavior: 'smooth' })
               if (event.target.files && event.target.files[0]) {
                 if (event.target.files.length + files.length > 5) {
-                  window.Telegram.WebApp.showAlert("Максимум 5 файлов");
+                  window.Telegram.WebApp.showAlert(translation("Максимум 5 файлов"));
                 } else {
                   let newFiles = [];
                   for (let i = 0; i < event.target.files.length; i++) {
@@ -241,9 +253,12 @@ const FileInput = ({
                     newFiles.push(newFile);
                   }
                   // setFiles([...files, ...newFiles]);
+                  
                   addFiles(newFiles);
                 }
               }
+
+
 
               // hideKeyboard(myRef.current)
             }}

@@ -2,12 +2,12 @@ import { useCallback } from "react";
 import { putMyTask } from "../../store/information";
 import translation from "../../functions/translate";
 
-const Yes = translation("Yes")
-const No = translation("No")
-export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sortFiles, dispatch, setDetails, details }) =>{
+const Yes = translation("Да")
+const No = translation("Нет")
+export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sortFiles, dispatch, details , setDetailsShow }) =>{
 
     const save = useCallback( () => {
-        if (details.task !== myAdsArray[secondPage.index] ) {
+        if (details !== myAdsArray[secondPage.index] ) {
           window.Telegram.WebApp
             .showPopup({
               title: translation("Сохранить?"),
@@ -19,19 +19,19 @@ export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sort
             } , (buttonId) => {
     
               if (buttonId === "delete" || buttonId === null) {
-                setDetails((value) => ({...value , isActive : false}))
+                setDetailsShow(false)
               }
               if (buttonId === "save") {
-              if (checkMistakes(details.task)){
+              if (checkMistakes(details)){
               let myFormData = new FormData();
-              myFormData.append('title' , String(detailsVar.task.taskName))
-              myFormData.append('description' , String(detailsVar.task.taskDescription))
+              myFormData.append('title' , String(detailsVar.taskName))
+              myFormData.append('description' , String(detailsVar.taskDescription))
               myFormData.append("deadline" , String(1))
-              myFormData.append("price" , String(detailsVar.task.tonValue ))
-              myFormData.append("startTime" , detailsVar.task.time.start)
-              myFormData.append("endTime" , detailsVar.task.time.end)
+              myFormData.append("price" , String(detailsVar.tonValue ))
+              myFormData.append("startTime" , detailsVar.time.start)
+              myFormData.append("endTime" , detailsVar.time.end)
     
-              let files = sortFiles(details.task.photosNames ,  details.task.photos)
+              let files = sortFiles(details.photosNames ,  details.photos)
             
                 for (let i = 0; i <  files.removedArr.length; i++){
                   myFormData.append(`deleteFiles[${i}]` , files.removedArr[i])
@@ -40,10 +40,9 @@ export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sort
                   myFormData.append(`addFiles` , files.addedArr[i] )
                 }
     
-              dispatch(putMyTask([myFormData, details.task.id , details.task]))
+              dispatch(putMyTask([myFormData, details.id , details]))
     
-              
-              setDetails((value) => ({...value , isActive : false}))
+              setDetailsShow(false)
               }
               else{
                 window.Telegram.WebApp.HapticFeedback.notificationOccurred("error")
@@ -53,10 +52,10 @@ export const useSave = ({detailsVar, myAdsArray, secondPage, checkMistakes, sort
             } )
             
         } else {
-          setDetails((value) => ({...value , isActive : false}))
+          setDetailsShow(false)
         }
          // eslint-disable-next-line
-      }, [details , dispatch , myAdsArray , setDetails , secondPage.index, checkMistakes  ] ) 
+      }, [details , dispatch , myAdsArray  , secondPage.index, checkMistakes  ] ) 
 
       return save
 }
