@@ -12,6 +12,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
         const lineHeight = parseInt(window.getComputedStyle(textAreaRef.current).lineHeight);
         console.log(lineHeight)
         const maxHeight = lineHeight * 8;
+        console.log(maxHeight, textAreaRef.current.scrollHeight)
         setShowButton(textAreaRef.current.scrollHeight > maxHeight);
       }
     };
@@ -42,7 +43,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
       ) : (
         ""
       )}
-      {showButton &&       <button className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
+      {showButton &&   <button className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
           <p className="font-semibold !font-font-3 text-white">Развернуть</p>
       </button>}
 
