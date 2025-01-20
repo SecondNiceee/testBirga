@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @font-face {
   font-family: 'trash';
   src:  url('fonts/trash.eot?y7i1t');

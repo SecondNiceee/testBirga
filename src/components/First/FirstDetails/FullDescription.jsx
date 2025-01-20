@@ -19,7 +19,10 @@ const FullDescription = ({ fullDescription, ...props }) => {
       }} ref={refTwo} readOnly value={fullDescription} className="FullDescriptionBottom"/>
       {fullDescription.length > 0 ? (
         <div  {...props}  className="FullDescription">
-          <textarea readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom"/>
+          <textarea readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
+          <button className="w-[100%] py-[11px] bg-[#2ea5ff] flex justify-center items-center">
+            <p className="font-semibold font-3 text-white">Развернуть</p>
+          </button>
         </div>
       ) : (
         ""
