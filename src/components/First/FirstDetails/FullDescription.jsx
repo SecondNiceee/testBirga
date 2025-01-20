@@ -8,10 +8,10 @@ const FullDescription = ({ fullDescription, ...props }) => {
   
   useEffect(() => {
     const checkLineCount = () => {
-      if (textRef.current) {
+      if (textAreaRef.current) {
         const lineHeight = parseInt(window.getComputedStyle(textAreaRef.current).lineHeight);
         const maxHeight = lineHeight * 8;
-        setShowButton(textRef.current.scrollHeight > maxHeight);
+        setShowButton(textAreaRef.current.scrollHeight > maxHeight);
       }
     };
 
