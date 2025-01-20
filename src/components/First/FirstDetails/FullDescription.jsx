@@ -6,6 +6,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   const [showButton, setShowButton] = useState(false)
   const [maxHeight, setMaxHeight] = useState(null)
+
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
@@ -26,6 +27,11 @@ const FullDescription = ({ fullDescription, ...props }) => {
       textAreaRef.current.style.height = (refTwo.current.scrollHeight).toString() + 'px'
   } , [fullDescription] )
 
+  const clickHandler = () => {
+    setMaxHeight(null)
+    setShowButton(false)
+  }
+
   
   return (
     <div className="flex flex-col items-center w-[100%] gap-[4px]">
@@ -44,7 +50,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
       ) : (
         ""
       )}
-      {showButton &&   <button className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
+      {showButton &&   <button onClick={clickHandler} className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
           <p className="font-semibold !font-font-3 text-white">Развернуть</p>
       </button>}
 
