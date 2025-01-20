@@ -5,12 +5,13 @@ const FullDescription = ({ fullDescription, ...props }) => {
   const refTwo = useRef(null)
 
   const [showButton, setShowButton] = useState(false)
+  const [height, setHight] = useState
   
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
-        const lineHeight = parseInt(window.getComputedStyle(textAreaRef.current).lineHeight);
-        console.log(lineHeight)
+        const lineHeight = window.getComputedStyle(textAreaRef.current).lineHeight;
+        textAreaRef.current.style.maxHeight = lineHeight * 8
         const maxHeight = lineHeight * 8;
         console.log(maxHeight, textAreaRef.current.scrollHeight)
         setShowButton(textAreaRef.current.scrollHeight > maxHeight);
