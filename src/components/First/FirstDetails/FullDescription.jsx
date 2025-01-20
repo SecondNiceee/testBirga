@@ -10,6 +10,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
         const lineHeight = parseInt(window.getComputedStyle(textAreaRef.current).lineHeight);
+        console.log(lineHeight)
         const maxHeight = lineHeight * 8;
         setShowButton(textAreaRef.current.scrollHeight > maxHeight);
       }
