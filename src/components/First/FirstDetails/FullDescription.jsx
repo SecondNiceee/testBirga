@@ -17,7 +17,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
     checkLineCount();
 
-  }, [fullDescription, maxLines]);
+  }, [fullDescription]);
 
 
   useEffect( () => {
