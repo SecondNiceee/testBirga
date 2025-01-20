@@ -5,12 +5,12 @@ const FullDescription = ({ fullDescription, ...props }) => {
   const refTwo = useRef(null)
 
   const [showButton, setShowButton] = useState(false)
+  const [maxHeight, setMaxHeight] = useState(null)
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
         const lineHeight = 19.7;
-        textAreaRef.current.style.maxHeight = lineHeight * 8
-        const maxHeight = lineHeight * 8;
+        setMaxHeight(lineHeight * 8)
         console.log(maxHeight, textAreaRef.current.scrollHeight)
         setShowButton(textAreaRef.current.scrollHeight > maxHeight);
       }
@@ -37,7 +37,9 @@ const FullDescription = ({ fullDescription, ...props }) => {
       }} ref={refTwo} readOnly value={fullDescription} className="FullDescriptionBottom"/>
       {fullDescription.length > 0 ? (
         <div  {...props}  className="FullDescription w-[100%]">
-          <textarea readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
+          <textarea style={{
+            maxHeight : maxHeight ?? 'unset'
+          }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
         </div>
       ) : (
         ""
