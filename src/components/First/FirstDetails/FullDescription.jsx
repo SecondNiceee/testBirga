@@ -5,8 +5,6 @@ const FullDescription = ({ fullDescription, ...props }) => {
   const refTwo = useRef(null)
 
   const [showButton, setShowButton] = useState(false)
-  const [height, setHight] = useState
-  
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
