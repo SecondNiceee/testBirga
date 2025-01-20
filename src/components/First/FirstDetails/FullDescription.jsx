@@ -10,7 +10,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
-        const lineHeight = window.getComputedStyle(textAreaRef.current).lineHeight;
+        const lineHeight = 19.7;
         textAreaRef.current.style.maxHeight = lineHeight * 8
         const maxHeight = lineHeight * 8;
         console.log(maxHeight, textAreaRef.current.scrollHeight)
