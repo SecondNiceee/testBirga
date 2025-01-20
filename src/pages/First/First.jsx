@@ -801,6 +801,8 @@ const First = ({ isPage = false }) => {
       <CSSTransition
         in={isDetailsActive.isOpen}
         timeout={400}
+        unmountOnExit
+        mountOnEnter
         // classNames="left-right"
       >
         <FirstDetails
