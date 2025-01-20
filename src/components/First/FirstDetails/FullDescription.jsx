@@ -10,7 +10,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   
   return (
-    <>
+    <div className="flex flex-col items-center w-[100%] gap-[4px]">
       <textarea style={{
         position : "absolute",
         opacity : 0,
@@ -20,14 +20,14 @@ const FullDescription = ({ fullDescription, ...props }) => {
       {fullDescription.length > 0 ? (
         <div  {...props}  className="FullDescription">
           <textarea readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
-          <button className="w-[100%] py-[11px] bg-[#2ea5ff] flex justify-center items-center">
-            <p className="font-semibold font-3 text-white">Развернуть</p>
-          </button>
         </div>
       ) : (
         ""
       )}
-    </>
+      <button className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
+          <p className="font-semibold !font-font-3 text-white">Развернуть</p>
+      </button>
+    </div>
   );
 };
 
