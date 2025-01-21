@@ -30,12 +30,12 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   const clickHandler = () => {
     setMaxHeight(false)
-    setShowButton('show')
+    setShowButton('hide')
   }
 
   const clickHandlerHide = () => {
     setMaxHeight(String(lineHeight * 8) + "px")
-    setShowButton(true)
+    setShowButton("show")
   }
 
   console.log(maxHeight)
