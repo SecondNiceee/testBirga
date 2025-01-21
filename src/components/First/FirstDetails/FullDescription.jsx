@@ -1,5 +1,5 @@
 import React, { memo,  useEffect, useRef, useState } from "react";
-import Text from "../../Text/Text";
+import Linkify from 'react-linkify';
 const lineHeight = 19.7;
 const FullDescription = ({ fullDescription, ...props }) => {
   const textAreaRef = useRef(null)
@@ -48,9 +48,11 @@ const FullDescription = ({ fullDescription, ...props }) => {
       }} ref={refTwo} readOnly value={fullDescription} className="FullDescriptionBottom"/>
       {fullDescription.length > 0 ? (
         <div  {...props}  className="FullDescription w-[100%]">
-          <textarea style={{
-            maxHeight : maxHeight ?? 'unset'
-          }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
+          <Linkify>
+            <textarea style={{
+              maxHeight : maxHeight ?? 'unset'
+            }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
+          </Linkify>
         </div>
       ) : (
         ""
