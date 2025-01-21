@@ -29,7 +29,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
   } , [fullDescription] )
 
   const clickHandler = () => {
-    setMaxHeight(null)
+    setMaxHeight(false)
     setShowButton('hide')
   }
 
@@ -53,7 +53,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
         <div  {...props}  className="FullDescription w-[100%]">
           <Linkify>
             <textarea style={{
-              maxHeight : !maxHeight ? 'auto' : maxHeight,
+              maxHeight : maxHeight ? maxHeight : 'auto',
               fontSize : "16px"
             }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
           </Linkify>
