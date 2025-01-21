@@ -65,8 +65,9 @@ const FullDescription = ({ fullDescription, ...props }) => {
           <Linkify>
             <textarea style={{
               maxHeight : styleMaxHeight,
-              fontSize : "16px"
-            }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
+              fontSize : "16px",
+              letterSpacing : "-1.67px"
+            }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom  leading-[64px]"/>
           </Linkify>
         </div>
       ) : (
@@ -75,7 +76,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
       {showButton === "show" ?   <button onClick={clickHandler} className="w-[100%] py-[14px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
           <p className="font-medium !font-font-3 text-white tracking-[.02em]">Развернуть</p>
       </button> : showButton === "hide" ? <button onClick={clickHandlerHide} className="w-[100%] py-[14px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
-          <p className="font-semibold !font-font-3 text-white">Свернуть</p>
+          <p className="font-semibold !font-font-3 text-white ">Свернуть</p>
       </button> : <></> }
 
     </div>
