@@ -11,14 +11,13 @@ const FullDescription = ({ fullDescription, ...props }) => {
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
-        setMaxHeight()
+        setMaxHeight(toString(lineHeight * 8) + "px")
         console.log(lineHeight * 8, textAreaRef.current.scrollHeight)
         setShowButton(textAreaRef.current.scrollHeight > lineHeight * 8 ? 'show' : false);
       }
     };
 
     checkLineCount();
-
   }, [fullDescription]);
 
 
