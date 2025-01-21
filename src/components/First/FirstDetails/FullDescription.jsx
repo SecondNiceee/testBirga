@@ -13,7 +13,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
       if (textAreaRef.current) {
         setMaxHeight()
         console.log(lineHeight * 8, textAreaRef.current.scrollHeight)
-        setShowButton(textAreaRef.current.scrollHeight > lineHeight * 8);
+        setShowButton(textAreaRef.current.scrollHeight > lineHeight * 8 ? 'show' : false);
       }
     };
 
@@ -29,7 +29,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   const clickHandler = () => {
     setMaxHeight(null)
-    setShowButton(false)
+    setShowButton('hide')
   }
 
   const clickHandlerHide = () => {
@@ -57,11 +57,11 @@ const FullDescription = ({ fullDescription, ...props }) => {
       ) : (
         ""
       )}
-      {showButton ?   <button onClick={clickHandler} className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
+      {showButton === "show" ?   <button onClick={clickHandler} className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
           <p className="font-semibold !font-font-3 text-white">Развернуть</p>
-      </button> : <button onClick={clickHandlerHide} className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
+      </button> : showButton === "hide" ? <button onClick={clickHandlerHide} className="w-[100%] py-[11px] bg-[#2ea5ff] rounded-[6px_6px_10px_10px] flex justify-center items-center">
           <p className="font-semibold !font-font-3 text-white">Свернуть</p>
-      </button> }
+      </button> : <></> }
 
     </div>
   );
