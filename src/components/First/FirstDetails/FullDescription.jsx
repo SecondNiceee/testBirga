@@ -11,8 +11,8 @@ const FullDescription = ({ fullDescription, ...props }) => {
   useEffect(() => {
     const checkLineCount = () => {
       if (textAreaRef.current) {
-        setMaxHeight(toString(lineHeight * 8) + "px")
-        console.log(toString(lineHeight * 8) + "px")
+        setMaxHeight(String(lineHeight * 8) + "px")
+        console.log(String(lineHeight * 8) + "px")
         console.log(lineHeight)
         console.log(lineHeight * 8, textAreaRef.current.scrollHeight)
         setShowButton(textAreaRef.current.scrollHeight > lineHeight * 8 ? 'show' : false);
@@ -34,7 +34,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
   }
 
   const clickHandlerHide = () => {
-    setMaxHeight(toString(lineHeight * 8) + "px")
+    setMaxHeight(String(lineHeight * 8) + "px")
     setShowButton(true)
   }
 
