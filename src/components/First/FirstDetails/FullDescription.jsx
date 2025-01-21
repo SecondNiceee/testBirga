@@ -30,7 +30,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   const clickHandler = () => {
     setMaxHeight(false)
-    setShowButton('hide')
+    setShowButton('show')
   }
 
   const clickHandlerHide = () => {
