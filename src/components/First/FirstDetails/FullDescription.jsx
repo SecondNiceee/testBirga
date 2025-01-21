@@ -66,7 +66,8 @@ const FullDescription = ({ fullDescription, ...props }) => {
             <textarea style={{
               maxHeight : styleMaxHeight,
               fontSize : "16px",
-            }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom tracking-[146%]  leading-[64px]"/>
+              letterSpacing : "-.02em"
+            }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[146%]"/>
           </Linkify>
         </div>
       ) : (
