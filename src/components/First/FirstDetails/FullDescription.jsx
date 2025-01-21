@@ -1,4 +1,4 @@
-import React, { memo,  useEffect, useRef, useState } from "react";
+import React, { memo,  useEffect, useMemo, useRef, useState } from "react";
 import Linkify from 'react-linkify';
 const lineHeight = 19.7;
 const FullDescription = ({ fullDescription, ...props }) => {
@@ -40,6 +40,17 @@ const FullDescription = ({ fullDescription, ...props }) => {
 
   console.log(maxHeight)
 
+  const styleMaxHeight = useMemo( () => {
+    if (maxHeight){
+      return maxHeight
+    }
+    else{
+      return "unset"
+    }
+  } , [maxHeight] )
+  
+
+  console.log(styleMaxHeight)
   
   return (
     <div className="flex flex-col items-center w-[100%] gap-[4px]">
@@ -53,7 +64,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
         <div  {...props}  className="FullDescription w-[100%]">
           <Linkify>
             <textarea style={{
-              maxHeight : maxHeight ? maxHeight : 'auto',
+              maxHeight : styleMaxHeight,
               fontSize : "16px"
             }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
           </Linkify>
