@@ -53,7 +53,7 @@ const FullDescription = ({ fullDescription, ...props }) => {
         <div  {...props}  className="FullDescription w-[100%]">
           <Linkify>
             <textarea style={{
-              maxHeight : maxHeight ?? 'auto',
+              maxHeight : !maxHeight ? 'auto' : maxHeight,
               fontSize : "16px"
             }} readOnly ref = {textAreaRef} value={fullDescription} className="FullDescriptionBottom leading-[131%]"/>
           </Linkify>
